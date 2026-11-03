@@ -1,0 +1,93 @@
+/* Editor chrome lives outside the scaled slide. It never appears in exports. */
+.editor-selection[hidden], .editor-width-selection[hidden] { display: none; }
+.editor-panel [hidden], .editor-resize-handle[hidden] { display: none !important; }
+/* Paper and Edit share the right-hand sidebar slot. deck.css's .viewport
+   leaves room for whichever panel is open. */
+/* The panel slides in from the right; deck.css's "panels' room" gives
+   --editor-space, which eases with --editor-in. A drag on its left edge
+   sets --editor-width (js/panels.js). */
+body { --editor-width: 330px; }
+.editor-panel[hidden] { display: block; }
+body.editing .notes-drawer { right: var(--editor-space); }
+body.editing .bar :is(.deck-title, .home) { display: none; }
+body.editing .slide, body.editing .slide * { cursor: default; }
+body.editing .slide a { cursor: default; }
+body.editing .frames, body.editing .frames iframe, body.editing .slide iframe { pointer-events: none; }
+body.editing .slot, body.editing .play-room { outline: 1px dashed var(--accent); outline-offset: -2px; }
+body.editing .offline { pointer-events: none; }
+[data-edit][aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.editor-panel {
+  position: fixed; right: 0; top: calc(var(--bar) + 3px); bottom: 0; z-index: 11;
+  width: var(--editor-width); background: var(--surface); border-left: 1px solid var(--line);
+  display: block; transform: translateX(calc((1 - var(--editor-in, 1)) * 100%));
+  overflow: auto; padding: 16px; font: 13px/1.45 var(--f-head); color: var(--ink);
+}
+.editor-panel h2 { font-size: 18px; margin: 0; }
+.editor-panel h3 { font-size: 14px; margin: 0 0 8px; }
+.editor-order summary { cursor: pointer; font-size: 14px; font-weight: 600; }
+.editor-order summary span { float: right; font-size: 12px; font-weight: 400; color: var(--ink-2); }
+.editor-panel p { margin: 6px 0; }
+.editor-panel section { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.editor-panel .editor-row { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+.editor-panel .editor-row > * { min-width: 0; }
+.editor-panel .editor-row > label { flex: 1; }
+.editor-panel .editor-grow { flex: 1; }
+.editor-panel button { font: inherit; padding: 5px 9px; white-space: nowrap; }
+.editor-panel button:disabled { opacity: .45; cursor: default; }
+.editor-panel label { display: block; font-size: 12px; color: var(--ink-2); }
+.editor-panel input, .editor-panel select, .editor-panel textarea {
+  display: block; width: 100%; margin-top: 4px; padding: 7px 8px; border: 1px solid var(--line);
+  border-radius: 6px; background: var(--bg); color: var(--ink); font: 13px/1.45 var(--f-head);
+}
+.editor-panel textarea { resize: vertical; min-height: 64px; }
+.editor-panel .editor-check { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+.editor-panel .editor-check input { display: inline-block; width: auto; margin: 0; }
+.editor-panel .editor-delete { color: var(--rose-tone); border-color: var(--rose-tone); }
+.editor-panel :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.editor-panel .editor-help, .editor-status { color: var(--ink-2); font-size: 12px; }
+.editor-status { min-height: 2.9em; }
+.editor-status.error, .editor-recovery { color: var(--rose-tone); }
+.editor-panel .editor-recovery { padding: 10px; margin-top: 8px; border: 1px solid var(--rose-tone); border-radius: 6px; }
+.editor-panel .editor-recovery[hidden] { display: none; }
+.editor-recovery .editor-row { flex-wrap: wrap; }
+.editor-panel .editor-slides { max-height: 168px; overflow: auto; margin: 8px 0 0; padding: 0; list-style: none; }
+.editor-slides li { border: 1px solid transparent; border-radius: 5px; margin: 2px 0; }
+.editor-slides li[aria-current="true"] { background: var(--blue-tint); border-color: var(--accent); }
+.editor-slides li.drag-over { border-top: 3px solid var(--accent); }
+.editor-slides button { display: block; text-align: left; white-space: normal; width: 100%; background: transparent; border: 0; box-shadow: none; }
+.editor-slides .editor-slide-number { display: inline-block; color: var(--ink-3); font-variant-numeric: tabular-nums; width: 25px; }
+.editor-panel .editor-element-name { font-weight: 600; overflow-wrap: anywhere; }
+.editor-panel .editor-text-fields label + label { margin-top: 8px; }
+.editor-panel .editor-nudge { justify-content: center; }
+.editor-panel .editor-nudge button { min-width: 40px; }
+.editor-panel .editor-empty { padding: 12px; background: var(--surface-2); border-radius: 6px; }
+.editor-selection {
+  position: fixed; pointer-events: none; z-index: 8; border: 2px solid var(--accent);
+  box-shadow: 0 0 0 1px var(--surface); border-radius: 2px;
+}
+.editor-selection::before { content: ""; position: absolute; width: 7px; height: 7px; left: -5px; top: -5px; background: var(--accent); border: 1px solid var(--surface); }
+.editor-resize-handle {
+  position: absolute; width: 15px; height: 15px; right: -8px; bottom: -8px;
+  background: var(--surface); border: 2px solid var(--accent); border-radius: 3px;
+  pointer-events: auto; cursor: nwse-resize; touch-action: none;
+}
+.editor-width-selection { position: fixed; pointer-events: none; z-index: 8; }
+.editor-width-shared { outline: 1px dashed var(--accent); }
+.editor-width-handle {
+  position: absolute; width: 10px; height: 20px; top: 50%; margin-top: -10px;
+  background: var(--surface); border: 2px solid var(--accent); border-radius: 3px;
+  pointer-events: auto; cursor: ew-resize; touch-action: none;
+}
+.editor-width-handle[data-edge="left"] { left: -5px; }
+.editor-width-handle[data-edge="right"] { right: -5px; }
+@media (max-width: 740px) {
+  body { --editor-width: 280px; }
+  body.editing .bar .part { display: none; }
+  .editor-panel { padding: 12px; }
+}
+@media (max-width: 639px) {
+  body { --editor-space: 0px; }
+  .editor-panel { width: 100vw; }
+  .panel-resize[data-resize="editor"] { display: none !important; }
+}
+@media print { .editor-panel, .editor-selection, .editor-width-selection { display: none !important; } }

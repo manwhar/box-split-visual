@@ -1,0 +1,50 @@
+<!--
+  Demo snippets: small, working examples of how a demo page talks to the
+  deck. Each slide shows one mechanism; README.md says what each one shows
+  and where to read more. Open them on the local server at
+  http://localhost:8790/explorables/_snippets/ (the gallery leaves folders
+  starting with "_" out).
+
+  These slides are deliberately plain. They show the engine's mechanics,
+  not how an explorable should tell its paper's story or look: borrow the
+  code, not the slide order, layout or wording.
+-->
+
+<section class="slide s-centered" id="snippets" data-part="Snippets">
+  <h2>Demo snippets</h2>
+  <p class="lede">How a demo page works with the deck: one mechanism per slide.</p>
+  <aside class="notes">Each demo is its own small page in this folder. Read its source beside the slide that shows it.</aside>
+</section>
+
+<section class="slide chapter" id="sharp-canvas" data-part="Snippets">
+  <header class="ch-head"><span class="ch-num">1</span><div><h2>A canvas that stays sharp, and pauses</h2><p>canvas/index.html listens for deck:resolution and deck:visibility.</p></div></header>
+  <div class="play-room" data-max="2"><div class="play-set">
+    <iframe data-src="canvas/index.html" width="800" height="400" scrolling="no" title="Dots drifting on a canvas drawn at the deck's resolution"></iframe>
+  </div></div>
+  <aside class="notes">The deck scales this frame up to fill the slide. Without deck:resolution, the canvas would be drawn at its own size and stretched, so it would blur. Move to the next slide and back: the animation stops while the slide is off screen.</aside>
+</section>
+
+<section class="slide chapter" id="one-variant" data-part="Snippets">
+  <header class="ch-head"><span class="ch-num">2</span><div><h2>One page, chosen by its address</h2><p>variants/index.html?variant=few shows 20 coin flips.</p></div></header>
+  <div class="play-room" data-max="2"><div class="play-set">
+    <iframe data-src="variants/index.html?variant=few" width="600" height="400" scrolling="no" title="The share of heads over 20 seeded coin flips"></iframe>
+  </div></div>
+  <aside class="notes">One page can serve several slides: the slide picks what it shows with a query parameter. Its first view comes from a fixed seed, so the slide looks the same every time, including in its preview picture.</aside>
+</section>
+
+<section class="slide chapter" id="side-by-side" data-part="Snippets">
+  <header class="ch-head"><span class="ch-num">3</span><div><h2>The same page, side by side</h2><p>Two frames in one play-set scale together.</p></div></header>
+  <div class="play-room" data-max="1.5"><div class="play-set">
+    <iframe data-src="variants/index.html?variant=few" width="600" height="400" scrolling="no" title="The share of heads over 20 seeded coin flips"></iframe>
+    <iframe data-src="variants/index.html?variant=many" width="600" height="400" scrolling="no" title="The share of heads over 2,000 seeded coin flips"></iframe>
+  </div></div>
+  <aside class="notes">Each frame is a separate page with its own controls: Flip again in one doesn't change the other. When a comparison must stay in step, draw both views in one page instead.</aside>
+</section>
+
+<section class="slide chapter" id="recorded-run" data-part="Snippets">
+  <header class="ch-head"><span class="ch-num">4</span><div><h2>Replaying a recorded run</h2><p>recording/index.html loads run.json, and says it's a recording.</p></div></header>
+  <div class="play-room" data-max="2"><div class="play-set">
+    <iframe data-src="recording/index.html" width="800" height="400" scrolling="no" title="A replay of a recorded run, step by step"></iframe>
+  </div></div>
+  <aside class="notes">The published site is static files, so a demo can't call a model or a server: record what it needs and keep the file in the demo's folder. The page says it's loading, says plainly if the file is missing, and labels the replay as a recording so nobody takes it for a live computation.</aside>
+</section>

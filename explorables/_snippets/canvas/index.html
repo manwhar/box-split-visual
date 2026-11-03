@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A canvas that stays sharp, and pauses</title>
+<!--
+  Snippet: drawing on a canvas inside a deck.
+
+  1. Sharpness (deck:resolution). The deck scales this 800 × 400 page to fit
+     its slide, often to twice its size or more. A canvas drawn at its own
+     CSS size is then stretched and blurs. The deck sends
+     {type: "deck:resolution", detail}: how many screen pixels each CSS pixel
+     of this page covers. Give the canvas `detail` pixels per CSS pixel and
+     scale the drawing to match. Use this, not window.devicePixelRatio: inside
+     the deck's frame, devicePixelRatio doesn't know the slide enlarged it.
+     Opened on its own, the page never hears the message, so it starts from
+     devicePixelRatio.
+
+  2. Pausing (deck:visibility). The deck sends {type: "deck:visibility",
+     visible} when the slide comes on screen and goes off it. Stop animating
+     while it's hidden: a deck keeps every frame it has loaded, and hidden
+     animations would all keep running.
+
+  3. No size while hidden. A slide off screen isn't laid out, so this page's
+     canvas measures 0 × 0 there. The deck hides a slide before the message
+     saying so arrives, so a frame or two can still be drawn at that size,
+     and a new detail can arrive while it's hidden. Skip moving the dots
+     without a size (x % 0 is NaN, and would lose every dot for good), and
+     size the canvas on the first frame drawn once it has its size back. (A
+     ResizeObserver on the canvas isn't enough: in Chromium it sometimes
+     misses the canvas coming back.)
+
+  body's data-detail and data-running show the current state, for tests and
+  for checking by hand in the browser's developer tools.
+-->
+<style>
+  html, body { margin: 0; }
+  body {
+    box-sizing: border-box; width: 800px; height: 400px; overflow: hidden; padding: 20px 24px;
+    display: grid; grid-template-rows: 1fr auto; gap: 12px;
+    font: 20px/1.4 "Nunito Sans", system-ui, -apple-system, sans-serif; color: #1e2742; background: transparent;
+  }
+  /* The canvas's CSS size is fixed by the layout; its pixel size is set in script. */
+  canvas { width: 100%; height: 100%; display: block; border-radius: 12px; background: #eef2fb; }
+  p { margin: 0; color: #4a5470; }
+</style>
+</head>
+<body>
+  <canvas id="field" role="img" aria-label="Dots drifting across a field"></canvas>
+  <p id="status">Drawn at 1× detail.</p>
+<script>
+  const canvas = document.getElementById("field");
+  const context = canvas.getContext("2d");
+  const status = document.getElementById("status");
+
+  // Fixed starting dots, so the first view is the same every time.
+  const dots = Array.from({ length: 40 }, (_, i) => ({
+    x: (i * 97) % 752, y: (i * 53) % 300, dx: ((i % 5) - 2) * 0.6 || 0.4, dy: ((i % 3) - 1) * 0.5 || 0.3,
+  }));
+
+  let detail = window.devicePixelRatio || 1;
+  let visible = true;
+  let unsized = false; // resize() found no size to give the canvas pixels for
+
+  /** Give the canvas `detail` pixels per CSS pixel, then draw in CSS pixels. */
+  function resize() {
+    document.body.dataset.detail = String(detail);
+    status.textContent = `Drawn at ${detail}× detail.`;
+    const width = canvas.clientWidth, height = canvas.clientHeight;
+    // Hidden: keep the detail, and size the canvas once it's shown (frame(), below).
+    unsized = !width || !height;
+    if (unsized) return;
+    canvas.width = Math.round(width * detail);
+    canvas.height = Math.round(height * detail);
+    // Every drawing call below uses CSS pixels; this scales them up.
+    context.setTransform(detail, 0, 0, detail, 0, 0);
+    draw();
+  }
+
+  function draw() {
+    const width = canvas.clientWidth, height = canvas.clientHeight;
+    context.clearRect(0, 0, width, height);
+    context.fillStyle = "#3d63bf";
+    for (const dot of dots) {
+      context.beginPath();
+      context.arc(dot.x, dot.y, 8, 0, Math.PI * 2);
+      context.fill();
+    }
+  }
+
+  function step() {
+    const width = canvas.clientWidth, height = canvas.clientHeight;
+    if (!width || !height) return; // hidden, and not yet told so
+    for (const dot of dots) {
+      dot.x = (dot.x + dot.dx + width) % width;
+      dot.y = (dot.y + dot.dy + height) % height;
+    }
+    draw();
+  }
+
+  addEventListener("message", (event) => {
+    if (event.data?.type === "deck:resolution") {
+      detail = event.data.detail;
+      resize();
+    }
+    if (event.data?.type === "deck:visibility") {
+      visible = event.data.visible;
+      document.body.dataset.running = String(visible);
+    }
+  });
+
+  // One loop for the page's life; it only moves the dots while visible.
+  function frame() {
+    if (unsized) resize();
+    if (visible) step();
+    requestAnimationFrame(frame);
+  }
+  document.body.dataset.running = "true";
+  resize();
+  requestAnimationFrame(frame);
+</script>
+</body>
+</html>

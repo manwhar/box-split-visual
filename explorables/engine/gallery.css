@@ -1,0 +1,80 @@
+/* The gallery of explorables: the site's front page, and /explorables/ on
+ * the local server. tools/decks.py gallery() writes it. It takes its colours
+ * and fonts from deck.css; these rules lay out a page that scrolls, unlike a
+ * deck, with a card for each explorable. The cards take the lab's colours
+ * in turn, like cards on a slide.
+ */
+html:has(body.gallery), body.gallery { height: auto; }
+body.gallery { min-height: 100vh; overflow: auto; background: var(--bg); }
+.gallery-head, .gallery main, .gallery-foot { max-width: 1180px; margin: 0 auto; padding-left: 32px; padding-right: 32px; }
+.gallery-head { padding-top: 64px; padding-bottom: 40px; }
+.gallery-head h1 { font-family: var(--f-cover); font-weight: 800; font-size: clamp(44px, 7vw, 76px); line-height: 1.05; color: var(--blue-tone); text-wrap: wrap; }
+.gallery-head .lede { margin-top: 16px; font-size: clamp(18px, 2.2vw, 22px); line-height: 1.5; color: var(--ink-2); }
+
+.explorables { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 28px; }
+.explorable {
+  position: relative; isolation: isolate; display: flex; flex-direction: column; overflow: hidden; border-radius: 18px; background: var(--surface);
+  box-shadow: 0 0 0 1px var(--line), var(--shadow); --tint: var(--blue-tint); --tone: var(--blue-tone);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.explorable:nth-child(4n + 2) { --tint: var(--sun-tint); --tone: var(--sun-tone); }
+.explorable:nth-child(4n + 3) { --tint: var(--rose-tint); --tone: var(--rose-tone); }
+.explorable:nth-child(4n + 4) { --tint: var(--sea-tint); --tone: var(--sea-tone); }
+/* A slide-shaped picture, or, without one, the paper's year on the card's tint. */
+.explorable .cover { position: relative; display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--tint); }
+/* Out of the flow, so a picture of another shape is cropped to the card's, never stretches it. */
+.explorable .cover img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.cover-year { display: grid; place-items: center; height: 100%; font-family: var(--f-num); font-size: 72px; font-weight: 800; color: var(--tone); }
+.explorable .about { flex: 1; display: flex; flex-direction: column; gap: 8px; padding: 20px 24px 24px; }
+.explorable h2 { font-family: var(--f-head); font-size: 26px; font-weight: 500; line-height: 1.2; }
+.explorable h2 a { color: var(--ink); text-decoration: none; }
+/* Stretch the title's native link over the entire card, with one keyboard stop. */
+.explorable h2 a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.explorable h2 a:is(:hover, :focus-visible) { color: var(--tone); }
+.explorable h2 a:focus-visible { outline: none; }
+.explorable:has(h2 a:focus-visible) { outline: 3px solid var(--tone); outline-offset: 4px; }
+@media (hover: hover) {
+  .explorable:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px var(--tone), 0 12px 28px rgba(30, 40, 60, 0.16); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .explorable { transition: none; }
+  .explorable:hover { transform: none; }
+}
+.explorable .paper { font-size: 15px; line-height: 1.45; color: var(--ink-3); }
+.explorable .paper-title { font-style: italic; color: var(--ink-2); }
+.explorable .description { font-size: 17px; line-height: 1.5; color: var(--ink); }
+.explorable .tags { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.explorable .tags li { padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--tint); color: var(--tone); }
+.explorable .by { margin-top: auto; padding-top: 4px; font-size: 15px; font-weight: 500; color: var(--tone); white-space: pre-line; }
+
+/* On the local server: drafts, and what to fix before an explorable is published. */
+.badge { align-self: flex-start; padding: 2px 10px; border-radius: 999px; font-size: 13px; font-weight: 500; background: var(--surface-2); color: var(--ink-2); }
+.badge.error { background: var(--rose-tint); color: var(--rose-tone); }
+.badge.warning { background: var(--sun-tint); color: var(--sun-tone); }
+/* Keep the local validation disclosure above the card's link. */
+.problems { position: relative; z-index: 2; font-size: 14px; line-height: 1.45; }
+.problems summary { cursor: pointer; color: var(--ink-2); }
+.problems ul { margin: 8px 0 0; padding-left: 1.2em; }
+.problems li { margin-bottom: 6px; }
+.problems li.error::marker { color: var(--rose-tone); }
+.problems li.warning::marker { color: var(--sun-tone); }
+.problems b { font-weight: 600; margin-right: 4px; }
+
+.gallery .empty { font-size: 18px; color: var(--ink-2); }
+.gallery-foot { padding-top: 48px; padding-bottom: 56px; font-size: 15px; color: var(--ink-3); }
+.gallery-foot p + p { margin-top: 8px; }
+.gallery-foot code { font-size: 14px; }
+
+/* The invitation stays distinct from the research gallery below it. */
+.gallery .create-invitation { display: flex; align-items: center; gap: 32px; justify-content: space-between; margin-bottom: 36px; padding: 26px 30px; border-radius: 14px; background: var(--blue-tint); border-left: 4px solid var(--blue-tone); }
+.gallery .create-invitation .invitation-kicker { font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--blue-tone); margin-bottom: 6px; }
+.gallery .create-invitation h2 { font-family: var(--f-head); font-weight: 600; font-size: 24px; line-height: 1.25; margin-bottom: 8px; }
+.gallery .create-invitation p { font-size: 16px; color: var(--ink-2); line-height: 1.5; }
+.gallery .create-invitation p strong { display: block; margin-top: 4px; }
+.gallery .create-invitation > a { flex-shrink: 0; display: inline-flex; gap: 18px; align-items: center; min-height: 48px; padding: 12px 20px; border-radius: 8px; background: var(--accent-2); color: var(--accent-ink); font-size: 17px; font-weight: 600; text-decoration: none; }
+.gallery .create-invitation > a:hover { background: var(--accent); }
+@media (max-width: 600px) {
+  .gallery-head, .gallery main, .gallery-foot { padding-left: 16px; padding-right: 16px; }
+  .gallery-head { padding-top: 40px; padding-bottom: 28px; }
+  .gallery .create-invitation { flex-direction: column; align-items: flex-start; gap: 20px; padding: 22px; }
+}

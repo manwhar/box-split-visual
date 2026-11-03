@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "harness": "antigravity",
+  "session": "0c27c0d5-af58-45fd-92b0-5bc9fbcecce7",
+  "source": {},
+  "pending": [],
+  "baseline": {
+    "turnId": "step-380",
+    "itemId": "planner_response-380-1",
+    "digest": "39cf30fb84b908ebc00f6683350fa97ab833c32440b49d20fbbeec39f767a681"
+  }
+}

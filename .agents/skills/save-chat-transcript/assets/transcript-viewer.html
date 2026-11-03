@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chat transcript</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f3f1ec;
+        --panel: #fffdf8;
+        --ink: #24221f;
+        --muted: #6d6962;
+        --line: #ded9cf;
+        --user: #e6efff;
+        --assistant: #f7f3eb;
+        --accent: #315b9c;
+        --shadow: 0 12px 32px rgb(49 44 35 / 10%);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #181816;
+          --panel: #22211e;
+          --ink: #f2efe8;
+          --muted: #aaa59b;
+          --line: #3d3a34;
+          --user: #1e304e;
+          --assistant: #292722;
+          --accent: #9cbcf2;
+          --shadow: 0 12px 32px rgb(0 0 0 / 28%);
+        }
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      main { width: min(920px, calc(100% - 32px)); margin: 40px auto 80px; }
+      header { margin-bottom: 18px; }
+      h1 { margin: 0 0 4px; font-size: clamp(1.75rem, 4vw, 2.5rem); letter-spacing: -0.035em; }
+      .header-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+      .transcript-details { display: flex; align-items: baseline; gap: 7px; color: var(--muted); font-size: 0.9rem; }
+      #harness { font-weight: 700; }
+      #warning { margin-top: 8px; color: #ad5b20; font-weight: 650; }
+      .toolbar {
+        position: sticky;
+        top: 12px;
+        z-index: 10;
+        padding: 12px;
+        margin-bottom: 24px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: color-mix(in srgb, var(--panel) 94%, transparent);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+      }
+      input[type="search"] {
+        width: 100%;
+        min-height: 40px;
+        padding: 8px 11px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: var(--panel);
+        color: var(--ink);
+        font: inherit;
+      }
+      .file-button {
+        margin-left: auto;
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 0.88rem;
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
+        white-space: nowrap;
+      }
+      #file-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+      #drop-zone {
+        padding: 44px 24px;
+        border: 2px dashed var(--line);
+        border-radius: 18px;
+        color: var(--muted);
+        text-align: center;
+        background: var(--panel);
+      }
+      #drop-zone.dragging { border-color: var(--accent); color: var(--accent); }
+      #error {
+        display: none;
+        padding: 12px 14px;
+        margin-bottom: 18px;
+        border: 1px solid #b84b42;
+        border-radius: 10px;
+        color: #b84b42;
+        background: color-mix(in srgb, #b84b42 9%, var(--panel));
+        white-space: pre-wrap;
+      }
+      #messages { display: grid; gap: 14px; }
+      article {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--assistant);
+        box-shadow: 0 3px 12px rgb(49 44 35 / 5%);
+      }
+      article.user {
+        margin-left: clamp(24px, 8vw, 72px);
+        background: var(--user);
+      }
+      .reasoning-group {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: color-mix(in srgb, var(--assistant) 72%, var(--bg));
+      }
+      .reasoning-group > summary {
+        padding: 12px 14px;
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 700;
+        user-select: none;
+      }
+      .reasoning-group[open] > summary { border-bottom: 1px solid var(--line); }
+      .reasoning-list { padding: 0 18px; }
+      .reasoning-list article {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+      .reasoning-list article + article { border-top: 1px solid var(--line); }
+      .message-body {
+        padding: 16px;
+        overflow-wrap: anywhere;
+      }
+      .message-body > :first-child { margin-top: 0; }
+      .message-body > :last-child { margin-bottom: 0; }
+      .message-body p { margin: 0.75em 0; }
+      .supplied-context {
+        margin-top: 14px;
+        padding-top: 10px;
+        border-top: 1px solid color-mix(in srgb, var(--line) 72%, transparent);
+      }
+      .supplied-context > summary {
+        color: var(--accent);
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 650;
+      }
+      .supplied-context-body {
+        padding-top: 10px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .message-body h1,
+      .message-body h2,
+      .message-body h3,
+      .message-body h4,
+      .message-body h5,
+      .message-body h6 { margin: 1em 0 0.45em; line-height: 1.25; letter-spacing: -0.015em; }
+      .message-body h1 { font-size: 1.55rem; }
+      .message-body h2 { font-size: 1.35rem; }
+      .message-body h3 { font-size: 1.18rem; }
+      .message-body ul,
+      .message-body ol { margin: 0.75em 0; padding-left: 1.6em; }
+      .message-body li + li { margin-top: 0.3em; }
+      .message-body .table-wrap {
+        max-width: 100%;
+        margin: 0.9em 0;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+      }
+      .message-body table { width: 100%; border-collapse: collapse; }
+      .message-body th,
+      .message-body td {
+        padding: 8px 10px;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+      .message-body th { background: color-mix(in srgb, var(--bg) 64%, var(--panel)); }
+      .message-body tr:last-child td { border-bottom: 0; }
+      .message-body th:last-child,
+      .message-body td:last-child { border-right: 0; }
+      .message-body blockquote {
+        margin: 0.8em 0;
+        padding: 0.2em 0 0.2em 1em;
+        border-left: 3px solid var(--accent);
+        color: var(--muted);
+      }
+      .message-body pre {
+        margin: 0;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: color-mix(in srgb, var(--bg) 72%, var(--panel));
+        color: inherit;
+        font: 0.9em/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .message-body :not(pre) > code {
+        padding: 0.12em 0.35em;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        background: color-mix(in srgb, var(--bg) 72%, var(--panel));
+        font: 0.9em ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      .message-body a { color: var(--accent); text-underline-offset: 0.16em; }
+      .message-body hr { border: 0; border-top: 1px solid var(--line); margin: 1.2em 0; }
+      mark { background: #ffe08a; color: #211d14; }
+      .empty { padding: 32px; color: var(--muted); text-align: center; }
+      @media (max-width: 680px) {
+        main { width: min(100% - 20px, 920px); margin-top: 24px; }
+        .header-meta { align-items: flex-start; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1 id="title">Chat transcript</h1>
+        <div class="header-meta">
+          <div class="transcript-details">
+            <span id="harness" hidden></span>
+            <span id="meta-separator" hidden aria-hidden="true">·</span>
+            <time id="summary" hidden></time>
+          </div>
+          <label class="file-button" for="file-input">View another transcript</label>
+          <input id="file-input" type="file" accept=".jsonl,application/json,text/plain" />
+        </div>
+        <div id="warning" hidden></div>
+      </header>
+
+      <div class="toolbar">
+        <input id="search" type="search" placeholder="Search messages" aria-label="Search messages" />
+      </div>
+
+      <div id="error" role="alert"></div>
+      <div id="drop-zone">Drop a transcript JSONL file here, or choose “View another transcript”.</div>
+      <section id="messages" aria-live="polite"></section>
+    </main>
+
+    <script>
+      const INITIAL_TRANSCRIPT = {"name":null,"metadata":null,"events":[]};
+      const state = {
+        name: INITIAL_TRANSCRIPT.name,
+        metadata: INITIAL_TRANSCRIPT.metadata,
+        events: INITIAL_TRANSCRIPT.events,
+      };
+      const elements = {
+        title: document.querySelector("#title"),
+        harness: document.querySelector("#harness"),
+        metaSeparator: document.querySelector("#meta-separator"),
+        summary: document.querySelector("#summary"),
+        warning: document.querySelector("#warning"),
+        search: document.querySelector("#search"),
+        file: document.querySelector("#file-input"),
+        drop: document.querySelector("#drop-zone"),
+        error: document.querySelector("#error"),
+        messages: document.querySelector("#messages"),
+      };
+
+      function parseJsonl(source) {
+        let metadata = null;
+        const events = [];
+        source.split(/\r?\n/).forEach((line, index) => {
+          if (!line.trim()) return;
+          let event;
+          try { event = JSON.parse(line); }
+          catch (error) { throw new Error(`Line ${index + 1} is not valid JSON: ${error.message}`); }
+          const validMetadata = event && event.schemaVersion === 1 && event.recordType === "metadata"
+            && typeof event.harness === "string" && typeof event.threadId === "string"
+            && (event.conversationStartedAt == null || typeof event.conversationStartedAt === "string");
+          if (validMetadata) {
+            if (metadata || events.length) throw new Error(`Line ${index + 1} contains misplaced transcript metadata.`);
+            metadata = event;
+            return;
+          }
+          const validMessage = event && event.schemaVersion === 1 && typeof event.harness === "string"
+            && typeof event.threadId === "string" && typeof event.turnId === "string"
+            && typeof event.itemId === "string" && ["user", "assistant"].includes(event.role)
+            && (event.conversationStartedAt == null || typeof event.conversationStartedAt === "string")
+            && typeof event.text === "string";
+          if (!validMessage) throw new Error(`Line ${index + 1} is not a normalized transcript record.`);
+          events.push(event);
+        });
+        return { metadata, events };
+      }
+
+      function showError(error) {
+        elements.error.textContent = error instanceof Error ? error.message : String(error);
+        elements.error.style.display = "block";
+      }
+
+      function setTranscript(name, metadata, events) {
+        state.name = name;
+        state.metadata = metadata;
+        state.events = events;
+        elements.error.style.display = "none";
+        elements.title.textContent = name ? name.replace(/\.jsonl$/i, "") : "Chat transcript";
+        document.title = `${elements.title.textContent} — Chat transcript`;
+        render();
+      }
+
+      function appendHighlightedText(container, text, query) {
+        if (!query) { container.append(document.createTextNode(text)); return; }
+        const lower = text.toLocaleLowerCase();
+        const needle = query.toLocaleLowerCase();
+        let start = 0;
+        let match = lower.indexOf(needle);
+        while (match !== -1) {
+          container.append(document.createTextNode(text.slice(start, match)));
+          const mark = document.createElement("mark");
+          mark.textContent = text.slice(match, match + query.length);
+          container.append(mark);
+          start = match + query.length;
+          match = lower.indexOf(needle, start);
+        }
+        container.append(document.createTextNode(text.slice(start)));
+      }
+
+      function safeLinkTarget(href) {
+        try {
+          const url = new URL(href, document.baseURI);
+          return ["http:", "https:", "mailto:", "file:"].includes(url.protocol) ? url.href : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function appendInlineMarkdown(container, text, query) {
+        const tokenPattern = /(\\(?:_|[^\w\s])|`[^`\n]+`|\*\*[^*\n]+\*\*|__[^_\n]+__|\[[^\]\n]+\]\([^)\n]+\)|\*[^*\n]+\*|_[^_\n]+_)/g;
+        let start = 0;
+        for (const match of text.matchAll(tokenPattern)) {
+          appendHighlightedText(container, text.slice(start, match.index), query);
+          const token = match[0];
+          let element;
+
+          if (token.startsWith("\\")) {
+            appendHighlightedText(container, token.slice(1), query);
+          } else if (token.startsWith("`")) {
+            element = document.createElement("code");
+            appendHighlightedText(element, token.slice(1, -1), query);
+          } else if (token.startsWith("**") || token.startsWith("__")) {
+            element = document.createElement("strong");
+            appendHighlightedText(element, token.slice(2, -2), query);
+          } else if (token.startsWith("[")) {
+            const link = token.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+            const href = link && safeLinkTarget(link[2].trim());
+            if (link && href) {
+              element = document.createElement("a");
+              element.href = href;
+              element.rel = "noopener noreferrer";
+              appendHighlightedText(element, link[1], query);
+            }
+          } else {
+            element = document.createElement("em");
+            appendHighlightedText(element, token.slice(1, -1), query);
+          }
+
+          if (element) container.append(element);
+          else if (!token.startsWith("\\")) appendHighlightedText(container, token, query);
+          start = match.index + token.length;
+        }
+        appendHighlightedText(container, text.slice(start), query);
+      }
+
+      function startsMarkdownBlock(line) {
+        return /^\s*(```|#{1,6}\s|>|[-*+]\s|\d+[.)]\s|\|?.+\|.+\|?\s*$|([-*_])\2{2,}\s*$)/.test(line);
+      }
+
+      function parseTableRow(line) {
+        return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((cell) => cell.trim());
+      }
+
+      function isTableDelimiter(line) {
+        const cells = parseTableRow(line);
+        return cells.length > 0 && cells.every((cell) => /^:?-{3,}:?$/.test(cell));
+      }
+
+      function renderMarkdown(container, text, query) {
+        const lines = text.split(/\r?\n/);
+        let index = 0;
+
+        while (index < lines.length) {
+          const line = lines[index];
+          if (!line.trim()) { index += 1; continue; }
+
+          const fence = line.match(/^\s*```([^`]*)$/);
+          if (fence) {
+            const codeLines = [];
+            index += 1;
+            while (index < lines.length && !/^\s*```\s*$/.test(lines[index])) {
+              codeLines.push(lines[index]);
+              index += 1;
+            }
+            if (index < lines.length) index += 1;
+            const pre = document.createElement("pre");
+            const code = document.createElement("code");
+            if (fence[1].trim()) code.dataset.language = fence[1].trim();
+            appendHighlightedText(code, codeLines.join("\n"), query);
+            pre.append(code);
+            container.append(pre);
+            continue;
+          }
+
+          const heading = line.match(/^\s*(#{1,6})\s+(.+)$/);
+          if (heading) {
+            const element = document.createElement(`h${heading[1].length}`);
+            appendInlineMarkdown(element, heading[2], query);
+            container.append(element);
+            index += 1;
+            continue;
+          }
+
+          if (/^\s*([-*_])\1{2,}\s*$/.test(line)) {
+            container.append(document.createElement("hr"));
+            index += 1;
+            continue;
+          }
+
+          if (line.includes("|") && index + 1 < lines.length && isTableDelimiter(lines[index + 1])) {
+            const headings = parseTableRow(line);
+            const delimiters = parseTableRow(lines[index + 1]);
+            const wrapper = document.createElement("div");
+            wrapper.className = "table-wrap";
+            const table = document.createElement("table");
+            const thead = document.createElement("thead");
+            const headingRow = document.createElement("tr");
+            headings.forEach((headingText, cellIndex) => {
+              const th = document.createElement("th");
+              const delimiter = delimiters[cellIndex] ?? "---";
+              if (delimiter.startsWith(":") && delimiter.endsWith(":")) th.style.textAlign = "center";
+              else if (delimiter.endsWith(":")) th.style.textAlign = "right";
+              appendInlineMarkdown(th, headingText, query);
+              headingRow.append(th);
+            });
+            thead.append(headingRow);
+            table.append(thead);
+            index += 2;
+
+            const tbody = document.createElement("tbody");
+            while (index < lines.length && lines[index].trim() && lines[index].includes("|")) {
+              const row = document.createElement("tr");
+              const cells = parseTableRow(lines[index]);
+              headings.forEach((_, cellIndex) => {
+                const td = document.createElement("td");
+                const delimiter = delimiters[cellIndex] ?? "---";
+                if (delimiter.startsWith(":") && delimiter.endsWith(":")) td.style.textAlign = "center";
+                else if (delimiter.endsWith(":")) td.style.textAlign = "right";
+                appendInlineMarkdown(td, cells[cellIndex] ?? "", query);
+                row.append(td);
+              });
+              tbody.append(row);
+              index += 1;
+            }
+            table.append(tbody);
+            wrapper.append(table);
+            container.append(wrapper);
+            continue;
+          }
+
+          const listItem = line.match(/^\s*([-*+]|\d+[.)])\s+(.+)$/);
+          if (listItem) {
+            const ordered = /^\d/.test(listItem[1]);
+            const list = document.createElement(ordered ? "ol" : "ul");
+            while (index < lines.length) {
+              const item = lines[index].match(/^\s*([-*+]|\d+[.)])\s+(.+)$/);
+              if (!item || /^\d/.test(item[1]) !== ordered) break;
+              const li = document.createElement("li");
+              appendInlineMarkdown(li, item[2], query);
+              list.append(li);
+              index += 1;
+            }
+            container.append(list);
+            continue;
+          }
+
+          if (/^\s*>/.test(line)) {
+            const quote = document.createElement("blockquote");
+            const quoteLines = [];
+            while (index < lines.length && /^\s*>/.test(lines[index])) {
+              quoteLines.push(lines[index].replace(/^\s*>\s?/, ""));
+              index += 1;
+            }
+            quoteLines.forEach((quoteLine, quoteIndex) => {
+              if (quoteIndex) quote.append(document.createElement("br"));
+              appendInlineMarkdown(quote, quoteLine, query);
+            });
+            container.append(quote);
+            continue;
+          }
+
+          const paragraph = document.createElement("p");
+          let paragraphLine = 0;
+          while (index < lines.length && lines[index].trim() && (paragraphLine === 0 || !startsMarkdownBlock(lines[index]))) {
+            if (paragraphLine) paragraph.append(document.createElement("br"));
+            appendInlineMarkdown(paragraph, lines[index], query);
+            paragraphLine += 1;
+            index += 1;
+          }
+          container.append(paragraph);
+        }
+      }
+
+      function matchesSearch(event, query) {
+        return !query || event.text.toLocaleLowerCase().includes(query.toLocaleLowerCase());
+      }
+
+      function conversationStart(metadata, events) {
+        const timestamps = [metadata?.conversationStartedAt, ...events
+          .map((event) => event.conversationStartedAt)
+        ]
+          .filter((value) => typeof value === "string" && !Number.isNaN(Date.parse(value)))
+          .sort();
+        return timestamps[0] ? new Date(timestamps[0]) : null;
+      }
+
+      function splitUserMessage(text) {
+        const requestLabel = "## My request:";
+        const requestIndex = text.lastIndexOf(requestLabel);
+        const hasSuppliedContext = text.includes("# Files mentioned by the user:")
+          || text.includes("<in-app-browser-context");
+        const startsOnOwnLine = requestIndex === 0 || text[requestIndex - 1] === "\n";
+
+        if (!hasSuppliedContext || requestIndex < 0 || !startsOnOwnLine) {
+          return { requestText: text, contextText: null };
+        }
+
+        const contextText = text.slice(0, requestIndex).trim();
+        const requestText = text
+          .slice(requestIndex + requestLabel.length)
+          .replace(/^[ \t]*\r?\n/, "");
+        return { requestText, contextText: contextText || null };
+      }
+
+      function groupEvents(events) {
+        const groups = [];
+        for (let index = 0; index < events.length;) {
+          if (events[index].role === "assistant" && events[index].phase === "commentary") {
+            const commentary = [];
+            while (index < events.length && events[index].role === "assistant" && events[index].phase === "commentary") {
+              commentary.push(events[index]);
+              index += 1;
+            }
+            groups.push({ type: "reasoning", events: commentary });
+          } else {
+            groups.push({ type: "message", events: [events[index]] });
+            index += 1;
+          }
+        }
+        return groups;
+      }
+
+      function createMessage(event, query) {
+        const article = document.createElement("article");
+        article.className = event.role;
+        article.setAttribute("aria-label", event.role === "user" ? "User message" : "Assistant message");
+        const body = document.createElement("div");
+        body.className = "message-body";
+        const userMessage = event.role === "user"
+          ? splitUserMessage(event.text)
+          : { requestText: event.text, contextText: null };
+        renderMarkdown(body, userMessage.requestText, query);
+        if (userMessage.contextText) {
+          const details = document.createElement("details");
+          details.className = "supplied-context";
+          details.open = Boolean(query)
+            && userMessage.contextText.toLocaleLowerCase().includes(query.toLocaleLowerCase());
+          const summary = document.createElement("summary");
+          summary.textContent = "View supplied context";
+          const contextBody = document.createElement("div");
+          contextBody.className = "supplied-context-body";
+          renderMarkdown(contextBody, userMessage.contextText, query);
+          details.append(summary, contextBody);
+          body.append(details);
+        }
+        article.append(body);
+        return article;
+      }
+
+      function render() {
+        const query = elements.search.value.trim();
+        const visible = state.events.filter((event) => matchesSearch(event, query));
+
+        elements.messages.replaceChildren();
+        elements.drop.hidden = state.events.length > 0;
+        const statuses = new Set(state.events.map((event) => event.captureStatus).filter(Boolean));
+        if (state.metadata?.captureStatus) statuses.add(state.metadata.captureStatus);
+        const harness = state.metadata?.harness ?? state.events[0]?.harness ?? null;
+        elements.harness.hidden = !harness;
+        elements.harness.textContent = harness
+          ? `${harness.slice(0, 1).toLocaleUpperCase()}${harness.slice(1)}`
+          : "";
+        const startedAt = conversationStart(state.metadata, state.events);
+        elements.summary.hidden = !startedAt;
+        elements.summary.dateTime = startedAt ? startedAt.toISOString() : "";
+        elements.summary.textContent = startedAt
+          ? new Intl.DateTimeFormat(undefined, { dateStyle: "long", timeStyle: "short" }).format(startedAt)
+          : "";
+        elements.metaSeparator.hidden = !harness || !startedAt;
+        elements.warning.hidden = !statuses.has("context-limited") && !statuses.has("source-truncated");
+        elements.warning.textContent = statuses.has("context-limited")
+          ? "Completeness warning: this archive was reconstructed from limited context."
+          : statuses.has("source-truncated")
+            ? "Completeness warning: the source log contains truncated messages."
+            : "";
+
+        for (const group of groupEvents(state.events)) {
+          const matching = group.events.filter((event) => matchesSearch(event, query));
+          if (matching.length === 0) continue;
+
+          if (group.type === "reasoning") {
+            const details = document.createElement("details");
+            details.className = "reasoning-group";
+            details.open = Boolean(query);
+            const summary = document.createElement("summary");
+            summary.textContent = `${matching.length} reasoning message${matching.length === 1 ? "" : "s"}`;
+            const list = document.createElement("div");
+            list.className = "reasoning-list";
+            matching.forEach((event) => list.append(createMessage(event, query)));
+            details.append(summary, list);
+            elements.messages.append(details);
+          } else {
+            elements.messages.append(createMessage(matching[0], query));
+          }
+        }
+
+        if (state.events.length && visible.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "No messages match this search.";
+          elements.messages.append(empty);
+        }
+      }
+
+      async function loadFile(file) {
+        try {
+          const document = parseJsonl(await file.text());
+          setTranscript(file.name, document.metadata, document.events);
+        }
+        catch (error) { showError(error); }
+      }
+
+      elements.file.addEventListener("change", () => {
+        if (elements.file.files?.[0]) loadFile(elements.file.files[0]);
+      });
+      elements.search.addEventListener("input", render);
+      for (const name of ["dragenter", "dragover"]) {
+        elements.drop.addEventListener(name, (event) => {
+          event.preventDefault();
+          elements.drop.classList.add("dragging");
+        });
+      }
+      for (const name of ["dragleave", "drop"]) {
+        elements.drop.addEventListener(name, (event) => {
+          event.preventDefault();
+          elements.drop.classList.remove("dragging");
+        });
+      }
+      elements.drop.addEventListener("drop", (event) => {
+        if (event.dataTransfer?.files?.[0]) loadFile(event.dataTransfer.files[0]);
+      });
+
+      if (state.events.length) setTranscript(state.name, state.metadata, state.events);
+      else render();
+    </script>
+  </body>
+</html>

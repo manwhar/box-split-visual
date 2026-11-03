@@ -1,0 +1,199 @@
+/* The setup guide for the explorable creation skill (agent-skill.html).
+ *
+ * It builds on create.css and borrows the look of the Tech4Good Lab's talks:
+ * the title sits on a band of the cover's sky blue that ends in its waves and
+ * sailboat, each step is numbered in one of the lab's colours (blue, the
+ * sail's yellow, rose, sea) along a rail that joins them, each tool in the
+ * install list has its own colour, and the starting prompt sits on a pale
+ * "idea" panel with a button to copy it. Every colour is a
+ * token from deck.css, so dark mode follows on its own.
+ */
+.skill-guide { --guide-width: 780px; --wave-deep: color-mix(in srgb, var(--accent) 24%, var(--sky)); }
+.skill-guide .page-width.guide-content, .skill-guide .page-width.guide-intro { max-width: var(--guide-width); }
+
+/* ----------------------------------------------------- the sky band at the top */
+.guide-top, .guide-band { background: var(--sky); }
+.skill-guide .create-header { border-bottom: 0; }
+.guide-band { position: relative; overflow: hidden; }
+.guide-intro { padding-block: 28px 36px; position: relative; z-index: 1; }
+.guide-intro h1 { font-family: var(--f-cover); font-weight: 900; font-size: clamp(34px, 4.4vw, 48px); line-height: 1.12; letter-spacing: -.03em; text-wrap: balance; }
+.guide-intro > p { margin-top: 18px; color: var(--ink-2); max-width: 640px; }
+.skill-guide .guide-intro code { background: var(--surface); color: var(--blue-tone); padding: 2px 8px; border-radius: 6px; white-space: nowrap; }
+/* The waves stretch to the band's width; the last one is the page's own
+   background, so the band flows into the steps below it. */
+.guide-waves { display: block; width: 100%; height: 120px; }
+.wave-back { fill: var(--wave-deep); }
+.wave-front { fill: var(--bg); }
+/* The lab's sailboat, riding the far wave. */
+.guide-boat { position: absolute; right: 9%; bottom: 50px; width: 76px; height: auto; }
+.guide-boat .sail { fill: var(--sun); }
+.guide-boat .sail-2 { fill: color-mix(in srgb, var(--sun) 72%, #ffffff); }
+.guide-boat .sun-face { fill: #fde98a; }
+.guide-boat .smile { fill: none; stroke: #b47c00; stroke-width: 1.4; stroke-linecap: round; }
+.guide-boat .hull { fill: #ffffff; }
+
+/* -------------------------------------------------- the numbered steps */
+.skill-guide .guide-content { padding-block: 4px 56px; }
+.guide-step { position: relative; padding: 26px 0 34px 68px; --tone: var(--blue-tone); --next: var(--sun-tone); }
+.guide-step:nth-of-type(2) { --tone: var(--sun-num); --next: var(--rose-tone); }
+.guide-step:nth-of-type(3) { --tone: var(--rose-tone); --next: var(--sea-tone); }
+.guide-step:nth-of-type(4) { --tone: var(--sea-tone); --next: var(--blue-tone); }
+.guide-step:nth-of-type(5) { --tone: var(--blue-tone); --next: var(--sun-num); }
+.guide-step:nth-of-type(6) { --tone: var(--sun-num); }
+/* The rail runs from one step's number down to the next, shading between
+   their colours. */
+.guide-step:not(:last-of-type)::before {
+  content: ""; position: absolute; left: 21px; top: 80px; bottom: -14px; width: 3px; border-radius: 3px;
+  background: linear-gradient(var(--tone), var(--next)); opacity: .35;
+}
+.skill-guide .guide-step h2 { font-size: 28px; line-height: 1.25; letter-spacing: -.02em; text-wrap: initial; margin-bottom: 14px; }
+.step-num {
+  position: absolute; left: 0; top: 22px; width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--tone); color: var(--bg);
+  font-family: var(--f-num); font-weight: 900; font-size: 22px; letter-spacing: 0;
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--tone) 16%, transparent);
+}
+.guide-step > p, .guide-step > ul { color: var(--ink-2); }
+.guide-step ul, .guide-step ol, .details-body ol { padding-left: 24px; margin-block: 12px 0; }
+.guide-step li, .details-body li { padding-left: 4px; margin-block: 10px; }
+.guide-step > p + pre, .guide-step > pre + p { margin-top: 12px; }
+.guide-step ul li::marker { color: var(--tone); font-size: 1.25em; }
+.details-body ol li::marker { color: var(--tool-tone, var(--blue-tone)); font-family: var(--f-num); font-weight: 800; }
+
+/* -------------------------------------------------- the starter download */
+.create-page .starter-download { margin-top: 20px; }
+.starter-download .action { font-family: var(--f-cover); font-weight: 800; }
+.starter-download .action span { font-size: 20px; line-height: 1; }
+/* A step's own numbered list, numbered in the step's colour. */
+.skill-guide .step-list { color: var(--ink-2); }
+.step-list li::marker { color: var(--tone); font-family: var(--f-num); font-weight: 800; }
+.step-list strong { color: var(--ink); }
+
+/* -------------------------------------------------- the install list */
+.install-options { margin-top: 20px; display: grid; gap: 10px; }
+.skill-guide .install-options .ai-prompt {
+  --tool-tint: var(--blue-tint); --tool-tone: var(--blue-tone);
+  margin: 0; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--tool-tone);
+  overflow: hidden; transition: border-color .15s, box-shadow .15s;
+}
+.skill-guide .install-options .tool-opencode { --tool-tint: var(--sea-tint); --tool-tone: var(--sea-tone); }
+.skill-guide .install-options .tool-claude { --tool-tint: var(--rose-tint); --tool-tone: var(--rose-tone); }
+.skill-guide .install-options .tool-antigravity { --tool-tint: var(--sun-tint); --tool-tone: var(--sun-tone); }
+.skill-guide .install-options .ai-prompt[open] { border-color: var(--tool-tone); box-shadow: var(--shadow); }
+.skill-guide .ai-prompt summary { font-size: 18px; padding: 12px 16px 12px 14px; justify-content: flex-start; gap: 14px; }
+.skill-guide .install-options summary:hover, .skill-guide .install-options [open] summary { background: var(--tool-tint); }
+.tool-icon {
+  flex: none; width: 40px; height: 40px; padding: 8px; border-radius: 10px;
+  background: var(--tool-tint); color: var(--tool-tone);
+  fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round;
+}
+.skill-guide .install-options summary:hover .tool-icon, .skill-guide .install-options [open] .tool-icon { background: var(--surface); }
+/* The plus that turns into a cross: a small round button in the tool's colour. */
+.skill-guide .ai-prompt summary > span:last-child {
+  margin-left: auto; width: 30px; height: 30px; flex: none; border-radius: 50%;
+  display: grid; place-items: center; font-size: 22px; color: var(--tool-tone, var(--blue-tone));
+  border: 1.5px solid color-mix(in srgb, var(--tool-tone, var(--blue-tone)) 45%, transparent);
+  transition: transform .15s;
+}
+.skill-guide .ai-prompt[open] summary > span:not(:last-child) { transform: none; }
+.skill-guide .details-body { padding: 18px 20px 20px; }
+.skill-guide .install-options .details-body { border-top: 1px solid color-mix(in srgb, var(--tool-tone) 25%, transparent); }
+.skill-guide .details-body ol { margin-top: 0; }
+.skill-guide .details-body > p { margin-top: 16px; }
+
+/* Commands look like a terminal, with the prompt sign in the sail's yellow.
+   The sign is drawn by CSS, so copying the command leaves it out. */
+.skill-guide code { font-family: var(--f-mono); font-size: .83em; overflow-wrap: anywhere; }
+.skill-guide :not(pre) > code { background: var(--surface-2); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; color: var(--ink); }
+.skill-guide pre {
+  --term-bg: #1e2742;
+  background: var(--term-bg); color: #e8ebf0; border-radius: 8px; padding: 14px 18px; margin: 12px 0;
+  line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+.skill-guide pre code { user-select: all; }
+.skill-guide pre code::before { content: "$ "; color: var(--sun); user-select: none; }
+
+.skill-guide .guide-small { font-size: 15px; line-height: 1.55; color: var(--ink-2); margin-top: 16px; }
+/* Notes on the install step, on a pale sea panel. */
+.guide-note { margin-top: 20px; padding: 14px 18px; border-radius: 10px; background: var(--sea-tint); color: var(--ink-2); font-size: 15px; line-height: 1.55; }
+.create-page .guide-note p + p { margin-top: 8px; }
+.guide-note a { color: var(--sea-tone); }
+.guide-note strong { color: var(--ink); }
+.skill-guide .guide-note ol { margin-top: 6px; padding-left: 22px; }
+.skill-guide .guide-note li { margin-block: 4px; }
+.guide-note li::marker { color: var(--sea-tone); font-family: var(--f-num); font-weight: 800; }
+
+/* The starting prompt, on a pale rose "idea" panel like the lab's slides. */
+.skill-guide .skill-kickoff {
+  position: relative; background: var(--idea); border-left: 4px solid var(--rose-tone); border-radius: 0 10px 10px 0;
+  padding: 22px 26px; margin-block: 18px; color: var(--ink); font-size: 18px; line-height: 1.6; user-select: all;
+}
+/* The prompt's Copy button sits in the panel's corner. */
+.kickoff { position: relative; }
+.skill-guide .kickoff .skill-kickoff { padding-right: 104px; }
+.skill-guide .copy-prompt {
+  position: absolute; top: 14px; right: 14px; padding: 5px 14px; border-radius: 999px;
+  font-family: var(--f-cover); font-weight: 700; font-size: 15px;
+  background: var(--surface); color: var(--rose-tone); border: 1.5px solid color-mix(in srgb, var(--rose-tone) 45%, transparent);
+}
+.skill-guide .copy-prompt:hover { border-color: var(--rose-tone); }
+
+/* Example explorables as chips in the lab's colours. */
+.example-links a {
+  display: inline-block; margin: 6px 4px 0 6px; padding: 3px 12px; border-radius: 999px;
+  background: var(--blue-tint); color: var(--blue-tone); font-weight: 600; text-decoration: none;
+}
+.example-links a:nth-of-type(2) { background: var(--sun-tint); color: var(--sun-tone); }
+.example-links a:nth-of-type(3) { background: var(--rose-tint); color: var(--rose-tone); }
+.example-links a:hover { text-decoration: underline; }
+.example-links .sep { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Troubleshooting, on the sail's yellow. */
+.skill-guide .guide-troubleshooting { --tool-tone: var(--sun-tone); margin: 8px 0 0 68px; background: var(--sun-tint); border-color: transparent; }
+.skill-guide .ai-prompt summary > .trouble-mark {
+  width: 28px; height: 28px; flex: none; border-radius: 50%; display: grid; place-items: center;
+  background: var(--sun-num); color: var(--bg); font-family: var(--f-num); font-weight: 900; font-size: 17px; line-height: 1;
+}
+.guide-troubleshooting .details-body { color: var(--ink-2); }
+
+/* ------------------------------------------- the sky band at the bottom */
+.guide-bottom { margin-top: 24px; }
+.guide-bottom .guide-waves { height: 48px; fill: var(--sky); }
+.guide-bottom .create-footer { width: auto; max-width: none; padding-inline: max(32px, calc((100% - 1116px) / 2)); background: var(--sky); border-top: 0; }
+.guide-bottom .create-footer a { font-weight: 600; }
+
+.skill-guide a:focus-visible, .skill-guide summary:focus-visible { outline: 2px solid var(--blue-tone); outline-offset: 4px; border-radius: 3px; }
+
+/* In dark mode the terminal is darker than the page, and the boat's hull
+   stays white like the cover's. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .skill-guide pre { --term-bg: #0b0e14; }
+}
+
+@media (max-width: 700px) {
+  .guide-intro { padding-block: 16px 24px; }
+  .guide-intro h1 { font-size: 32px; }
+  .guide-waves { height: 64px; }
+  .guide-boat { width: 50px; bottom: 30px; right: 7%; }
+  /* On a phone the number sits beside the heading and the content takes the
+     full width, so there is no rail. */
+  .guide-step { padding: 22px 0 26px; }
+  .guide-step::before { display: none; }
+  .skill-guide .guide-step h2 { font-size: 25px; display: flex; align-items: center; gap: 14px; }
+  .step-num { position: static; width: 38px; height: 38px; font-size: 19px; flex: none; box-shadow: 0 0 0 4px color-mix(in srgb, var(--tone) 16%, transparent); }
+  .skill-guide .ai-prompt summary { padding: 10px 12px; gap: 12px; }
+  .tool-icon { width: 36px; height: 36px; padding: 7px; }
+  .skill-guide .details-body { padding: 16px 16px 18px; }
+  .skill-guide pre { padding: 12px 14px; }
+  .skill-guide .skill-kickoff, .skill-guide .kickoff .skill-kickoff { padding: 18px 18px 60px; }
+  .skill-guide .copy-prompt { top: auto; bottom: 14px; right: 14px; }
+  .skill-guide .guide-troubleshooting { margin-left: 0; }
+  .guide-bottom .create-footer { padding-inline: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skill-guide .ai-prompt summary > span:last-child, .skill-guide .install-options .ai-prompt { transition: none; }
+}
+@media (forced-colors: active) {
+  .step-num, .tool-icon, .trouble-mark { border: 1px solid CanvasText; }
+}

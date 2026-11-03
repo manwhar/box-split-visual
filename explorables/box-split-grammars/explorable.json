@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "title": "Instant Architecture with Box-Split Grammars",
+  "description": "Procedural 3D architecture in Minecraft using split grammars expressed as native Python functions.",
+  "authors": ["Explorable Contributor"],
+  "paper": {
+    "title": "Instant Architecture in Minecraft using Box-Split Grammars",
+    "authors": "Markus Eger",
+    "year": 2022,
+    "venue": "FDG '22: Proceedings of the 17th International Conference on the Foundations of Digital Games"
+  }
+}

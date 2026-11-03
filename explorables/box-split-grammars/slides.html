@@ -1,0 +1,77 @@
+<!--
+  Instant Architecture in Minecraft using Box-Split Grammars (FDG 2022)
+  Explorable presentation deck.
+-->
+
+<section class="slide s-paper-intro" id="paper" data-part="The paper">
+  <p class="kicker">Research Paper</p>
+  <h2>Instant Architecture in Minecraft using Box-Split Grammars</h2>
+  <p class="sub">Markus Eger &bull; <span class="num">2022</span> &bull; <span class="nowrap">Foundations of Digital Games (FDG '22)</span></p>
+  <ul class="points">
+    <li>Procedural architectural generation typically relies on specialized domain-specific languages (such as CGA Shape), isolating generation from general game engines and tools.</li>
+    <li>How can we combine formal Box Grammars and Split Grammars into an expressive system where rules are ordinary, native Python functions?</li>
+  </ul>
+  <aside class="notes">Introduce the paper: Markus Eger presented Box-Split Grammars at FDG 2022 to provide an expressive, convenient framework for procedural architecture in Minecraft.</aside>
+</section>
+
+<section class="slide s-big-ideas" id="big-ideas" data-part="The paper">
+  <p class="kicker">Core Contributions</p>
+  <h2 class="sr-only">The paper's big ideas</h2>
+  <p class="big-idea">Split 3D integer bounding boxes using <mark class="m-sun">relative and absolute rules</mark> with local coordinate reorientation.</p>
+  <p class="big-idea">Express grammar rules as <mark class="m-blue">standard Python functions</mark> with stochastic selection, iteration, and arithmetic constraints.</p>
+  <aside class="notes">Two big ideas: (1) A clean geometric representation over discrete voxel boxes with mixed absolute/proportional split slicing; (2) Embedding the grammar directly into Python via decorators that support non-deterministic rule selection and constraints.</aside>
+</section>
+
+<section class="slide" id="core-mechanisms" data-part="How it works">
+  <p class="kicker">Architecture &amp; Rules</p>
+  <h2>Core Grammar Building Blocks</h2>
+  <p class="lede">How Box-Split Grammars turn a single bounding box into complex architecture.</p>
+  <div class="grid-3">
+    <div class="card">
+      <span class="tag">Geometry</span>
+      <b>1. Integer Scopes</b>
+      <span class="text">Every non-terminal is an axis-aligned box with discrete coordinates and local coordinate reorientation.</span>
+      <pre><code>reorient(x=Dimension.Z)</code></pre>
+    </div>
+    <div class="card">
+      <span class="tag">Partition</span>
+      <b>2. Sizing &amp; Rounding</b>
+      <span class="text">Combines absolute sizes (e.g. 1 block) with proportional relative sizes (-1), handling integer rounding cleanly.</span>
+      <pre><code>split(X, [1, -1, 1])</code></pre>
+    </div>
+    <div class="card">
+      <span class="tag">Language</span>
+      <b>3. Native Python Rules</b>
+      <span class="text">Rules are decorated Python functions intercepted for non-deterministic rule selection and constraints.</span>
+      <pre><code>@rule(constraint=X % 2 == 0)</code></pre>
+    </div>
+  </div>
+  <aside class="notes">Highlight how these building blocks allow modeling modular architectural structures like ancient Greek temples (tetrastyle, hexastyle, peripteral) with minimal rules.</aside>
+</section>
+
+<section class="slide chapter" id="interactive-demo" data-part="Explore it">
+  <header class="ch-head">
+    <span class="ch-num">1</span>
+    <div>
+      <h2>Interactive Box-Split &amp; Grammar Demo</h2>
+      <p>Cut and fill regions with Minecraft blocks; hover generated Python rules to highlight scopes.</p>
+    </div>
+  </header>
+  <div class="play-room" data-max="1.5">
+    <div class="play-set">
+      <iframe data-src="demo/index.html" width="900" height="460" scrolling="no" title="Interactive 2D Box Split Knife &amp; Fill Tool"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Demonstrate partitioning and material assignment: place horizontal/vertical cuts on the 10x10 grid, fill regions with official Minecraft blocks (Oak Log, Cobblestone, Oak Planks), and hover lines in the live-generated Python code panel to inspect how rules map directly to spatial scopes.</aside>
+</section>
+
+<section class="slide s-big-list s-discuss" id="discuss" data-part="Discussion">
+  <p class="kicker">Reflection</p>
+  <h2>Discuss with your table</h2>
+  <ol class="share">
+    <li>What are the advantages of writing grammar rules as ordinary Python functions rather than creating a domain-specific language?</li>
+    <li>How could context-free box splitting be adapted to handle connected urban structures like roads, bridges, and city walls?</li>
+    <li>Where else in procedural game content generation could integer-constrained box grammars be applied?</li>
+  </ol>
+  <aside class="notes">Open discussion questions encouraging participants to analyze the trade-offs of Python-embedded grammars and general procedural content generation challenges.</aside>
+</section>

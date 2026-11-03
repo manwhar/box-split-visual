@@ -1,0 +1,100 @@
+/* Presenter controls are outside the authored slides and never exported. */
+.presenter-notice {
+  position: fixed; z-index: 30; top: calc(var(--bar) + 14px); left: 50%; transform: translateX(-50%);
+  width: min(520px, 90vw); padding: 16px 20px; border: 1px solid var(--line);
+  border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); line-height: 1.5;
+}
+body.presenter-mode { --presenter-sidebar: clamp(260px, 29vw, 430px); --presenter-notes-height: clamp(180px, 32vh, 350px); }
+body.presenter-mode .bar .deck-title,
+body.presenter-mode .bar .home,
+body.presenter-mode .bar [data-edit],
+body.presenter-mode .bar [data-notes],
+body.presenter-mode .bar [data-settings] { display: none; }
+/* Presenter mode lays out its own notes; their edge isn't dragged. */
+body.presenter-mode .panel-resize[data-resize="notes"] { display: none; }
+/* The slide list opens over the presenter's own layout, and closes once a slide is chosen (js/slide-list.js). */
+body.presenter-mode { --list-space: 0px; }
+body.presenter-mode .slide-list { z-index: 12; box-shadow: var(--shadow); }
+body.presenter-mode .bar [data-presenter] { color: var(--accent); border-color: var(--accent); }
+body.presenter-mode .viewport {
+  top: calc(var(--bar) + 54px); left: 20px; right: calc(var(--presenter-sidebar) + 40px);
+  bottom: calc(var(--presenter-notes-height) + 34px); border-radius: 10px;
+}
+body.presenter-mode .stage:focus-visible { outline: none; }
+.presenter-current-label {
+  position: fixed; top: calc(var(--bar) + 21px); left: 20px; right: calc(var(--presenter-sidebar) + 40px);
+  display: flex; align-items: baseline; gap: 14px; font-size: 15px;
+}
+.presenter-current-label b { white-space: nowrap; }
+.presenter-current-label span { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Over the current slide when a presentation window that had connected closes (js/presenter.js). */
+.presenter-closed {
+  position: fixed; z-index: 11; top: calc(var(--bar) + 54px); left: 20px; right: calc(var(--presenter-sidebar) + 40px);
+  bottom: calc(var(--presenter-notes-height) + 34px); display: grid; place-content: center; justify-items: center; gap: 4px;
+  padding: 24px; border: 2px solid var(--accent); border-radius: 10px; text-align: center; font-size: 18px; line-height: 1.5;
+  background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: var(--shadow);
+}
+.presenter-closed[hidden] { display: none; }
+.presenter-closed p { margin: 0 0 14px; max-width: 34em; }
+.presenter-closed b { display: block; font-size: 22px; }
+.presenter-closed button { margin: 0 4px; }
+.presenter-sidebar {
+  position: fixed; top: calc(var(--bar) + 20px); right: 20px; bottom: 20px; width: var(--presenter-sidebar);
+  display: flex; flex-direction: column; gap: 20px; overflow: auto; font-size: 15px; line-height: 1.5;
+}
+.presenter-sidebar h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.presenter-sidebar p { margin: 10px 0; color: var(--ink-2); }
+.presenter-panel-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.presenter-panel-heading span { color: var(--ink-2); font-family: var(--f-num); font-size: 13px; }
+.presenter-preview { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background: var(--surface); box-shadow: var(--shadow); }
+.presenter-preview iframe { position: absolute; inset: 0; width: 1600px; height: 900px; border: 0; transform-origin: 0 0; pointer-events: none; }
+.presenter-preview [data-end] { position: absolute; inset: 0; margin: 0; place-content: center; text-align: center; }
+.presenter-preview [data-end]:not([hidden]) { display: grid; }
+.presenter-next-title { font-weight: 500; }
+.presenter-preview-kind { display: inline-block; margin-top: 10px; padding: 2px 8px; border-radius: 5px; background: var(--surface); color: var(--ink-2); font-size: 12px; }
+.presenter-preview-kind[hidden] { display: none; }
+.presenter-preview-kind + .presenter-next-title { margin-top: 6px; }
+.presenter-window-controls { border-top: 1px solid var(--line); padding-top: 18px; }
+.presenter-window-controls > button { margin: 0 6px 8px 0; }
+.presenter-sidebar kbd { font: inherit; padding: 1px 5px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); }
+.presenter-sidebar [data-end-presentation] { margin-top: 8px; }
+body.presenter-mode .notes-drawer {
+  display: flex; left: 20px; right: calc(var(--presenter-sidebar) + 40px); bottom: 20px;
+  height: var(--presenter-notes-height); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px;
+  transform: none; visibility: visible; transition: none;
+}
+body.presenter-mode .notes-drawer textarea { font-size: 20px; line-height: 1.55; }
+/* Demos have one authoritative instance, in the audience window. */
+body.presenter-mode .frames { display: none; }
+body.presenter-mode .play-set,
+body.presenter-mode .slot > * { visibility: hidden; pointer-events: none; }
+body.presenter-mode .play-room { position: relative; }
+body.presenter-mode :is(.slot, .play-room)::after, .demo-preview {
+  position: absolute; inset: 0; display: grid; place-content: center; text-align: center; padding: 24px;
+  border: 2px dashed var(--line); border-radius: 16px; background: var(--surface-2); color: var(--ink-2); font-size: 28px;
+}
+body.presenter-mode :is(.slot, .play-room)::after { content: "Interactive demo · use the presentation window"; }
+html[data-presentation="preview"] body { overflow: hidden; }
+html[data-presentation="preview"] .play-room { position: relative; }
+html[data-presentation="preview"] .demo-still { position: absolute; inset: 0; display: block; }
+html[data-presentation="preview"] .demo-still img { display: block; width: 100%; height: 100%; max-width: none; object-fit: contain; }
+/* Audience mode keeps the deck's title, section, count, and progress visible.
+   Hide controls before the first paint and fit the slide below the header. */
+html[data-presentation="audience"] :is(.bar button, .bar .home, .notes-drawer, .settings-pop, .slide-list, .slide-tip, .panel-resize, .editor-panel, .editor-selection, .editor-width-selection) { display: none !important; }
+html[data-presentation="audience"] .viewport { inset: calc(var(--bar) + 3px) 0 0; }
+html[data-presentation="audience"] body { background: #080b11; }
+html[data-presentation="audience"]:not([data-connected]) :is(.bar, .progress, .viewport) { visibility: hidden; }
+.audience-notice { position: fixed; inset: 40% 10% auto; text-align: center; color: #fff; font-size: 24px; }
+@media (max-width: 800px) {
+  body.presenter-mode { --presenter-sidebar: 230px; --presenter-notes-height: 35vh; }
+  body.presenter-mode .bar .part { display: none; }
+  body.presenter-mode .notes-drawer textarea { font-size: 17px; }
+}
+@media (max-width: 600px) {
+  body.presenter-mode { overflow: auto; }
+  body.presenter-mode .viewport { position: absolute; top: calc(var(--bar) + 50px); left: 12px; right: 12px; bottom: auto; height: calc((100vw - 24px) * 9 / 16); }
+  .presenter-current-label { position: absolute; left: 12px; right: 12px; }
+  .presenter-closed { position: absolute; top: calc(var(--bar) + 50px); left: 12px; right: 12px; bottom: auto; min-height: calc((100vw - 24px) * 9 / 16); }
+  body.presenter-mode .notes-drawer { position: absolute; top: calc(var(--bar) + 66px + (100vw - 24px) * 9 / 16); left: 12px; right: 12px; bottom: auto; height: 250px; }
+  .presenter-sidebar { position: absolute; top: calc(var(--bar) + 334px + (100vw - 24px) * 9 / 16); left: 12px; right: 12px; bottom: auto; width: auto; padding-bottom: 20px; overflow: visible; }
+}

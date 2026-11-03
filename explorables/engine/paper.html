@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The paper</title>
+<style>
+  /* The seven role colors were chosen so every pair, and each against the page,
+     stays apart with color-blind vision too (simulated protanopia, deuteranopia
+     and tritanopia); tests/paper-colors.test.mjs checks this and the text contrast. */
+  :root { color-scheme: light; --paper: #fff; --ink: #283148; --muted: #707a91; --line: #e3e8f1; --accent: #5078d0; --highlight: #fff0af; --context: #bbe7fe; --gap: #eabfcb; --idea: #ffea9a; --instantiation: #ecab65; --method: #bab2f7; --findings: #8fc69c; --implications: #def8d2; }
+  @media (prefers-color-scheme: dark) {
+    :root { color-scheme: dark; --paper: #15191f; --ink: #e0e5ed; --muted: #a0abbe; --line: #303844; --accent: #8fb0f5; --highlight: #5b481b; --context: #103648; --gap: #4e3136; --idea: #322c0f; --instantiation: #714112; --method: #4b437a; --findings: #155758; --implications: #554e38; }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: system-ui, -apple-system, sans-serif; }
+  #viewerContainer { position: absolute; inset: 0; overflow: auto; scrollbar-gutter: stable; overscroll-behavior: contain; }
+  #viewerContainer:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  #viewer { --reading-size: 16px; --gutter: 24px; padding: 8px var(--gutter) 36px; overflow-wrap: anywhere; }
+  .paper-heading h1 { font-size: 18px; line-height: 1.4; margin: 12px 0; font-weight: 650; }
+  .authors, .publication { font-size: 12px; line-height: 1.6; margin: 8px 0; color: var(--muted); }
+  /* The legend stays pinned to the top while the paper scrolls beneath it, so
+     the colors can be looked up anywhere. It spans the gutters to hide the text. */
+  .role-bar { position: sticky; top: 0; z-index: 1; margin: 10px calc(-1 * var(--gutter)) 0; padding: 0 var(--gutter); background: var(--paper); box-shadow: 0 1px 0 var(--line); }
+  .role-legend { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 0; margin: 0; list-style: none; font-size: 11px; line-height: 1.5; }
+  .role-legend button { font: inherit; color: inherit; border: 1px solid transparent; padding: 3px 7px; cursor: pointer; }
+  .role-legend button:hover, .role-legend button[data-preview] { border-color: var(--ink); }
+  .role-legend button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .role-legend button[aria-pressed="true"] { border-color: var(--ink); font-weight: 650; }
+  #viewer[data-focus] .role-legend button[aria-pressed="false"] { opacity: .5; }
+  /* Always show the role detail row under the legend with a steady height so
+     hovering across sentences never flashes an overlay or shifts the text. */
+  .role-detail { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px 8px; min-height: 44px; padding: 6px 0 8px; border-top: 1px solid var(--line); font-size: 11px; line-height: 1.45; }
+  .subtype-chip { flex: none; font: inherit; font-size: 10.5px; font-weight: 600; color: var(--paper); background: var(--ink); border: 1px solid var(--ink); border-radius: 999px; padding: 1px 7px; margin-top: 1px; }
+  .role-question { margin: 0; color: var(--ink); flex: 1 1 160px; }
+  .role-question.empty { color: var(--muted); }
+  .paper-section { border-top: 1px solid var(--line); }
+  .role-bar + .paper-section { border-top: 0; }
+  .paper-section h2 { font-size: 16px; line-height: 1.5; margin: 18px 0 12px; }
+  .section-text { max-width: 66ch; margin: 0 auto; padding: 0 0 8px; font-family: Georgia, "Times New Roman", serif; font-size: var(--reading-size); line-height: 1.75; }
+  .section-text p { margin: 0 0 1.1em; }
+  .section-text h3 { font-family: system-ui, sans-serif; font-size: 0.94em; line-height: 1.5; margin: 1.4em 0 0.7em; }
+  .role-highlight { border-radius: 3px; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: 2px 0; }
+  /* Idea and Instantiation share a warm hue, pale then deep: the same idea, abstract then concrete. */
+  .role-highlight[data-role="context"] { background: var(--context); }
+  .role-highlight[data-role="gap"] { background: var(--gap); }
+  .role-highlight[data-role="idea"] { background: var(--idea); }
+  .role-highlight[data-role="instantiation"] { background: var(--instantiation); }
+  .role-highlight[data-role="method"] { background: var(--method); }
+  .role-highlight[data-role="findings"] { background: var(--findings); }
+  .role-highlight[data-role="implications"] { background: var(--implications); }
+  /* Choosing a role in the legend shows only its sentences in color, so readers
+     never have to tell two colors apart to follow one role. */
+  .sentence.muted { background: none; color: var(--muted); }
+  #status { position: absolute; inset: 0; display: grid; place-content: center; margin: 0; padding: 24px; text-align: center; font-size: 16px; line-height: 1.5; color: var(--muted); pointer-events: none; }
+  #status:empty { display: none; }
+  @media (max-width: 400px) { #viewer { --gutter: 16px; } }
+</style>
+</head>
+<body>
+<div id="viewerContainer" tabindex="0" aria-label="Paper text"><article id="viewer"></article></div>
+<p id="status" role="status">Opening the paper…</p>
+<script type="module" src="js/paper-viewer.js"></script>
+</body>
+</html>

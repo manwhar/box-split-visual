@@ -1,0 +1,554 @@
+/* The shared look of every slide deck: the explorables and the talk.
+ *
+ * Every slide is laid out on a fixed 1600 × 900 stage, which js/deck.js
+ * scales to fit the window, so a slide looks the same on any screen and
+ * nothing on it ever scrolls. Each slide arranges its own content; the
+ * classes below are building blocks, not a template. A deck adds its own
+ * layouts in its own style sheet (an explorable's style.css, the talk's
+ * talk.css).
+ *
+ * The look follows the Tech4Good Lab's talks: airy white slides in Gill Sans
+ * (Light for text), with yellow highlighter on key phrases, pale pink "idea"
+ * panels and small grey citations. Nunito Sans stands in for Gill Sans on
+ * machines that don't have it. Colour comes from the lab's palette (its
+ * blue, the sail's yellow, a rose and a sea green): cards in a row and the
+ * numbers of a list take its colours in turn (see "colour" below), and
+ * explorables/tests/colors.test.mjs keeps each readable where it's used.
+ *
+ * The page around the stage (the bar, the slide list, the notes) is built by
+ * js/deck.js; its rules are at the top and the bottom of this file.
+ */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --outside: #e9edf4;
+  --surface: #ffffff;
+  --surface-2: #f3f6fb;
+  --ink: #1e2742;         /* a deep navy, so the text isn't plain black */
+  --ink-2: #4a5470;
+  --ink-3: #848ca3;
+  --line: #dfe5ef;
+  --accent: #5078d0;      /* the Tech4Good Lab blue */
+  --accent-2: #3d63bf;
+  --accent-ink: #ffffff;
+  --mark: #fef8cb;        /* highlighter yellow */
+  --mark-ink: #222326;
+  --sun: #f4ae00;         /* the sailboat's yellow */
+  --sky: #e5eeff;         /* the cover's waves */
+  --idea: #feeae9;        /* "Idea" panels */
+  --award: #d9453b;       /* award lines in citations */
+  /* The lab's colours, each as a pale tint for a panel and a deeper tone for
+     the tag, number or name on it: its blue, the sailboat's yellow, the rose
+     of its idea panels and the sea of its illustration. */
+  --blue-tint: #e9f0ff;
+  --blue-tone: #3d63bf;
+  --sun-tint: #fff3cf;
+  --sun-tone: #946500;
+  --sun-num: #b47c00;     /* a brighter yellow for big numerals (3:1 is enough at their size) */
+  --rose-tint: #fde8e6;
+  --rose-tone: #b8423a;
+  --sea-tint: #e2f5f7;
+  --sea-tone: #1c7785;
+  /* Bolder markers, for a big idea's key phrases */
+  --blue-mark: #bcd0fb;
+  --sun-mark: #ffd86b;
+  --rose-mark: #ffbdb5;
+  --shadow: 0 1px 2px rgba(30, 40, 60, 0.05), 0 8px 24px rgba(30, 40, 60, 0.07);
+  --f-cover: "Nunito", "Nunito Sans", system-ui, -apple-system, sans-serif;
+  --f-head: "Gill Sans", "Gill Sans MT", "Nunito Sans", system-ui, -apple-system, sans-serif;
+  --f-body: var(--f-head);
+  /* Numbers set on their own: in Gill Sans a 1 is a bare stroke that reads as
+     a capital I, so chapter 1 would read "I" and 11 "II". Nunito's 1 has a flag. */
+  --f-num: var(--f-cover);
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --bar: 44px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #12151b;
+    --outside: #090b0e;
+    --surface: #181c23;
+    --surface-2: #1f2530;
+    --ink: #e8ebf0;
+    --ink-2: #b2b9c4;
+    --ink-3: #8a93a0;
+    --line: #2c3340;
+    --accent: #8fb0f5;
+    --accent-2: #a7c1f7;
+    --accent-ink: #0c1222;
+    --mark: #4d4614;
+    --mark-ink: #fff7cc;
+    --sun: #f6be3a;
+    --sky: #1c2638;
+    --idea: #3a2527;
+    --award: #f08a80;
+    --blue-tint: #1d2840;
+    --blue-tone: #9ab6f6;
+    --sun-tint: #3a3116;
+    --sun-tone: #f6c34a;
+    --sun-num: #f6c34a;
+    --rose-tint: #3d2427;
+    --rose-tone: #f39a91;
+    --sea-tint: #15343a;
+    --sea-tone: #7fd2de;
+    --blue-mark: #2d4782;
+    --sun-mark: #6b520e;
+    --rose-mark: #74322d;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 32px rgba(0, 0, 0, 0.35);
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body { margin: 0; overflow: hidden; background: var(--outside); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+b, strong { font-weight: 600; }
+a { color: var(--accent); }
+code { font-family: var(--f-mono); font-size: 0.85em; }
+button, input { font: inherit; color: inherit; }
+button {
+  font-family: var(--f-head); font-weight: 500; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 6px 14px;
+}
+button:hover { border-color: var(--ink-3); }
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+:focus-visible { outline: 3px solid var(--accent-2); outline-offset: 2px; }
+
+/* ------------------------------------------------- the bar above the stage */
+.bar {
+  position: fixed; inset: 0 0 auto 0; height: var(--bar); z-index: 10;
+  display: flex; align-items: center; gap: 10px; padding: 0 14px;
+  background: var(--surface); border-bottom: 1px solid var(--line); font-family: var(--f-head); font-size: 14px;
+}
+.bar .deck-title { font-weight: 600; white-space: nowrap; }
+/* The way back to the gallery of explorables, when a deck has one (data-home). */
+.bar .home { color: var(--ink-2); text-decoration: none; white-space: nowrap; }
+.bar .home:hover { color: var(--accent); }
+/* On the local server, how many problems the deck's folder has (tools/decks.py check). */
+.bar .problems { color: var(--rose-tone); font-weight: 500; text-decoration: none; white-space: nowrap; }
+.bar .part { color: var(--blue-tone); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .spacer { flex: 1; }
+.bar .counter { font-family: var(--f-num); font-variant-numeric: tabular-nums; color: var(--ink-2); white-space: nowrap; }
+.bar button { padding: 3px 10px; font-size: 13px; }
+/* A window narrower than a tablet has no room for the whole bar in a row:
+   the section's name gives way, the title and the gallery link are cut
+   short (the link to its arrow), and the rest of the bar scrolls sideways,
+   so every button can still be reached and the page itself never scrolls.
+   The slide controls come right after the title, so they're on screen
+   without scrolling (explorables/tests/deck-phone-browser.mjs). */
+@media (max-width: 767px) {
+  .bar { gap: 6px; padding: 0 8px; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .bar::-webkit-scrollbar { display: none; }
+  .bar > * { flex-shrink: 0; }
+  .bar .part { display: none; }
+  .bar .deck-title { max-width: 32vw; overflow: hidden; text-overflow: ellipsis; }
+  .bar .home { width: 1.1em; overflow: hidden; }
+  .bar button { padding: 3px 8px; }
+}
+.progress { position: fixed; top: var(--bar); left: 0; height: 3px; background: var(--accent); z-index: 10; transition: width 0.25s; }
+
+/* ------------------------------------------------------- the panels' room */
+/* Four panels share the window with the stage: the slide list at the left
+   (js/slide-list.js), the paper or the editor at the right (js/paper.js,
+   js/editor.js) and the notes drawer at the bottom. Each has how open it is,
+   a number from 0 to 1 (--list-in, --paper-in, --editor-in, --notes-in) that
+   its body class sets to 1 and that eases between the two, and a size its
+   reader can drag (--list-w, --paper-w, --editor-width, --notes-size; see
+   js/panels.js). The room each takes from the stage is the two multiplied,
+   so as a panel slides in, the stage (.viewport) narrows beside it and
+   js/deck.js refits the slide as it goes. Registering the amounts lets them
+   ease; a browser that can't simply opens and closes the panels at once. */
+@property --list-in { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --paper-in { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --editor-in { syntax: "<number>"; inherits: true; initial-value: 0; }
+@property --notes-in { syntax: "<number>"; inherits: true; initial-value: 0; }
+:root { --panel-time: 0.24s; }
+body {
+  --list-space: calc(var(--list-w, 220px) * var(--list-in));
+  --paper-space: calc(var(--paper-w, 330px) * var(--paper-in));
+  --editor-space: calc(var(--editor-width, 330px) * var(--editor-in));
+  --notes-h: calc(var(--notes-size, min(220px, 40vh)) * var(--notes-in));
+  transition: --list-in var(--panel-time) ease, --paper-in var(--panel-time) ease,
+    --editor-in var(--panel-time) ease, --notes-in var(--panel-time) ease;
+}
+body.list-open { --list-in: 1; }
+body.paper-open { --paper-in: 1; }
+body.editing { --editor-in: 1; }
+body.show-notes { --notes-in: 1; }
+/* A closed panel stays laid out, off screen, so it can slide back in; it's
+   hidden (no pointer, no keyboard, no screen reader) once it has slid out. */
+:is(.slide-list, .paper-panel, .editor-panel, .notes-drawer) { visibility: visible; transition: visibility 0s; }
+:is(.slide-list, .paper-panel, .editor-panel)[hidden] { visibility: hidden; transition: visibility 0s linear var(--panel-time); }
+/* The edges a drag resizes (js/panels.js), shown while their panel is open. */
+.panel-resize { position: fixed; z-index: 13; display: none; touch-action: none; }
+.panel-resize[data-resize="list"] { top: calc(var(--bar) + 3px); bottom: var(--notes-h, 0px); left: calc(var(--list-space, 0px) - 5px); width: 10px; cursor: col-resize; }
+.panel-resize[data-resize="editor"] { top: calc(var(--bar) + 3px); bottom: 0; right: calc(var(--editor-space, 0px) - 5px); width: 10px; cursor: col-resize; }
+.panel-resize[data-resize="notes"] { left: 0; right: var(--editor-space, 0px); bottom: calc(var(--notes-h, 0px) - 5px); height: 10px; cursor: row-resize; }
+body.list-open .panel-resize[data-resize="list"],
+body.editing .panel-resize[data-resize="editor"],
+body.show-notes .panel-resize[data-resize="notes"] { display: block; }
+.panel-resize:hover, body.panel-resizing .panel-resize { background: linear-gradient(var(--accent), var(--accent)) center / 2px 100% no-repeat; }
+.panel-resize[data-resize="notes"]:hover, body.panel-resizing .panel-resize[data-resize="notes"] { background-size: 100% 2px; }
+/* While a panel is dragged, frames let the pointer through, so the drag isn't lost to them. */
+body.panel-resizing { user-select: none; }
+body.panel-resizing iframe { pointer-events: none; }
+body.panel-resizing[data-resizing="notes"] { cursor: row-resize; }
+body.panel-resizing:not([data-resizing="notes"]) { cursor: col-resize; }
+
+/* ------------------------------------------------------------- the stage */
+/* The stage's room: the window below the bar, less the notes drawer at the
+   bottom, the slide list at the left and, at the right, the paper's panel
+   and the editor's, when open. */
+.viewport { position: fixed; top: calc(var(--bar) + 3px); left: var(--list-space, 0px); right: max(var(--paper-space, 0px), var(--editor-space, 0px)); bottom: var(--notes-h, 0px); overflow: hidden; }
+/* A sideways swipe on the slides is the deck's, to change them (js/deck.js);
+   up and down and pinching are still the browser's. */
+.viewport { touch-action: pan-y pinch-zoom; }
+.stage { position: absolute; left: 0; top: 0; width: 1600px; height: 900px; transform-origin: 0 0; background: var(--bg); overflow: hidden; }
+.stage:focus-visible { outline: none; }
+.slide { position: absolute; inset: 0; padding: 58px 80px 52px; display: none; flex-direction: column; font-size: 30px; font-weight: 300; line-height: 1.45; }
+.slide.active { display: flex; }
+/* Slides laid out as two columns (.s-paper, and a deck's own grid layouts).
+   Only the active slide is displayed, so the grid goes here, not on those rules. */
+.slide.active.s-paper { display: grid; }
+/* The shared frames go over the slides (z-index), or each slide's empty slot
+   would take the clicks meant for the widget or the lab in the frame above
+   it. The layer itself lets clicks through, so the rest of the slide works. */
+.frames { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.frames iframe {
+  position: absolute; left: 0; top: 0; border: 0; pointer-events: auto; transform-origin: 0 0;
+  background: var(--surface); border-radius: 14px; box-shadow: 0 0 0 1px var(--line), var(--shadow); visibility: hidden;
+}
+.frames iframe.on { visibility: visible; }
+/* The space an embed provider's frame is placed over (js/embeds.js), such as
+   a Smallville guide widget; .offline is what a provider shows there while
+   what it needs isn't answering. */
+.slot { flex: 1; min-height: 0; position: relative; }
+.slot .offline {
+  position: absolute; inset: 0; display: grid; place-content: center; gap: 16px; text-align: center; padding: 40px;
+  border: 2px dashed var(--line); border-radius: 16px; font-family: var(--f-head); font-size: 26px; color: var(--ink-2);
+}
+.slot .offline code { justify-self: center; text-align: left; padding: 12px 18px; border-radius: 10px; background: var(--surface-2); color: var(--ink); font-size: 24px; }
+
+/* --------------------------------------------------------------- colour */
+/* Cards in a row, and the items of a numbered list, take the lab's colours
+   in turn: blue, the sail's yellow, rose, then sea. Each sets the tint that a
+   .card is filled with, the tone of the text on it (.tag, a name), and the
+   colour of a big numeral (.stat, a list's numbers). */
+:is(.duo, .grid-3, .grid-4) > .card,
+:is(.share, .big-cards) > li { --tint: var(--blue-tint); --tone: var(--blue-tone); --num: var(--blue-tone); }
+:is(.duo, .grid-3, .grid-4) > .card:nth-child(4n + 2),
+:is(.share, .big-cards) > li:nth-child(4n + 2) { --tint: var(--sun-tint); --tone: var(--sun-tone); --num: var(--sun-num); }
+:is(.duo, .grid-3, .grid-4) > .card:nth-child(4n + 3),
+:is(.share, .big-cards) > li:nth-child(4n + 3) { --tint: var(--rose-tint); --tone: var(--rose-tone); --num: var(--rose-tone); }
+:is(.duo, .grid-3, .grid-4) > .card:nth-child(4n + 4),
+:is(.share, .big-cards) > li:nth-child(4n + 4) { --tint: var(--sea-tint); --tone: var(--sea-tone); --num: var(--sea-tone); }
+
+/* -------------------------------------------------------------- type */
+.kicker { font-family: var(--f-head); font-style: italic; font-weight: 300; font-size: 25px; color: var(--blue-tone); margin: 0 0 10px; }
+h1, h2, h3 { font-family: var(--f-head); margin: 0; text-wrap: balance; }
+h1 { font-size: 100px; line-height: 1.05; font-weight: 400; }
+h2 { font-size: 54px; line-height: 1.12; font-weight: 400; }
+h3 { font-size: 30px; line-height: 1.2; font-weight: 500; }
+p { margin: 0; }
+.lede { font-size: 34px; line-height: 1.4; color: var(--ink-2); margin-top: 18px; }
+.sub { font-size: 28px; color: var(--ink-2); margin-top: 12px; }
+.cite { font-family: var(--f-head); font-size: 24px; color: var(--ink-3); }
+.small { font-size: 24px; }
+ul.points, ol.points { margin: 26px 0 0; padding-left: 1.1em; }
+.points li { margin: 0 0 14px; }
+.points li::marker { color: var(--sun); }
+.fill { flex: 1; min-height: 0; }
+.mt { margin-top: 28px; }
+.grow { flex: 1; }
+/* Numbers inside running text: Gill Sans's 1 reads as a capital I, so a
+   number in a sentence is set in Nunito, like the numbers that stand alone. */
+.num { font-family: var(--f-num); }
+/* A phrase that shouldn't break across lines, such as a journal's name. */
+.nowrap { white-space: nowrap; }
+/* A heading only screen readers see, for a slide whose heading would repeat
+   what its picture already says. Every slide still has one, for the slide list. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* ------------------------------------------------------- building blocks */
+.card { padding: 26px 28px; border-radius: 16px; background: var(--tint, var(--blue-tint)); border: 0; }
+.card b { display: block; font-family: var(--f-head); font-weight: 500; font-size: 32px; line-height: 1.2; }
+.card .text { display: block; margin-top: 10px; font-size: 26px; line-height: 1.4; color: var(--ink-2); }
+.card .who { display: block; font-family: var(--f-head); font-size: 24px; color: var(--ink-3); margin-top: 8px; }
+.tag { display: inline-block; font-family: var(--f-head); font-weight: 500; font-size: 24px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--tone, var(--blue-tone)); margin-bottom: 10px; }
+a.card { color: var(--ink); text-decoration: none; }
+a.card:hover { box-shadow: 0 0 0 2px var(--tone, var(--blue-tone)); }
+.stat { font-family: var(--f-num); font-size: 80px; font-weight: 400; line-height: 1; color: var(--num, var(--blue-tone)); margin-bottom: 12px; }
+/* "Idea" panels, pale pink with an underlined italic label, as on the lab's slides. */
+.card.idea { background: var(--idea); border: 0; }
+.card.idea .tag { font-style: italic; font-weight: 600; font-size: 26px; letter-spacing: 0; text-transform: none; text-decoration: underline; text-underline-offset: 4px; color: var(--ink); }
+.card.idea .text { font-style: italic; }
+/* A statement on a pale blue panel, its key phrase under yellow highlighter. */
+.band {
+  margin-top: auto; padding: 26px 34px; border-radius: 16px; background: var(--sky); color: var(--ink);
+  font-family: var(--f-head); font-size: 34px; line-height: 1.4; font-weight: 300;
+}
+.band b, .statement b, .hl { font-weight: 500; background: var(--mark); color: var(--mark-ink); padding: 0 0.12em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+figure { margin: 0; }
+/* height: auto, or the height attribute (there to reserve the space) would
+   win over a width set by a slide and stretch the figure. */
+figure img { display: block; max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 0 0 1px var(--line); }
+figcaption { font-family: var(--f-head); font-size: 24px; color: var(--ink-3); margin-top: 10px; }
+/* A citation in the lab's style: title, authors, venue (its acronym in
+   blue) and award (in red), small and grey at the bottom of a slide. */
+.paper-ref { font-family: var(--f-head); font-weight: 300; font-size: 24px; line-height: 1.4; color: var(--ink-3); }
+.paper-ref .title { color: var(--ink-2); font-weight: 400; }
+.paper-ref .venue b { color: var(--accent); font-weight: 500; }
+.paper-ref .award { color: var(--award); }
+
+table.compare { border-collapse: separate; border-spacing: 0; width: 100%; }
+table.compare th, table.compare td { text-align: left; padding: 18px 22px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.compare th { font-family: var(--f-head); font-size: 24px; color: var(--blue-tone); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+table.compare td.strong { font-family: var(--f-head); font-weight: 500; }
+/* A column to set apart, such as where released code differs from its paper, on a pale rose panel. */
+table.compare .diff { background: var(--rose-tint); border-bottom-color: var(--bg); }
+table.compare th.diff { border-radius: 16px 16px 0 0; }
+table.compare tr:last-child td.diff { border-radius: 0 0 16px 16px; border-bottom-color: transparent; }
+
+/* Two, three or four cards in a row */
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; margin-top: 36px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.grid-3 .card b { font-size: 28px; }
+.grid-3 .card .text { font-size: 24px; }
+
+/* Big statements on cards in a row (.big-cards), each card in one of the
+   lab's colours (see "colour" above). A card's statement (.big) is set large
+   toward its bottom, with the card's number above it when the cards are
+   .numbered, and under it a line in the card's colour (.who), such as who
+   said it. Pretty wrapping keeps a short last word from sitting alone on its
+   line where it can. */
+.big-cards { list-style: none; margin: 0; padding: 0; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 32px; }
+.big-cards > li { display: flex; flex-direction: column; min-height: 580px; padding: 44px 44px 46px; border-radius: 26px; background: var(--tint); }
+.big-cards .big { display: block; margin-top: auto; font-family: var(--f-head); font-size: 58px; line-height: 1.12; font-weight: 400; text-wrap: pretty; }
+.big-cards .who { display: block; font-family: var(--f-head); font-size: 30px; font-weight: 500; color: var(--tone); margin-top: 26px; text-wrap: balance; }
+.big-cards.numbered { counter-reset: card; }
+.big-cards.numbered > li { counter-increment: card; }
+.big-cards.numbered > li::before { content: counter(card); font-family: var(--f-num); font-size: 110px; font-weight: 800; line-height: 1; color: var(--num); }
+
+/* ---------------------------------------------------------- slide layouts */
+/* A title, centred on an otherwise empty slide, in the cover's Nunito, with
+   a one-line description (.lede), who said it (.credit) and where to find
+   more (.more). */
+.slide.s-centered { justify-content: center; align-items: center; text-align: center; }
+.s-centered h2 { font-family: var(--f-cover); font-weight: 800; font-size: 104px; line-height: 1.1; color: var(--blue-tone); }
+.s-centered .lede { max-width: 1200px; font-size: 54px; line-height: 1.28; color: var(--ink); margin-top: 40px; text-wrap: balance; }
+.s-centered .credit { font-family: var(--f-head); font-size: 32px; color: var(--ink-3); margin-top: 32px; }
+.s-centered .more { font-family: var(--f-head); font-size: 34px; color: var(--ink-2); margin-top: 56px; }
+.s-centered .more a { font-weight: 500; text-decoration: none; }
+
+/* A heading and a short numbered list, each item beside a big bold number
+   as on the lab's slides, set large enough to read from the back of a room:
+   an agenda, an outline, discussion questions. The heading and the list sit
+   together in the middle of the slide: the auto margins share the free
+   space above the heading and below the list, so the heading isn't
+   stranded at the top, far from its list. */
+.s-big-list h2 { font-size: 60px; }
+.s-big-list > :first-child { margin-top: auto; }
+.share { list-style: none; margin: 64px 0 auto; padding: 0; display: grid; gap: 50px; counter-reset: share; }
+.share li {
+  counter-increment: share; display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: center;
+  font-family: var(--f-head); font-size: 62px; font-weight: 300; line-height: 1.2;
+}
+.share li::before { content: counter(share); font-family: var(--f-num); font-size: 96px; font-weight: 800; line-height: 1; color: var(--num, var(--blue-tone)); }
+/* An outline's items can link to where each part starts. */
+.share a { color: inherit; text-decoration: none; }
+.share a:hover { color: var(--tone); }
+/* Questions for the room to discuss: longer items, so set a little smaller and closer. */
+.s-discuss .share { gap: 36px; }
+.s-discuss .share li { font-size: 38px; line-height: 1.25; grid-template-columns: 96px minmax(0, 1fr); }
+.s-discuss .share li::before { font-size: 72px; }
+
+/* A paper, presented as a paper: its title, where it appeared, then the
+   problem it takes on, set large. Its big ideas follow on a slide of their
+   own (.s-big-ideas). */
+.slide.s-paper-intro { justify-content: center; }
+.s-paper-intro h2 { font-size: 72px; }
+.s-paper-intro .sub { font-size: 36px; margin-top: 16px; }
+.s-paper-intro .points { font-size: 44px; line-height: 1.35; margin-top: 56px; max-width: 1320px; }
+.s-paper-intro .points li { margin-bottom: 32px; }
+.s-paper-intro q { font-style: italic; quotes: "“" "”"; }
+
+/* A paper's big ideas, on a slide of their own: statements set large in the
+   cover's Nunito, each with its core phrase under a coloured marker
+   (<mark class="m-sun">, m-blue or m-rose). The marker is a band across the
+   lower part of the words, drawn as their background, and it follows them
+   onto a second line (box-decoration-break). */
+.slide.s-big-ideas { justify-content: center; padding-left: 120px; padding-right: 120px; }
+.big-idea { font-family: var(--f-cover); font-size: 64px; font-weight: 400; line-height: 1.3; color: var(--ink); text-wrap: balance; }
+.big-idea + .big-idea { margin-top: 80px; }
+.big-idea mark {
+  color: inherit; font-weight: 600; padding: 0 0.08em; background: linear-gradient(transparent 58%, var(--marker) 58% 92%, transparent 92%);
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.big-idea .m-sun { --marker: var(--sun-mark); }
+.big-idea .m-blue { --marker: var(--blue-mark); }
+.big-idea .m-rose { --marker: var(--rose-mark); }
+
+/* A paper's figure beside the facts it shows: the figure in a wide left
+   column, the facts in the rest. .facts-large is for a figure whose words
+   matter as much as it does: a slightly narrower figure, so the facts can be
+   set larger and still be read when projected. */
+.s-paper { grid-template-columns: 1060px minmax(0, 1fr); gap: 44px; align-items: center; }
+.s-paper .facts { font-size: 26px; }
+.s-paper .facts .points li { margin-bottom: 16px; }
+.s-paper .paper-ref { margin-top: 18px; }
+.s-paper.facts-large { grid-template-columns: 960px minmax(0, 1fr); }
+.s-paper.facts-large .facts { font-size: 30px; }
+.s-paper.facts-large .sub { font-size: 32px; }
+
+/* A picture that is the whole slide, cropped to fill the stage, with its
+   caption set over its lower left corner in white; or shown whole (.fit),
+   for a picture already laid out as a slide. */
+.slide.s-full { padding: 0; }
+.full-photo { position: absolute; inset: 0; margin: 0; background: #000; }
+.full-photo img { width: 100%; height: 100%; max-width: none; object-fit: cover; border-radius: 0; box-shadow: none; }
+.full-photo.fit { background: #fff; }
+.full-photo.fit img { object-fit: contain; }
+.full-photo figcaption {
+  position: absolute; left: 34px; bottom: 30px; margin: 0; color: #fff;
+  font-family: var(--f-head); font-weight: 600; font-size: 44px; line-height: 1.15; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+}
+.full-photo figcaption span { display: block; }
+
+/* A demo's slide (.chapter): a two-line heading (the title, and the one
+   thing to see), then the demo, which gets all the rest of the slide. The
+   demo is scaled to fit, so every pixel of height given to the heading
+   makes it smaller. The number is set like the big section numbers on the
+   lab's slides. */
+.ch-head { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 18px; align-items: center; margin-bottom: 18px; }
+.ch-num { font-family: var(--f-num); font-size: 76px; font-weight: 800; line-height: 1; text-align: center; color: var(--blue-tone); }
+.ch-head h2 { font-size: 44px; }
+.ch-head p { font-size: 24px; color: var(--ink-2); margin-top: 4px; }
+.slide.chapter { padding: 34px 64px 30px; }
+/* A result with the demo or chart that shows it: laid out like a demo's
+   slide, but without a number. */
+.slide.s-result { padding: 34px 64px 30px; }
+.s-result .ch-head { grid-template-columns: minmax(0, 1fr); }
+/* A caveat under a result, such as where a paper found its system falling
+   short, on a pale rose panel, with its key terms in the rose's tone. */
+.caveat { margin-top: 16px; padding: 14px 26px; border-radius: 14px; background: var(--rose-tint); font-family: var(--f-head); font-size: 30px; line-height: 1.3; font-weight: 300; }
+.caveat b { font-weight: 500; color: var(--rose-tone); }
+
+/* ----------------------------------------------------- embedded demos */
+/* The space a slide gives its own frames (pages from the deck's folder that
+   play on the slide), and the frames at their own size, side by side, which
+   js/playables.js scales as one to fit that space. */
+.play-room { flex: 1; min-height: 0; position: relative; margin-top: 24px; }
+.play-set { position: absolute; left: 0; top: 0; transform-origin: 0 0; display: flex; align-items: flex-start; }
+.play-set iframe { display: block; flex: none; border: 0; background: transparent; }
+
+/* ------------------------------------------------- notes, list, settings */
+.notes { display: none; }
+/* The notes drawer keeps its whole height and slides up from below the window. */
+.notes-drawer {
+  position: fixed; left: 0; right: 0; bottom: 0; height: var(--notes-size, min(220px, 40vh)); z-index: 9; overflow: hidden;
+  display: flex; flex-direction: column; gap: 8px; transform: translateY(calc((1 - var(--notes-in, 1)) * 100%));
+  padding: 14px 22px; background: var(--surface); border-top: 1px solid var(--line); font-size: 18px; line-height: 1.5; color: var(--ink-2);
+}
+body:not(.show-notes) .notes-drawer { visibility: hidden; transition: visibility 0s linear var(--panel-time); }
+.notes-drawer .notes-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.notes-drawer label { font-size: 14px; font-weight: 500; color: var(--ink); }
+.notes-drawer [data-save-status] { flex: 1; min-width: 140px; font-size: 12px; line-height: 1.35; }
+.notes-drawer [data-save-status].error { color: var(--rose-tone); }
+.notes-drawer button { font-size: 13px; padding: 4px 9px; white-space: nowrap; }
+.notes-drawer button:disabled { opacity: .45; cursor: default; }
+.notes-drawer textarea {
+  flex: 1; min-height: 0; width: 100%; padding: 4px 6px; resize: none;
+  border: 1px solid transparent; border-radius: 6px; background: transparent; color: inherit; font: inherit;
+}
+.notes-drawer textarea:hover { border-color: var(--line); }
+.notes-drawer :focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+/* The slide list (js/slide-list.js): a picture of every slide down the
+   window's left, under its section's name, like Keynote's. The stage takes
+   its room from the slides' side (.viewport's left), so it never covers a
+   slide; it stops above the notes drawer, and slides in from the left. Its
+   pictures fill its width (--thumb-w, set by js/slide-list.js), with their
+   numbers to their left. */
+.slide-list {
+  position: fixed; top: calc(var(--bar) + 3px); left: 0; bottom: var(--notes-h, 0px); z-index: 9; width: var(--list-w, 220px);
+  transform: translateX(calc((var(--list-in, 1) - 1) * 100%));
+  display: block; overflow-y: auto; overscroll-behavior: contain; padding: 6px 10px 18px 0;
+  background: var(--surface); border-right: 1px solid var(--line); font-family: var(--f-head); font-size: 13px;
+}
+.slide-list[hidden] { display: block; }
+/* The bar's Slides and Notes buttons look pressed while their panel is open. */
+.bar [data-list][aria-pressed="true"],
+.bar [data-notes][aria-expanded="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.slide-list h3 {
+  position: sticky; top: -6px; z-index: 1; margin: 0; padding: 10px 0 6px 14px; background: var(--surface);
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--blue-tone);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.slide-list ol { margin: 0; padding: 0; list-style: none; }
+.slide-list li { margin: 0 0 10px; }
+.slide-list a { display: flex; align-items: flex-start; gap: 6px; text-decoration: none; color: var(--ink-3); }
+.slide-list .thumb-number { width: 30px; flex: none; padding-top: 2px; text-align: right; font-family: var(--f-num); font-size: 12px; font-variant-numeric: tabular-nums; }
+/* A picture's outline: the line around every slide, the accent around the one on screen. */
+.slide-list .thumb { flex: none; border-radius: 4px; box-shadow: 0 0 0 1px var(--line); background: var(--bg); content-visibility: auto; contain-intrinsic-size: var(--thumb-w, 168px) calc(var(--thumb-w, 168px) * 9 / 16); }
+.slide-list a:hover .thumb { box-shadow: 0 0 0 2px var(--ink-3); }
+.slide-list a[aria-current="true"] { color: var(--accent); font-weight: 700; }
+.slide-list a[aria-current="true"] .thumb { box-shadow: 0 0 0 3px var(--accent); }
+.slide-list a:focus-visible { outline: none; }
+.slide-list a:focus-visible .thumb { outline: 3px solid var(--accent-2); outline-offset: 3px; }
+/* The hovered slide's number and title, beside its picture, over the stage. */
+.slide-tip {
+  position: fixed; z-index: 22; max-width: min(420px, 60vw); transform: translateY(-50%); pointer-events: none;
+  padding: 5px 10px; border-radius: 7px; background: var(--ink); color: var(--bg); box-shadow: var(--shadow);
+  font-family: var(--f-head); font-size: 14px; line-height: 1.3;
+}
+.slide-tip[hidden] { display: none; }
+.settings-pop {
+  position: fixed; top: calc(var(--bar) + 8px); right: 12px; z-index: 21; width: min(420px, 92vw); display: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); padding: 14px 16px; font-family: var(--f-head); font-size: 15px;
+}
+.settings-pop.open { display: block; }
+.settings-pop input { width: 100%; margin: 6px 0 8px; padding: 6px 8px; border: 1px solid var(--ink-3); border-radius: 8px; background: var(--surface); }
+.settings-pop .help { font-size: 13px; color: var(--ink-3); }
+
+/* ------------------------------------------------ the paper beside the slides */
+/* js/paper.js: an independent reader. Hide legacy passage asides on older decks. */
+.slide aside.paper { display: none; }
+/* It slides in from the right (see "the panels' room" above). */
+.paper-panel {
+  position: fixed; top: calc(var(--bar) + 3px); right: 0; bottom: var(--notes-h, 0px); z-index: 9;
+  width: var(--paper-w, 330px); display: flex; flex-direction: column; transform: translateX(calc((1 - var(--paper-in, 1)) * 100%));
+  background: var(--surface); border-left: 1px solid var(--line); font-family: var(--f-head);
+}
+.paper-panel[hidden] { display: flex; }
+/* Its left edge, which a drag resizes. */
+.paper-panel .paper-resize { position: absolute; top: 0; bottom: 0; left: -5px; width: 10px; cursor: col-resize; z-index: 1; touch-action: none; }
+.paper-panel .paper-head { display: flex; align-items: center; gap: 10px; padding: 8px 10px 8px 16px; font-size: 14px; border-bottom: 1px solid var(--line); }
+.paper-panel .paper-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.paper-panel .paper-file { color: var(--ink-2); text-decoration: none; white-space: nowrap; }
+.paper-panel .paper-file:hover { color: var(--accent); }
+.paper-panel button { padding: 3px 10px; font-size: 13px; }
+.paper-panel [data-paper-close] { padding: 0 9px; font-size: 20px; line-height: 1.2; }
+.paper-panel [data-paper-zoom] { min-width: 30px; padding: 0 7px; font-size: 18px; line-height: 1.3; }
+/* The slide's passages, one button each; the one shown is pressed. One whose
+   words weren't found where its slide says is outlined in rose. */
+.paper-panel .paper-view { position: relative; flex: 1; min-height: 0; background: var(--outside); }
+.paper-panel .paper-view iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* While the panel is resized, its frame lets the pointer through, so the drag isn't lost to it. */
+body.paper-resizing { cursor: col-resize; user-select: none; }
+body.paper-resizing .paper-view iframe { pointer-events: none; }
+/* The bar's Paper button: pressed while the panel is open, with how many passages the slide has. */
+.bar [data-paper][aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+/* A window too narrow for both: the panel covers the slides until it's closed
+   (js/paper.js's MIN_PANEL + MIN_STAGE). */
+@media (max-width: 639px) {
+  body { --paper-space: 0px; --list-space: 0px; }
+  .panel-resize[data-resize="list"] { display: none !important; }
+  .slide-list { z-index: 12; box-shadow: var(--shadow); }
+  .paper-panel { right: 0; width: 100vw; }
+  .paper-panel .paper-resize { display: none; }
+}
+/* Without motion, the progress line jumps and the panels open and close at once. */
+@media (prefers-reduced-motion: reduce) {
+  .progress, body, :is(.slide-list, .paper-panel, .editor-panel, .notes-drawer, .slide-list[hidden], .paper-panel[hidden], .editor-panel[hidden]) { transition: none !important; }
+}

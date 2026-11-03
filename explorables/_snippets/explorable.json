@@ -1,0 +1,12 @@
+{
+  "format": 1,
+  "title": "Demo snippets",
+  "description": "Small working examples of how a demo page works with the deck: sharp canvases, one page on several slides, and recorded data.",
+  "authors": ["Tech4Good Lab"],
+  "paper": {
+    "title": "None: these slides show the engine, not a paper",
+    "authors": "None",
+    "year": 2026
+  },
+  "draft": true
+}

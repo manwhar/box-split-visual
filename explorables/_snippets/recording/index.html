@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Replaying a recorded run</title>
+<!--
+  Snippet: a demo that replays recorded data.
+
+  1. Record it, then load it. The published site is static files: a demo
+     can't call a model, an API or a server of yours. Run the system ahead
+     of time, save what the demo needs as a file, and load it with fetch().
+     Keep the file in the demo's own folder (here, recording/run.json) and
+     it's published with the demo. A file elsewhere in the explorable's
+     folder, such as ../data/run.json, must also be listed in
+     explorable.json's "publish", or the published demo won't find it.
+
+  2. Say what's happening. The page says it's loading until the file
+     arrives, and says plainly if it can't be read, instead of showing an
+     empty chart. (The preview capture waits for the network to go quiet, so
+     the picture shows the loaded view.)
+
+  3. Label a replay as a replay. The badge says this is a recording, and the
+     controls step through it; nothing here recomputes anything. A reader
+     shouldn't mistake playback for a live model.
+
+  4. Pause with the slide (deck:visibility): playback stops when the slide
+     goes off screen and stays where it was.
+
+  body's data-state (loading, ready or error) and data-step show the current
+  state, for tests and for checking by hand in the browser's developer tools.
+-->
+<style>
+  html, body { margin: 0; }
+  body {
+    box-sizing: border-box; width: 800px; height: 400px; overflow: hidden; padding: 20px 24px;
+    display: grid; grid-template-rows: auto 1fr auto; gap: 12px;
+    font: 20px/1.4 "Nunito Sans", system-ui, -apple-system, sans-serif; color: #1e2742; background: transparent;
+  }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+  h1 { margin: 0; font-size: 26px; }
+  .badge { font-size: 18px; font-weight: 700; padding: 2px 12px; border-radius: 999px; background: #fdf0c8; color: #7a5600; white-space: nowrap; }
+  #message { margin: 0; align-self: center; justify-self: center; color: #4a5470; }
+  #message.error { color: #b23a48; }
+  svg { width: 100%; height: 100%; }
+  .bar { fill: #c9d5f0; }
+  .bar.past { fill: #8fa7dd; }
+  .bar.now { fill: #3d63bf; }
+  .label { font-size: 18px; fill: #4a5470; }
+  .controls { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; }
+  button { font: inherit; padding: 6px 16px; border-radius: 8px; border: 2px solid #3d63bf; background: #fff; color: #3d63bf; cursor: pointer; min-width: 96px; }
+  input[type="range"] { width: 100%; accent-color: #3d63bf; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body data-state="loading">
+  <header>
+    <h1>People waiting, minute by minute</h1>
+    <span class="badge" title="Playback of a saved run: nothing is recomputed">Recorded run · replay</span>
+  </header>
+  <p id="message" role="status">Loading the recording…</p>
+  <svg id="chart" viewBox="0 0 752 220" role="img" aria-label="People waiting in each minute of the recorded run" hidden></svg>
+  <div class="controls" id="controls" hidden>
+    <button id="play" data-analytics-id="replay-play">Play</button>
+    <input id="step" type="range" min="0" value="0" aria-label="Minute of the recording" data-analytics-id="replay-step">
+    <output id="readout" for="step"></output>
+  </div>
+<script>
+  const message = document.getElementById("message");
+  const chart = document.getElementById("chart");
+  const slider = document.getElementById("step");
+  const play = document.getElementById("play");
+  const readout = document.getElementById("readout");
+
+  let steps = [];
+  let playing = false;
+  let visible = true;
+  let timer = null;
+
+  /** Fetch the recording, or throw an error a reader can understand. */
+  async function load() {
+    const response = await fetch("run.json");
+    if (!response.ok) throw new Error(`The recording couldn't be loaded (${response.status}).`);
+    const run = await response.json();
+    if (!Array.isArray(run.steps) || run.steps.length === 0) throw new Error("The recording has no steps.");
+    return run;
+  }
+
+  /** One bar per minute; the current minute is dark, earlier ones lighter. */
+  function draw(current) {
+    const top = Math.max(...steps.map((s) => s.waiting), 1);
+    const width = 720 / steps.length;
+    chart.innerHTML = steps.map((s, i) => {
+      const height = (s.waiting / top) * 180;
+      const kind = i === current ? "now" : i < current ? "past" : "";
+      return `<rect class="bar ${kind}" x="${16 + i * width}" y="${190 - height}" width="${width - 4}" height="${height}"></rect>`;
+    }).join("") + `<text class="label" x="16" y="214">minute 0</text>`
+      + `<text class="label" x="736" y="214" text-anchor="end">minute ${steps.length - 1}</text>`;
+    const s = steps[current];
+    readout.textContent = `${s.waiting} waiting · ${s.arrived} arrived`;
+    document.body.dataset.step = String(current);
+  }
+
+  function show(current) {
+    slider.value = String(current);
+    draw(current);
+  }
+
+  /** Playback advances only while playing and while the slide is on screen. */
+  function schedule() {
+    clearInterval(timer);
+    timer = null;
+    if (!playing || !visible) return;
+    timer = setInterval(() => {
+      const next = Number(slider.value) + 1;
+      if (next >= steps.length) {
+        setPlaying(false);
+        return;
+      }
+      show(next);
+    }, 400);
+  }
+
+  function setPlaying(value) {
+    playing = value;
+    play.textContent = playing ? "Pause" : "Play";
+    schedule();
+  }
+
+  play.addEventListener("click", () => {
+    // Playing from the end starts again from the beginning.
+    if (!playing && Number(slider.value) === steps.length - 1) show(0);
+    setPlaying(!playing);
+  });
+  slider.addEventListener("input", () => draw(Number(slider.value)));
+
+  addEventListener("message", (event) => {
+    if (event.data?.type === "deck:visibility") {
+      visible = event.data.visible;
+      schedule();
+    }
+  });
+
+  load().then((run) => {
+    steps = run.steps;
+    slider.max = String(steps.length - 1);
+    message.hidden = true;
+    // An <svg> has no `hidden` property (only HTML elements do), so remove
+    // the attribute itself; `chart.hidden = false` would leave it hidden.
+    chart.removeAttribute("hidden");
+    document.getElementById("controls").hidden = false;
+    show(0);
+    document.body.dataset.state = "ready";
+  }).catch((error) => {
+    message.textContent = error.message;
+    message.classList.add("error");
+    document.body.dataset.state = "error";
+  });
+</script>
+</body>
+</html>

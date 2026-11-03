@@ -1,0 +1,176 @@
+/* A scrolling invitation and making guide, using the deck's palette and type. */
+html:has(body.create-page), body.create-page { height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  html:has(body.create-page) { scroll-behavior: smooth; }
+}
+body.create-page { overflow: auto; background: var(--bg); font-size: 19px; line-height: 1.55; }
+.create-page h1, .create-page h2, .create-page h3, .create-page h4, .create-page p, .create-page figure, .create-page blockquote, .create-page dl, .create-page dd { margin: 0; }
+.create-page a { color: var(--blue-tone); text-underline-offset: 4px; }
+.create-page a:hover { text-decoration-thickness: 2px; }
+.create-page p + p { margin-top: 16px; }
+.create-page h2 { font-family: var(--f-cover); font-size: clamp(30px, 3.7vw, 44px); font-weight: 800; line-height: 1.14; letter-spacing: -0.025em; text-wrap: balance; }
+.create-page h3 { font-size: 25px; line-height: 1.25; font-weight: 600; }
+.create-page h4 { font-size: 20px; line-height: 1.3; font-weight: 600; }
+.page-width { width: min(100% - 64px, 1116px); margin-inline: auto; }
+.eyebrow { color: var(--blue-tone); font-size: 13px; line-height: 1.4; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.create-page .eyebrow + h1, .create-page .eyebrow + h2 { margin-top: 18px; }
+.create-page section[id] { scroll-margin-top: 28px; }
+.skip-link { position: absolute; top: -100px; left: 16px; z-index: 10; padding: 12px 20px; background: var(--surface); }
+.skip-link:focus { top: 12px; }
+
+.create-header { padding-block: 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); }
+.create-header .site-name { font-family: var(--f-cover); font-weight: 800; font-size: 20px; text-decoration: none; }
+.create-header nav { display: flex; align-items: center; gap: 28px; font-size: 16px; }
+.create-header nav a { color: var(--ink-2); text-decoration: none; }
+.create-header nav a:hover { color: var(--blue-tone); text-decoration: underline; }
+/* Getting set up is the first step, so its link is a small button. */
+.create-header nav a.nav-cta { color: var(--accent-ink); background: var(--accent-2); padding: 5px 14px; border-radius: 999px; font-weight: 600; }
+.create-header nav a.nav-cta:hover { background: var(--accent); color: var(--accent-ink); text-decoration: none; }
+.create-hero { padding-block: 72px 76px; display: grid; grid-template-columns: 1.25fr 1fr; gap: 66px; align-items: center; }
+.create-hero h1 { max-width: 650px; font-family: var(--f-cover); font-size: clamp(44px, 5.1vw, 64px); font-weight: 900; line-height: 1.07; letter-spacing: -.04em; text-wrap: balance; }
+.highlight { background: var(--mark); color: var(--mark-ink); padding-inline: .08em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.create-page .hero-lede { margin-top: 26px; font-size: 22px; color: var(--ink-2); line-height: 1.5; }
+.hero-welcome { color: var(--ink-2); }
+.hero-welcome strong { color: var(--ink); }
+.hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 18px 24px; margin-top: 28px; }
+.create-page .action { display: inline-flex; align-items: center; justify-content: space-between; gap: 28px; padding: 13px 22px; border-radius: 8px; font-size: 18px; font-weight: 600; text-decoration: none; min-height: 48px; }
+.create-page .action-primary { color: var(--accent-ink); background: var(--accent-2); }
+.create-page .action-primary:hover { background: var(--accent); }
+.text-link { font-size: 17px; font-weight: 600; }
+.create-page .hero-deadline { margin-top: 22px; font-size: 15px; color: var(--ink-2); }
+.hero-example { padding: 25px; border-radius: 16px; background: var(--sun-tint); color: var(--ink); transform: rotate(2deg); }
+.example-heading { display: flex; justify-content: space-between; align-items: center; color: var(--sun-tone); }
+.example-heading .eyebrow { color: inherit; }
+.example-heading > span:last-child { font-size: 30px; line-height: 1; }
+.create-page .example-question { font-family: var(--f-cover); font-weight: 800; font-size: 27px; letter-spacing: -.02em; line-height: 1.2; margin-block: 18px 22px; }
+.example-picture { display: block; border-radius: 8px; overflow: hidden; background: #fff; }
+.example-picture img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
+.hero-example figcaption { margin-top: 20px; font-size: 17px; }
+.hero-example figcaption .text-link { display: inline-block; margin-block: 10px 14px; }
+.hero-example small { display: block; font-size: 12px; line-height: 1.5; color: var(--ink-2); }
+.what-section { border-top: 1px solid var(--line); padding-block: 38px 66px; }
+.what-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; margin-top: 18px; }
+.what-layout p { color: var(--ink-2); }
+
+.lab-section { background: var(--blue-tint); padding-block: 64px; }
+.lab-layout { display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 80px; }
+.lab-layout h2 { margin-bottom: 24px; }
+.lab-layout > div > p:not(.eyebrow) { color: var(--ink-2); }
+.lab-note { border-left: 3px solid var(--blue-tone); padding-left: 30px; }
+.lab-note blockquote { margin-block: 22px; font-family: var(--f-cover); font-size: 27px; font-weight: 700; line-height: 1.4; letter-spacing: -.025em; }
+.lab-note > p:last-child { color: var(--ink-2); font-size: 16px; }
+
+.start-section { padding-block: 80px; }
+.section-intro { max-width: 710px; }
+.section-intro > p:last-child { color: var(--ink-2); margin-top: 22px; font-size: 21px; }
+.creation-steps { list-style: none; padding: 0; margin: 36px 0 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 54px; }
+.creation-steps li { padding-block: 28px; border-top: 1px solid var(--line); display: flex; gap: 20px; align-items: flex-start; }
+.step-number { font-family: var(--f-num); font-weight: 800; font-size: 21px; line-height: 1.5; color: var(--blue-tone); }
+.creation-steps li:nth-child(2) .step-number { color: var(--sun-tone); }
+.creation-steps li:nth-child(3) .step-number { color: var(--rose-tone); }
+.creation-steps li:nth-child(4) .step-number { color: var(--sea-tone); }
+.creation-steps h3 { margin-bottom: 12px; }
+.creation-steps p { font-size: 18px; color: var(--ink-2); }
+/* The setup guide is everyone's first step, so it gets its own band after the
+   ideas: three steps in brief and a button to the full guide. */
+.setup-callout { margin-top: 44px; padding: 28px 32px; border-radius: 16px; background: var(--sky); display: flex; align-items: center; justify-content: space-between; gap: 24px 40px; flex-wrap: wrap; }
+.setup-callout h3 { font-family: var(--f-cover); font-weight: 800; font-size: 27px; letter-spacing: -.02em; }
+.setup-preview { list-style: none; counter-reset: setup; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 8px 28px; color: var(--ink-2); font-size: 18px; }
+.setup-preview li { counter-increment: setup; display: flex; align-items: flex-start; gap: 10px; }
+.setup-preview li::before { content: counter(setup); font-family: var(--f-num); font-weight: 900; font-size: 15px; color: var(--accent-ink); background: var(--blue-tone); width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; flex: none; margin-top: 1px; }
+.setup-callout .action { flex: none; }
+.ai-prompt { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; margin-top: 8px; }
+.ai-prompt summary { display: flex; gap: 20px; justify-content: space-between; align-items: center; cursor: pointer; padding: 18px 24px; font-weight: 600; list-style: none; }
+.ai-prompt summary::-webkit-details-marker { display: none; }
+.ai-prompt summary > span { font-family: var(--f-num); font-size: 24px; line-height: 1; }
+.ai-prompt[open] summary > span { transform: rotate(45deg); }
+.details-body { padding: 0 24px 24px; color: var(--ink-2); font-size: 17px; }
+.details-body blockquote { padding: 20px 24px; margin-block: 18px; background: var(--surface); border-left: 3px solid var(--blue-tone); color: var(--ink); user-select: all; }
+.details-body .prompt-next { font-size: 15px; line-height: 1.6; }
+.resources { margin-top: 52px; }
+.resource-list { margin-top: 20px; }
+.resource-list a { display: grid; grid-template-columns: 68px 1fr 20px; align-items: center; gap: 24px; padding-block: 18px; border-bottom: 1px solid var(--line); text-decoration: none; }
+.resource-list a:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.resource-kind { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-2); }
+.resource-list strong { font-size: 19px; display: block; }
+.resource-list small { display: block; color: var(--ink-2); font-size: 16px; margin-top: 2px; }
+.create-page .resource-note { font-size: 15px; margin-top: 18px; max-width: 830px; color: var(--ink-2); }
+
+.competition-section { background: var(--surface-2); padding-block: 72px; }
+.prizes { display: grid; grid-template-columns: 1.2fr 1fr 1fr; margin-top: 36px !important; border-block: 1px solid var(--line); }
+.prizes > div { padding: 26px 36px; }
+.prizes > div + div { border-left: 1px solid var(--line); }
+.prizes .first-prize { background: var(--sun-tint); }
+.prizes dt { color: var(--ink-2); font-size: 17px; }
+.prizes dd { font-family: var(--f-num); font-size: clamp(40px, 5vw, 62px); font-weight: 800; line-height: 1.3; letter-spacing: -.04em; color: var(--blue-tone); }
+.first-prize dd { color: var(--sun-tone); }
+.create-page .showcase-note { margin-top: 20px; color: var(--ink-2); max-width: 740px; font-size: 18px; }
+.entry-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 80px; margin-top: 56px; }
+.entry-checklist > p { margin-top: 16px; color: var(--ink-2); }
+.entry-checklist ol { padding-left: 22px; margin-block: 22px; }
+.entry-checklist li { margin-block: 16px; padding-left: 6px; color: var(--ink-2); font-size: 18px; }
+.entry-checklist li strong { color: var(--ink); }
+.concept-note { padding: 20px 24px; background: var(--blue-tint); color: var(--ink-2); font-size: 17px; border-radius: 8px; }
+.concept-note strong { display: block; margin-bottom: 4px; color: var(--blue-tone); }
+.timeline { list-style: none; margin: 22px 0 30px; padding: 0; }
+.timeline li { display: grid; grid-template-columns: 72px 1fr; gap: 24px; padding-block: 20px; border-bottom: 1px solid var(--line); align-items: center; }
+.timeline li:first-child { padding-top: 0; }
+.date { text-transform: uppercase; font-size: 13px; font-weight: 600; color: var(--blue-tone); text-align: center; line-height: 1.1; }
+.date strong { display: block; font-family: var(--f-num); font-size: 37px; font-weight: 800; margin-top: 4px; }
+.date-season strong { font-size: 18px; }
+.timeline p { color: var(--ink-2); font-size: 16px; margin-top: 5px; line-height: 1.4; }
+.entry-dates .action { width: 100%; }
+
+.help-section { display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px; padding-block: 80px; }
+.help-section > div:last-child { padding-top: 32px; color: var(--ink-2); }
+.support-email { display: inline-block; overflow-wrap: anywhere; font-weight: 600; margin-block: 18px; }
+.create-page .help-nudge { font-size: 17px; margin-top: 0; }
+.create-footer { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; padding-block: 26px 36px; border-top: 1px solid var(--line); color: var(--ink-2); font-size: 15px; }
+
+@media (max-width: 900px) {
+  .create-hero { gap: 36px; grid-template-columns: 1.2fr 1fr; padding-block: 50px; }
+  .create-hero h1 { font-size: 48px; }
+  .hero-example { padding: 20px; transform: none; }
+  .create-page .example-question { font-size: 24px; }
+  .what-layout, .lab-layout, .entry-layout, .help-section { gap: 36px; }
+  .lab-note blockquote { font-size: 24px; }
+  .creation-steps { gap: 0 30px; }
+}
+@media (max-width: 700px) {
+  .page-width { width: min(100% - 40px, 540px); }
+  .create-header { flex-wrap: wrap; gap: 18px; padding-block: 22px; }
+  .create-header nav { gap: 24px; flex-wrap: wrap; font-size: 15px; }
+  .create-hero, .what-layout, .lab-layout, .entry-layout, .help-section { grid-template-columns: 1fr; }
+  .create-hero { gap: 40px; }
+  .create-hero h1 { font-size: clamp(40px, 9vw, 54px); }
+  .create-page .hero-lede { font-size: 21px; }
+  .hero-example { max-width: 470px; }
+  .what-section { padding-bottom: 48px; }
+  .what-layout { gap: 22px; }
+  .lab-section, .competition-section { padding-block: 48px; }
+  .lab-layout { gap: 32px; }
+  .lab-note { padding-left: 22px; }
+  .start-section { padding-block: 50px; }
+  .setup-callout { margin-top: 32px; padding: 22px 20px; }
+  .setup-callout h3 { font-size: 23px; }
+  .setup-preview { flex-direction: column; font-size: 17px; }
+  .creation-steps { grid-template-columns: 1fr; margin-top: 28px; }
+  .creation-steps li { gap: 16px; padding-block: 24px; }
+  .prizes { grid-template-columns: 1.2fr 1fr 1fr; }
+  .prizes > div { padding: 20px 12px; }
+  .prizes dt { font-size: 14px; }
+  .prizes dd { font-size: clamp(32px, 8vw, 42px); }
+  .entry-layout { margin-top: 38px; gap: 38px; }
+  .resource-list a { grid-template-columns: 48px 1fr 16px; gap: 14px; }
+  .resource-kind { font-size: 11px; }
+  .resource-list strong { font-size: 18px; }
+  .resource-list small { font-size: 15px; }
+  .ai-prompt summary { padding: 16px 18px; font-size: 18px; }
+  .details-body { padding: 0 18px 20px; }
+  .details-body blockquote { padding: 16px; }
+  .help-section { padding-block: 48px; gap: 20px; }
+  .help-section > div:last-child { padding-top: 0; }
+}
+@media (forced-colors: active) {
+  .create-page .action-primary, .hero-example, .concept-note, .setup-callout, .create-header nav a.nav-cta { border: 1px solid ButtonText; }
+}

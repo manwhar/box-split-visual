@@ -1,0 +1,189 @@
+/*
+ * Custom stylization for "Instant Architecture in Minecraft using Box-Split Grammars"
+ * Layered on top of the shared engine/deck.css rules.
+ */
+
+/* Global slide stage accents */
+.stage {
+  --minecraft-green: #2e7d32;
+  --minecraft-stone: #546e7a;
+  --minecraft-gold: #c79a24;
+}
+
+/* Slide 1: Paper Intro */
+.slide.s-paper-intro {
+  background: radial-gradient(circle at 92% 12%, rgba(80, 120, 208, 0.08), transparent 45%),
+              radial-gradient(circle at 8% 88%, rgba(244, 174, 0, 0.05), transparent 45%);
+}
+
+.slide.s-paper-intro .kicker {
+  font-family: var(--f-head);
+  font-size: 28px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.slide.s-paper-intro h2 {
+  font-size: 68px;
+  line-height: 1.15;
+  color: var(--ink);
+  font-weight: 800;
+  max-width: 1350px;
+}
+
+.slide.s-paper-intro .sub {
+  font-size: 32px;
+  color: var(--ink-2);
+  margin-top: 16px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--line);
+  max-width: 1200px;
+}
+
+.slide.s-paper-intro .points {
+  margin-top: 36px;
+  font-size: 36px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.slide.s-paper-intro .points li {
+  margin-bottom: 24px;
+}
+
+/* Slide 2: Big Ideas */
+.slide.s-big-ideas {
+  background: radial-gradient(circle at 15% 25%, rgba(80, 120, 208, 0.07), transparent 50%),
+              radial-gradient(circle at 85% 75%, rgba(254, 232, 230, 0.4), transparent 50%);
+}
+
+.slide.s-big-ideas .kicker {
+  font-family: var(--f-head);
+  font-size: 28px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--blue-tone);
+  margin-bottom: 24px;
+}
+
+/* Slide 3: Core Building Blocks */
+#core-mechanisms {
+  justify-content: center;
+}
+
+#core-mechanisms .kicker {
+  font-family: var(--f-head);
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+#core-mechanisms h2 {
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.15;
+}
+
+#core-mechanisms .lede {
+  font-size: 30px;
+  color: var(--ink-2);
+  margin-top: 8px;
+  margin-bottom: 36px;
+}
+
+#core-mechanisms .grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+
+#core-mechanisms .card {
+  padding: 34px 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(30, 40, 60, 0.05);
+  border: 1px solid rgba(223, 229, 239, 0.7);
+  display: flex;
+  flex-direction: column;
+}
+
+#core-mechanisms .card .tag {
+  font-size: 24px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+#core-mechanisms .card b {
+  font-size: 32px;
+  line-height: 1.22;
+  margin-bottom: 12px;
+}
+
+#core-mechanisms .card .text {
+  font-size: 24px;
+  line-height: 1.45;
+  color: var(--ink-2);
+}
+
+#core-mechanisms .card pre {
+  margin-top: auto;
+  margin-bottom: 0;
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.06);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+#core-mechanisms .card code {
+  font-family: var(--f-mono);
+  font-size: 24px;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Slide 4: Chapter / Interactive Demo Frame */
+.slide.chapter .ch-head {
+  margin-bottom: 22px;
+}
+
+.slide.chapter .play-room {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(30, 40, 60, 0.1);
+  border: 1px solid var(--line);
+}
+
+/* Slide 5: Discussion */
+.slide.s-discuss .kicker {
+  font-family: var(--f-head);
+  font-size: 26px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.slide.s-discuss h2 {
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.slide.s-discuss .share {
+  margin-top: 36px;
+}
+
+.slide.s-discuss .share li {
+  font-size: 34px;
+  line-height: 1.42;
+  margin-bottom: 28px;
+}
