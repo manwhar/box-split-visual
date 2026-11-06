@@ -3,6 +3,56 @@
  * Layered on top of the shared engine/deck.css rules.
  */
 
+/* Force light theme across presentation */
+:root {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root,
+  :root:not([data-theme="light"]) {
+    color-scheme: light;
+    --bg: #ffffff;
+    --outside: #e9edf4;
+    --surface: #ffffff;
+    --surface-2: #f3f6fb;
+    --ink: #1e2742;
+    --ink-2: #4a5470;
+    --ink-3: #848ca3;
+    --line: #dfe5ef;
+    --accent: #5078d0;
+    --accent-2: #3d63bf;
+    --accent-ink: #ffffff;
+    --mark: #fef8cb;
+    --mark-ink: #222326;
+    --sun: #f4ae00;
+    --sky: #e5eeff;
+    --idea: #feeae9;
+    --award: #d9453b;
+    --blue-tint: #e9f0ff;
+    --blue-tone: #3d63bf;
+    --sun-tint: #fff3cf;
+    --sun-tone: #946500;
+    --sun-num: #b47c00;
+    --rose-tint: #fde8e6;
+    --rose-tone: #b8423a;
+    --sea-tint: #e2f5f7;
+    --sea-tone: #1c7785;
+    --blue-mark: #bcd0fb;
+    --sun-mark: #ffd86b;
+    --rose-mark: #ffbdb5;
+    --shadow: 0 1px 2px rgba(30, 40, 60, 0.05), 0 8px 24px rgba(30, 40, 60, 0.07);
+  }
+
+  body,
+  .viewport,
+  .stage,
+  .slide {
+    background: #ffffff;
+    color: var(--ink);
+  }
+}
+
 /* Global slide stage accents */
 .stage {
   --minecraft-green: #2e7d32;

@@ -38,8 +38,8 @@ export function generateGrammarCode(rootRegion) {
 
   function traverse(node, indentLevel) {
     const startIndex = lines.length;
-    const indentSpaces = '    '.repeat(indentLevel);
-    const indentHtml = '&nbsp;&nbsp;&nbsp;&nbsp;'.repeat(indentLevel);
+    const indentSpaces = '  '.repeat(indentLevel);
+    const indentHtml = '&nbsp;&nbsp;'.repeat(indentLevel);
 
     if (node.isLeaf()) {
       let callHtml, rawCall;

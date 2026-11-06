@@ -1,7 +1,7 @@
 // explorable-transcripts-v1: project-local completion and recovery hooks.
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
-const python = "C:\\Users\\thatp\\AppData\\Local\\Programs\\Python\\Python314\\python.exe"; // configured by startup
+const python = "/opt/homebrew/opt/python@3.14/bin/python3.14"; // configured by startup
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const runner = fileURLToPath(new URL("../../explorables/tools/transcript_hooks.py", import.meta.url));
 

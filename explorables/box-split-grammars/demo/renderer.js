@@ -14,7 +14,7 @@ export class CanvasRenderer {
     this.ctx = canvas.getContext('2d');
     this.textureLib = new TextureLibrary();
     this.detailScale = window.devicePixelRatio || 1;
-    this.padding = 24;
+    this.padding = 25;
 
     // Darkening & Bloom highlight animation state
     this.codeHighlightId = null;

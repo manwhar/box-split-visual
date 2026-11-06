@@ -24,29 +24,64 @@
 
 <section class="slide" id="core-mechanisms" data-part="How it works">
   <p class="kicker">Architecture &amp; Rules</p>
-  <h2>Core Grammar Building Blocks</h2>
-  <p class="lede">How Box-Split Grammars turn a single bounding box into complex architecture.</p>
-  <div class="grid-3">
-    <div class="card">
-      <span class="tag">Geometry</span>
-      <b>1. Integer Scopes</b>
-      <span class="text">Every non-terminal is an axis-aligned box with discrete coordinates and local coordinate reorientation.</span>
-      <pre><code>reorient(x=Dimension.Z)</code></pre>
+  <h2 style="font-size: 58px; font-weight: 800; color: var(--ink); line-height: 1.15;">Anatomy of a Box-Split Rule</h2>
+  <p class="lede" style="font-size: 26px; color: var(--ink-2); margin-top: 6px; margin-bottom: 22px;">How native Python functions express formal grammar productions and voxel geometry.</p>
+
+  <div style="display: grid; grid-template-columns: 680px 1fr; gap: 28px; align-items: stretch;">
+    <!-- Left Column: 3 Structured Code Blocks -->
+    <div style="background: #ffffff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 4px 24px rgba(30, 40, 60, 0.06); display: flex; flex-direction: column; overflow: hidden; align-self: start;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: var(--surface-2); border-bottom: 1px solid var(--line);">
+        <span style="font-family: var(--f-mono); font-size: 24px; font-weight: 600; color: var(--ink-2);">temple_wall.py</span>
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 12px; background: var(--blue-tint); color: var(--blue-tone);">Native Python Rule</span>
+      </div>
+
+      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-family: var(--f-mono); font-size: 24px; line-height: 1.5;">
+        <!-- Block 1: @rule & Structure Name -->
+        <div style="display: flex; align-items: flex-start; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--blue-tone); background: rgba(61, 99, 191, 0.07);">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--blue-tone); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">1</span>
+          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);"><span style="color: #be185d; font-weight: 700;">@rule</span>(<span style="color: #854d0e; font-weight: 600;">constraint</span>=Dimension.X % 2 == 1)
+<span style="color: #be185d; font-weight: 700;">def</span> <span style="color: #1d4ed8; font-weight: 700;">temple_wall</span>():</code>
+        </div>
+
+        <!-- Block 2: Spatial Partitioning -->
+        <div style="display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--sun-num); background: rgba(244, 174, 0, 0.09);">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--sun-num); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0;">2</span>
+          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);">    <span style="color: #be185d; font-weight: 700;">with</span> <span style="color: #1d4ed8; font-weight: 700;">split</span>(Dimension.X, [<span style="color: #b45309; font-weight: 700;">1</span>, <span style="color: #b45309; font-weight: 700;">-1</span>, <span style="color: #b45309; font-weight: 700;">1</span>]):</code>
+        </div>
+
+        <!-- Block 3: Minecraft Blocks & Void -->
+        <div style="display: flex; align-items: flex-start; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--minecraft-green); background: rgba(46, 125, 50, 0.07);">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--minecraft-green); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">3</span>
+          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);">        <span style="color: #1d4ed8; font-weight: 700;">fill</span>(<span style="color: #047857; font-weight: 700;">COBBLESTONE</span>)
+        <span style="color: #1d4ed8; font-weight: 700;">void</span>()
+        <span style="color: #1d4ed8; font-weight: 700;">fill</span>(<span style="color: #047857; font-weight: 700;">COBBLESTONE</span>)</code>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <span class="tag">Partition</span>
-      <b>2. Sizing &amp; Rounding</b>
-      <span class="text">Combines absolute sizes (e.g. 1 block) with proportional relative sizes (-1), handling integer rounding cleanly.</span>
-      <pre><code>split(X, [1, -1, 1])</code></pre>
-    </div>
-    <div class="card">
-      <span class="tag">Language</span>
-      <b>3. Native Python Rules</b>
-      <span class="text">Rules are decorated Python functions intercepted for non-deterministic rule selection and constraints.</span>
-      <pre><code>@rule(constraint=X % 2 == 0)</code></pre>
+
+    <!-- Right Column: 3 Explanatory Cards -->
+    <div style="display: flex; flex-direction: column; gap: 14px; justify-content: space-between;">
+      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--blue-tone); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue-tone); margin-bottom: 2px;">1. Structure &amp; Guard</span>
+        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">@rule &amp; Function Name</b>
+        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">The function name defines the non-terminal symbol. Same-named functions create random variants; constraints guard valid box dimensions.</span>
+      </div>
+
+      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--sun-tone); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sun-tone); margin-bottom: 2px;">2. Spatial Partitioning</span>
+        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">with split(axis, [sizes])</b>
+        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">Slices the scope along an axis. Positive integers are exact blocks (<code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">1</code>); negative integers allocate proportional remainder (<code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">-1</code>).</span>
+      </div>
+
+      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--minecraft-green); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--minecraft-green); margin-bottom: 2px;">3. Voxel Materials</span>
+        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">fill(BLOCK) &amp; void()</b>
+        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">Terminal leaves place concrete Minecraft blocks or air. Scopes can also call another rule, such as <code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">columns()</code>, for nested hierarchy.</span>
+      </div>
     </div>
   </div>
-  <aside class="notes">Highlight how these building blocks allow modeling modular architectural structures like ancient Greek temples (tetrastyle, hexastyle, peripteral) with minimal rules.</aside>
+
+  <aside class="notes">Walk through the three components: (1) @rule decorator registers the function as a grammar non-terminal and checks arithmetic constraints; (2) split() partitions integer box scopes using absolute and relative sizes; (3) fill() and void() assign terminal Minecraft blocks or allow recursive grammar calls.</aside>
 </section>
 
 <section class="slide chapter" id="interactive-demo" data-part="Explore it">

@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness claude --event UserPromptSubmit --owner explorable-transcripts-v1",
+            "timeout": 90
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness claude --event Stop --owner explorable-transcripts-v1",
+            "timeout": 90
+          }
+        ]
+      }
+    ],
+    "StopFailure": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness claude --event StopFailure --owner explorable-transcripts-v1",
+            "timeout": 90
+          }
+        ]
+      }
+    ]
+  }
+}
