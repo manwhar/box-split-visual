@@ -3,8 +3,17 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Box-Split Knife & Live Python Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Nunito:wght@400;600;700;800&family=Nunito+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap">
   <style>
+    :root {
+      --f-cover: "Nunito", "Nunito Sans", system-ui, -apple-system, sans-serif;
+      --f-head: "Gill Sans", "Gill Sans MT", "Nunito Sans", system-ui, -apple-system, sans-serif;
+      --f-body: "Nunito Sans", system-ui, -apple-system, sans-serif;
+      --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+    }
+
     *,
     *::before,
     *::after {
@@ -20,7 +29,7 @@
       overflow: hidden;
       background: #f8fafc;
       color: #1e293b;
-      font-family: "Nunito Sans", system-ui, -apple-system, sans-serif;
+      font-family: var(--f-body);
     }
 
     .demo-container {
@@ -76,6 +85,7 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: #64748b;
+      font-family: var(--f-head);
     }
 
     .btn-group {
@@ -100,7 +110,7 @@
       cursor: pointer;
       transition: all 0.15s ease;
       text-align: center;
-      font-family: inherit;
+      font-family: var(--f-head);
     }
 
     .btn-tab:hover {
@@ -132,6 +142,7 @@
       font-size: 12px;
       font-weight: 600;
       color: #334155;
+      font-family: var(--f-head);
       cursor: pointer;
       transition: all 0.15s ease;
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
@@ -170,7 +181,7 @@
       cursor: pointer;
       transition: all 0.15s ease;
       margin-top: auto;
-      font-family: inherit;
+      font-family: var(--f-head);
       box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
     }
 
@@ -208,6 +219,7 @@
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: #334155;
+      font-family: var(--f-head);
       display: flex;
       align-items: center;
       gap: 6px;
@@ -222,7 +234,7 @@
       background: #ffffff;
       color: #475569;
       cursor: pointer;
-      font-family: inherit;
+      font-family: var(--f-head);
       transition: all 0.12s ease;
     }
 
@@ -237,7 +249,7 @@
       overflow-x: auto;
       overflow-y: auto;
       padding: 8px 10px;
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-family: var(--f-mono);
       font-size: 11.5px;
       line-height: 1.5;
       scrollbar-width: thin;
@@ -313,6 +325,7 @@
       border-top: 1px solid #e2e8f0;
       font-size: 10px;
       color: #64748b;
+      font-family: var(--f-body);
       display: flex;
       justify-content: space-between;
     }
@@ -332,8 +345,8 @@
       <div class="control-group">
         <span class="control-label">Tool</span>
         <div class="btn-group">
-          <button id="tool-cut" class="btn-tab active">🔪 Cut</button>
-          <button id="tool-fill" class="btn-tab">🪣 Fill</button>
+          <button id="tool-cut" class="btn-tab active">Cut</button>
+          <button id="tool-fill" class="btn-tab">Fill</button>
         </div>
       </div>
 

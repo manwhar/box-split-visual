@@ -62,8 +62,7 @@
 
 /* Slide 1: Paper Intro */
 .slide.s-paper-intro {
-  background: radial-gradient(circle at 92% 12%, rgba(80, 120, 208, 0.08), transparent 45%),
-              radial-gradient(circle at 8% 88%, rgba(244, 174, 0, 0.05), transparent 45%);
+  background: #ffffff;
 }
 
 .slide.s-paper-intro .kicker {
@@ -106,8 +105,7 @@
 
 /* Slide 2: Big Ideas */
 .slide.s-big-ideas {
-  background: radial-gradient(circle at 15% 25%, rgba(80, 120, 208, 0.07), transparent 50%),
-              radial-gradient(circle at 85% 75%, rgba(254, 232, 230, 0.4), transparent 50%);
+  background: #ffffff;
 }
 
 .slide.s-big-ideas .kicker {
@@ -118,6 +116,14 @@
   letter-spacing: 0.1em;
   color: var(--blue-tone);
   margin-bottom: 24px;
+}
+
+.slide.s-big-ideas .big-idea mark {
+  background: var(--marker);
+  padding: 0.05em 0.22em;
+  border-radius: 8px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 /* Slide 3: Core Building Blocks */
@@ -201,6 +207,7 @@
 
 /* Slide 4: Chapter / Interactive Demo Frame */
 .slide.chapter .ch-head {
+  grid-template-columns: minmax(0, 1fr);
   margin-bottom: 22px;
 }
 

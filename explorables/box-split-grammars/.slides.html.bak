@@ -1,0 +1,112 @@
+<!--
+  Instant Architecture in Minecraft using Box-Split Grammars (FDG 2022)
+  Explorable presentation deck.
+-->
+
+<section class="slide s-paper-intro" id="paper" data-part="The paper">
+  <p class="kicker">Research Paper</p>
+  <h2 style="font-size: 48px;">Instant Architecture in Minecraft using Box-Split Grammars</h2>
+  <p class="sub" style="font-size: 28px;">Markus Eger • 2022 • Foundations of Digital Games (FDG '22)<span class="num"></span> <span class="nowrap"></span></p>
+  <ul class="points">
+    <li>Procedural architecture generation has previously relied on domain-specific frameworks, our Python implementation integrates directly into game engines.</li>
+    <li>How can we combine Box Grammars and Split Grammars into a single system driven by standard Python functions?</li>
+  </ul>
+  <aside class="notes">Introduce the paper: Markus Eger presented Box-Split Grammars at FDG 2022 to provide an expressive and convenient framework for procedural architecture in Minecraft.</aside>
+</section>
+
+<section class="slide s-big-ideas" id="big-ideas" data-part="The paper">
+  <p class="kicker">Contributions</p>
+  <h2 class="sr-only">The paper's big ideas</h2>
+  <p class="big-idea">Splitting 3D integer bounding boxes using <mark class="m-sun">absolute and relative rules</mark> with local coordinate reorientation.</p>
+  <p class="big-idea">Expressing grammar rules as <mark class="m-blue">standard Python functions</mark> with nondeterministic selection, iteration, and arithmetic constraints.</p>
+  <aside class="notes">Two big ideas: (1) A clean geometric representation over discrete voxel boxes with mixed absolute/proportional split slicing; (2) Embedding the grammar directly into Python via decorators that support non-deterministic rule selection and constraints.</aside>
+</section>
+
+<section class="slide" id="core-mechanisms" data-part="How it works">
+  <p class="kicker">Architecture and Rules</p>
+  <h2 style="font-size: 58px; font-weight: 800; color: var(--ink); line-height: 1.15;">The Box-Split Grammar System</h2>
+  <p class="lede" style="font-size: 26px; color: var(--ink-2); margin-top: 6px; margin-bottom: 22px;">How can Box-Split Grammars split a bounding box into complex architecture?</p>
+
+  <div style="display: grid; grid-template-columns: 680px 1fr; gap: 28px; align-items: stretch;">
+    <!-- Left Column: 3 Structured Code Blocks -->
+    <div style="background: #ffffff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 4px 24px rgba(30, 40, 60, 0.06); display: flex; flex-direction: column; overflow: hidden; align-self: start;">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: var(--surface-2); border-bottom: 1px solid var(--line);">
+        <span style="font-family: var(--f-mono); font-size: 24px; font-weight: 600; color: var(--ink-2);">temple_wall.py</span>
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 12px; background: var(--blue-tint); color: var(--blue-tone);">Python Rule</span>
+      </div>
+
+      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-family: var(--f-mono); font-size: 24px; line-height: 1.5;">
+        <!-- Block 1: @rule & Structure Name -->
+        <div style="display: flex; align-items: flex-start; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--blue-tone); background: rgba(61, 99, 191, 0.07);">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--blue-tone); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">1</span>
+          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);"><span style="color: #be185d; font-weight: 700;">@rule</span>(<span style="color: #854d0e; font-weight: 600;">constraint</span>=Dimension.X % 2 == 1)
+<span style="color: #be185d; font-weight: 700;">def</span> <span style="color: #1d4ed8; font-weight: 700;">temple_wall</span>():</code>
+        </div>
+
+        <!-- Block 2: Spatial Partitioning -->
+        <div style="display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--sun-num); background: rgba(244, 174, 0, 0.09);">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--sun-num); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0;">2</span>
+          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);">    <span style="color: #be185d; font-weight: 700;">with</span> <span style="color: #1d4ed8; font-weight: 700;">split</span>(Dimension.X, [<span style="color: #b45309; font-weight: 700;">1</span>, <span style="color: #b45309; font-weight: 700;">-1</span>, <span style="color: #b45309; font-weight: 700;">1</span>]):</code>
+        </div>
+
+        <!-- Block 3: Minecraft Blocks & Void -->
+        <div style="display: flex; align-items: flex-start; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--minecraft-green); background: rgba(46, 125, 50, 0.07);">
+          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--minecraft-green); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">3</span>
+          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);">        <span style="color: #1d4ed8; font-weight: 700;">fill</span>(<span style="color: #047857; font-weight: 700;">COBBLESTONE</span>)
+        <span style="color: #1d4ed8; font-weight: 700;">void</span>()
+        <span style="color: #1d4ed8; font-weight: 700;">fill</span>(<span style="color: #047857; font-weight: 700;">COBBLESTONE</span>)</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: 3 Explanatory Cards -->
+    <div style="display: flex; flex-direction: column; gap: 14px; justify-content: space-between;">
+      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--blue-tone); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue-tone); margin-bottom: 2px;">1. Structure</span>
+        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">@rule &amp; Function Name</b>
+        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">The function name defines the non-terminal symbol.  Shared function names create random variants, regulated by constraints that ensure rules only execute on valid bounding boxes.</span>
+      </div>
+
+      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--sun-tone); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sun-tone); margin-bottom: 2px;">2. Splitting</span>
+        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">with split(axis, [sizes])</b>
+        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">Slices the scope along an axis. Positive integers are absolute block counts (<code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">1</code>), negative integers allocate the proportional remainder (<code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">-1</code>).</span>
+      </div>
+
+      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--minecraft-green); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
+        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--minecraft-green); margin-bottom: 2px;">3. MATERIALS</span>
+        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">fill(BLOCK) &amp; void()</b>
+        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">void() acts as AIR. Scopes can also call other rules such as <code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">columns()</code>.</span>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">Walk through the three components: (1) @rule decorator registers the function as a grammar non-terminal and checks arithmetic constraints; (2) split() partitions integer box scopes using absolute and relative sizes; (3) fill() and void() assign terminal Minecraft blocks or allow recursive grammar calls.</aside>
+</section>
+
+<section class="slide chapter" id="interactive-demo" data-part="Explore it">
+  <header class="ch-head">
+    <span class="ch-num">1</span>
+    <div>
+      <h2>Interactive Box-Split &amp; Grammar Demonstration</h2>
+      <p style="width: 1286.32px; max-width: none; flex-shrink: 0; min-width: 0px; flex-basis: auto;">Cut and fill selected regions with Minecraft blocks and hover over Python rules to highlight their active scopes.</p>
+    </div>
+  </header>
+  <div class="play-room" data-max="1.5">
+    <div class="play-set">
+      <iframe data-src="demo/index.html" width="900" height="460" scrolling="no" title="Interactive 2D Box Split Knife &amp; Fill Tool"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Demonstrate partitioning and material assignment: place horizontal/vertical cuts on the 10x10 grid, fill regions with official Minecraft blocks (Oak Log, Cobblestone, Oak Planks), and hover lines in the live-generated Python code panel to inspect how rules map directly to spatial scopes.</aside>
+</section>
+
+<section class="slide s-big-list s-discuss" id="discuss" data-part="Discussion">
+  <p class="kicker">Reflection</p>
+  <h2>Discuss with your table</h2>
+  <ol class="share">
+    <li>What are the advantages of writing grammar rules as ordinary Python functions rather than creating a domain-specific frameworks?</li>
+    <li>How could box splitting be applied to handle connected structures like roads, bridges, and walls?</li>
+    <li>Where else in procedural generation could Box-Split Grammars be applied?</li>
+  </ol>
+  <aside class="notes">Open discussion questions encouraging participants to analyze the trade-offs of Python-embedded grammars and general procedural content generation challenges.</aside>
+</section>
