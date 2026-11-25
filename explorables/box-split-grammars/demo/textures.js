@@ -40,6 +40,27 @@ const OAK_LOG_ROWS = [
   '0100010021001200'
 ];
 
+// Official Minecraft Java Edition 16x16 Oak Log Bark (vertical wood bark ridges)
+const OAK_LOG_BARK_PALETTE = ['#4c3d26', '#5f4a2b', '#745a36', '#7e6237', '#3b2e1b', '#67502c'];
+const OAK_LOG_BARK_ROWS = [
+  '1204123210412101',
+  '1214122110412151',
+  '2210152104122150',
+  '2104122014123101',
+  '1041221015222011',
+  '0412210141231041',
+  '1122104152220412',
+  '2121041222104122',
+  '2101522104122101',
+  '1041231041221041',
+  '0412210412210152',
+  '1122014123104122',
+  '2101412210412101',
+  '1041221015221041',
+  '1214120141231512',
+  '2210152210412101'
+];
+
 const COBBLESTONE_PALETTE = ['#6e6d6d', '#616161', '#a6a6a6', '#525252', '#b5b5b5', '#888788'];
 const COBBLESTONE_ROWS = [
   '0122311242515425',
@@ -103,9 +124,16 @@ export class TextureLibrary {
       [TEXTURE_TYPES.COBBLESTONE]: createTextureCanvas(COBBLESTONE_PALETTE, COBBLESTONE_ROWS),
       [TEXTURE_TYPES.OAK_PLANKS]: createTextureCanvas(OAK_PLANKS_PALETTE, OAK_PLANKS_ROWS)
     };
+    this.sideCanvases = {
+      [TEXTURE_TYPES.OAK_LOG]: createTextureCanvas(OAK_LOG_BARK_PALETTE, OAK_LOG_BARK_ROWS)
+    };
   }
 
   getCanvas(type) {
     return this.canvases[type] || null;
+  }
+
+  getSideCanvas(type) {
+    return this.sideCanvases[type] || this.getCanvas(type);
   }
 }
