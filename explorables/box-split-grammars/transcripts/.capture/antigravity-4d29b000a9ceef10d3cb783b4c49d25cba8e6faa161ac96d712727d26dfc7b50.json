@@ -4,5 +4,9 @@
   "session": "ed77172f-eb6f-4709-a7e4-7c9413f6971f",
   "source": {},
   "pending": [],
-  "baseline": null
+  "baseline": {
+    "turnId": "step-304",
+    "itemId": "planner_response-304-1",
+    "digest": "892878d63ceeb382f78d810abb795eac408241ba324fdbf013432783a69b5b69"
+  }
 }

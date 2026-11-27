@@ -6,7 +6,7 @@
 
 import { clamp, easeInOutCubic, easeOutCubic, lerp } from './anim.js';
 
-export const PYTHON_LINE = 'Python lets coders use loops, conditions, and other tools to assist them in building.';
+export const PYTHON_LINE = 'Python  lets coders use loops, conditions, and other tools to assist them in building.';
 export const PYTHON_WORD = 'Python';
 
 export const BUBBLE_COPY = {

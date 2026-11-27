@@ -61,23 +61,57 @@
       <iframe data-src="demo/intro.html?step=4" width="1600" height="900" scrolling="no" title="Complete interactive assembly of definitions, castle side example, and Python snippet"></iframe>
     </div>
   </div>
-  <aside class="notes">Assemble the complete reference view: dock Nonterminal, type out how Python assists builders, sketch the Castle Side Example, and drag Python into the split rule before trying the interactive cutting demo.</aside>
+  <aside class="notes">Assemble the complete reference view: dock Nonterminal, type out how Python assists builders, sketch the Castle Side Example, and drag Python into the split rule before pulling out the leftmost tower to trace how its 2D box-split rules build it.</aside>
 </section>
 
-<section class="slide chapter" id="interactive-demo" data-part="Try it first">
-  <header class="ch-head">
-    <span class="ch-num">1</span>
-    <div>
-      <h2>Interactive Box-Split Grammar Widget</h2>
-      <p>Cut and fill boxes with Minecraft blocks.</p>
-    </div>
-  </header>
-  <div class="play-room" data-max="1.5">
+<section class="slide s-intro-stage" id="tower-pull" data-part="How a rule builds">
+  <h2 class="sr-only">From Tower to 2D Grid · Target Tower &amp; Empty Grid</h2>
+  <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/index.html" width="900" height="460" scrolling="no" title="Interactive 2D Box Split Knife and Fill Tool"></iframe>
+      <iframe data-src="demo/tower.html?step=1&amp;v=3" width="1600" height="900" scrolling="no" title="Pulling the leftmost Minecraft tower beside an empty 7 by 12 grid and tower.py"></iframe>
     </div>
   </div>
-  <aside class="notes">Let readers play immediately: make horizontal or vertical cuts on the 10x10 box, fill regions with Minecraft blocks (noting that filled leaf boxes lock against further cuts), hover the live Python lines to highlight boxes, and toggle Exact vs Relative to preview -1 proportional sizing.</aside>
+  <aside class="notes">Pull the leftmost tower() out of the castle overview to the left side while its recessed background bricks fade away in flight, revealing the empty 7x12 construction grid and starter tower.py beside it.</aside>
+</section>
+
+<section class="slide s-intro-stage" id="tower-split-x" data-part="How a rule builds">
+  <h2 class="sr-only">From Tower to 2D Grid · Seven Vertical Slices</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/tower.html?step=2&amp;v=3" width="1600" height="900" scrolling="no" title="Splitting the 7 by 12 grid into seven equal 1-wide vertical slices"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Run with split(Dimension.X, [1, 1, 1, 1, 1, 1, 1]): across the empty 7x12 grid, slicing it into seven equal 1-wide vertical strips beside the uncut reference tower.</aside>
+</section>
+
+<section class="slide s-intro-stage" id="tower-split-y" data-part="How a rule builds">
+  <h2 class="sr-only">From Tower to 2D Grid · Horizontal Splits Within Each Slice</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/tower.html?step=3&amp;v=3" width="1600" height="900" scrolling="no" title="Splitting each vertical slice horizontally to match the target tower structure"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Inside each 1-wide slice, run split(Dimension.Y, ...) while softly spotlighting the matching column on the uncut reference tower—[8, 4] for the buttress, [1, 11] for the stone pier, and [2, 1, 2, 1, 2, 1, 2, 1] for the windows.</aside>
+</section>
+
+<section class="slide s-intro-stage" id="tower-fill" data-part="How a rule builds">
+  <h2 class="sr-only">From Tower to 2D Grid · Filling Regions with Blocks</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/tower.html?step=4&amp;v=3" width="1600" height="900" scrolling="no" title="Dragging fill(STONE_BRICKS) from tower.py onto the 7 by 12 grid and completing the tower"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Show a cursor clicking and dragging fill(STONE_BRICKS) from tower.py into the 11-block pier and the first stone lintel on the 7x12 grid, then fill all remaining leaves across the tower and invite readers to hover code lines or grid regions.</aside>
+</section>
+
+<section class="slide s-intro-stage" id="interactive-demo" data-part="Try it yourself">
+  <h2 class="sr-only">Make something yourself! · Interactive Box-Split Grammar Widget</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/tower.html?step=5&amp;v=3" width="1600" height="900" scrolling="no" title="Make something yourself transition into Interactive 2D Box-Split Grammar Widget"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Transition from the completed tower build to "Make something yourself!", sliding into the live 10x10 2D Cut and Fill widget where readers make horizontal or vertical cuts, fill Minecraft blocks, hover Python lines to highlight boxes, and toggle Exact vs Relative sizing.</aside>
 </section>
 
 <section class="slide s-takeaway" id="takeaway-python" data-part="How it works">

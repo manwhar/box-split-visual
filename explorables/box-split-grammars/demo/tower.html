@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>From Tower to Box-Split Grammar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Nunito+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&display=swap">
+  <link rel="stylesheet" href="intro/intro.css?v=3">
+  <link rel="stylesheet" href="tower/tower.css?v=3">
+  <style>
+    .intro-snapshot,
+    .tower-stage,
+    .hero-tower-canvas,
+    .code-drag-chip,
+    .cursor-ripple,
+    .sim-cursor,
+    .yours-callout,
+    .chapter-stage {
+      position: absolute;
+      opacity: 0;
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage-root" id="stage-root">
+
+    <!-- Step 1 t=0 starting frame: exact static match of intro.html?step=4 -->
+    <div class="intro-snapshot" id="intro-snapshot" aria-hidden="true">
+      <header class="slide-header">
+        <p class="kicker">Key Terms</p>
+        <h2>But what is a <span class="word-pill">Box-Split Grammar</span>?</h2>
+      </header>
+
+      <div class="intro-grid">
+        <div class="def-stack">
+          <div class="terms-block">
+            <ul class="points terms-list">
+              <li><span class="term-label"><strong>Grammar:</strong> </span><span class="term-body">A set of rules that breaks one big box into smaller pieces step by step. You can think about it like grammar in English that breaks a sentence into phrases and words.</span></li>
+              <li><span class="term-label"><strong>Box-Split Grammar:</strong> </span><span class="term-body">Dr. Eger's <span class="word-pill">nonterminal</span> system that slices one big box into smaller pieces.</span></li>
+              <li><span class="term-label"><strong>Nonterminal:</strong> </span><span class="term-body">A rule that expands further instead of placing blocks. For example, one side of a castle splits into <code>tower()</code>, <code>wall()</code>, <code>gate()</code>, <code>wall()</code>, and <code>tower()</code>.</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="wall-example">
+          <div class="ex-head">
+            <span>Castle Side Example:</span>
+            <div class="code-drop-slot">
+              <span class="ex-pill">with split(Dimension.X, [<span data-slice="0">5</span>, <span data-slice="1">-1</span>, <span data-slice="2">3</span>, <span data-slice="3">-1</span>, <span data-slice="4">5</span>])</span>
+            </div>
+          </div>
+          <div class="castle-frame">
+            <div class="castle-sky">
+              <div class="castle-strip">
+                <div class="castle-piece" id="origin-tower-piece">
+                  <img id="origin-tower-img" src="assets/tower.png" width="448" height="768" alt="Left Minecraft castle tower">
+                  <span class="castle-label">tower()</span>
+                </div>
+                <div class="castle-piece">
+                  <img src="assets/wall1.png" width="448" height="768" alt="Left Minecraft castle wall">
+                  <span class="castle-label">wall()</span>
+                </div>
+                <div class="castle-piece">
+                  <img src="assets/gate.png" width="448" height="768" alt="Center Minecraft castle gate">
+                  <span class="castle-label">gate()</span>
+                </div>
+                <div class="castle-piece">
+                  <img src="assets/wall2.png" width="448" height="768" alt="Right Minecraft castle wall">
+                  <span class="castle-label">wall()</span>
+                </div>
+                <div class="castle-piece">
+                  <img src="assets/tower.png" width="448" height="768" alt="Right Minecraft castle tower">
+                  <span class="castle-label">tower()</span>
+                </div>
+                <span class="castle-cut" style="left: 112px"></span>
+                <span class="castle-cut" style="left: 224px"></span>
+                <span class="castle-cut" style="left: 336px"></span>
+                <span class="castle-cut" style="left: 448px"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="band intro-note">
+        <span class="python-text-wrap"><span class="word-pill">Python</span><span>  lets coders use loops, conditions, and other tools to assist them in building.</span><span class="typing-caret"></span></span>
+      </div>
+
+      <button type="button" class="replay-btn" tabindex="-1">↻ Replay</button>
+    </div>
+
+    <!-- Steps 1..4: Clean 3-column visual derivation (Target | Build Grid | tower.py) -->
+    <div class="tower-stage" id="tower-stage">
+      <div class="tower-three-col">
+        <div class="tower-col target-col">
+          <div class="col-caption"><code>tower()</code></div>
+          <div class="target-card">
+            <canvas id="target-tower-canvas" width="336" height="576"></canvas>
+          </div>
+        </div>
+
+        <div class="tower-col build-col">
+          <div class="col-caption">7 × 12 Grid</div>
+          <div class="build-card">
+            <div class="build-canvas-wrap">
+              <div class="top-slice-ticks" id="top-slice-ticks" aria-hidden="true"></div>
+              <canvas id="build-canvas" width="336" height="576"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="tower-col code-col">
+          <div class="col-caption"><code>tower.py</code></div>
+          <section class="grammar-panel" id="grammar-panel" aria-label="tower.py Box-Split Grammar Code">
+            <div class="code-body" id="code-lines"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating hero canvas used during Step 1 extraction & in-flight background fade -->
+    <canvas class="hero-tower-canvas" id="hero-tower-canvas" width="336" height="576" aria-hidden="true"></canvas>
+
+    <!-- Step 4 drag-and-drop snippet, click ripple, and simulated pointer cursor -->
+    <div class="code-drag-chip" id="code-drag-chip" aria-hidden="true"><span class="fn">fill</span>(<span class="const">STONE_BRICKS</span>)</div>
+    <div class="cursor-ripple" id="cursor-ripple" aria-hidden="true"></div>
+    <div class="sim-cursor" id="sim-cursor" data-mode="pointer" aria-hidden="true">
+      <svg class="cursor-pointer" viewBox="0 0 28 32" width="32" height="36"><path d="M3,2 L3,26 L9.5,20.2 L14.6,30 L18.4,28.1 L13.4,18.4 L22.5,18.2 Z" fill="#0f172a" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round"/></svg>
+    </div>
+
+    <!-- Step 5 center transition headline -->
+    <div class="yours-callout" id="yours-callout" aria-hidden="true">
+      <h2 class="yours-heading" id="yours-heading">Make something yourself!</h2>
+      <p class="yours-sub" id="yours-sub">Cut and fill boxes with Minecraft blocks to write your own Python grammar.</p>
+    </div>
+
+    <!-- Step 5 destination: Chapter 1 header + live preloaded 2D interactive mockup -->
+    <div class="chapter-stage" id="chapter-stage">
+      <header class="chapter-head" id="chapter-head">
+        <span class="chapter-num" id="chapter-num">1</span>
+        <div>
+          <h2 class="chapter-title" id="chapter-title">Make something yourself!</h2>
+          <p class="chapter-sub" id="chapter-sub">Cut and fill boxes with Minecraft blocks — hover the live Python lines to inspect every scope.</p>
+        </div>
+      </header>
+      <div class="mockup-room" id="mockup-room">
+        <div class="mockup-scale-wrap" id="mockup-scale-wrap">
+          <iframe id="mockup-frame" width="900" height="460" scrolling="no" title="Interactive 2D Box Split Knife and Fill Tool"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="replay-btn tower-replay-btn" id="tower-replay-btn">↻ Replay</button>
+  </div>
+
+  <script type="module" src="tower/main.js?v=3"></script>
+</body>
+</html>
