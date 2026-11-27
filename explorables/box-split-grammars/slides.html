@@ -113,8 +113,8 @@
   <header class="ch-head">
     <span class="ch-num">1</span>
     <div>
-      <h2>Try Cutting &amp; Filling a Box</h2>
-      <p><strong>1. Cut</strong> the grid first · <strong>2. Fill</strong> boxes with blocks (filled boxes lock!) · <strong>3. Toggle -1 Auto</strong> to see proportional sizing.</p>
+      <h2>Interactive Box-Split Grammar Widget</h2>
+      <p>Cut and fill boxes with Minecraft blocks.</p>
     </div>
   </header>
   <div class="play-room" data-max="1.5">
@@ -122,59 +122,55 @@
       <iframe data-src="demo/index.html" width="900" height="460" scrolling="no" title="Interactive 2D Box Split Knife and Fill Tool"></iframe>
     </div>
   </div>
-  <aside class="notes">Let readers play immediately: make horizontal or vertical cuts on the 10x10 box, fill regions with Minecraft blocks (noting that filled leaf boxes lock against further cuts), hover the live Python lines to see each split scope highlight, and toggle Exact vs -1 Auto to preview proportional remainder syntax.</aside>
+  <aside class="notes">Let readers play immediately: make horizontal or vertical cuts on the 10x10 box, fill regions with Minecraft blocks (noting that filled leaf boxes lock against further cuts), hover the live Python lines to highlight boxes, and toggle Exact vs Relative to preview -1 proportional sizing.</aside>
 </section>
 
 <section class="slide s-takeaway" id="takeaway-python" data-part="How it works">
-  <p class="kicker">What You Just Built · The Python Side</p>
-  <h2>Every cut is a nested Python scope</h2>
-  <p class="band"><b>Key takeaway:</b> Splitting a box creates smaller boxes inside a <code>with split(...)</code> block; filling a box ends that branch as a terminal Minecraft block.</p>
+  <p class="kicker">The Python Foundation</p>
+  <h2>Each cut creates a smaller scope</h2>
+  <p class="band">Splitting a box using <code>with split()</code> creates smaller boxes. Filling a box ends the cycle with a Minecraft block.</p>
 
   <div class="anatomy-grid">
     <div class="code-card">
       <div class="code-card-head">
-        <span>temple_wall.py</span>
-        <span class="code-badge">Python Rule</span>
+        <span>castle_wall.py</span>
       </div>
       <div class="code-steps">
         <div class="code-step">
           <span class="step-num">1</span>
-          <code><span class="hl-kw">@rule</span>(constraint=<span class="hl-dim">Dimension.X</span> &gt;= <span class="hl-num">7</span>)
-<span class="hl-kw">def</span> <span class="hl-fn">wall</span>():</code>
+          <code><span class="hl-kw">@rule</span>(constraint=<span class="hl-dim">Dimension.X</span> % <span class="hl-num">2</span> == <span class="hl-num">1</span>)
+<span class="hl-kw">def</span> <span class="hl-fn">castle_wall</span>():</code>
         </div>
         <div class="code-step">
           <span class="step-num">2</span>
-          <code>  <span class="hl-kw">with</span> <span class="hl-fn">split</span>(<span class="hl-dim">Dimension.X</span>, [<span class="hl-num">1</span>, <span class="hl-neg">-1</span>, <span class="hl-num">1</span>]):</code>
+          <code>  <span class="hl-kw">with</span> <span class="hl-fn">split</span>(<span class="hl-dim">Dimension.X</span>, [<span class="hl-num">5</span>, <span class="hl-neg">-1</span>, <span class="hl-num">5</span>]):</code>
         </div>
         <div class="code-step">
           <span class="step-num">3</span>
-          <code>    <span class="hl-fn">fill</span>(<span class="hl-const">OAK_LOG</span>)
-    <span class="hl-fn">center</span>()     <span class="hl-cmt"># calls another rule</span>
-    <span class="hl-fn">fill</span>(<span class="hl-const">OAK_LOG</span>)</code>
+          <code>    <span class="hl-fn">fill</span>(<span class="hl-const">COBBLESTONE</span>)
+    <span class="hl-fn">gate</span>()
+    <span class="hl-fn">fill</span>(<span class="hl-const">COBBLESTONE</span>)</code>
         </div>
       </div>
     </div>
 
     <div class="explain-stack">
       <div class="explain-card">
-        <span class="explain-tag">1. Rules &amp; Constraints</span>
-        <b>Same function name = variants</b>
-        <p>Multiple <code>@rule</code> functions share one name; Python picks among those whose constraint holds.</p>
+        <span class="explain-tag">1. Rules and Constraints</span>
+        <p>Multiple <code>@rule</code> functions can share the same name. Python picks a rule whose constraint holds.</p>
       </div>
       <div class="explain-card">
-        <span class="explain-tag">2. Absolute vs. Negative</span>
-        <b>Positive = exact, -1 = stretch</b>
-        <p>Positive sizes claim fixed blocks first; <code>-1</code> divides whatever space remains.</p>
+        <span class="explain-tag">2. Exact and Relative</span>
+        <p>Positive numbers are fixed blocks. Negative numbers fill the remaining space.</p>
       </div>
       <div class="explain-card">
-        <span class="explain-tag">3. Composition &amp; Loops</span>
-        <b>Call rules or repeat slices</b>
-        <p>Scopes call <code>fill()</code>/<code>void()</code>, invoke rules like <code>center()</code>, or loop with <code>repeat=True</code>.</p>
+        <span class="explain-tag">3. Loops</span>
+        <p>Loops can create repeating walls.</p>
       </div>
     </div>
   </div>
 
-  <aside class="notes">Bridge from the hands-on cutting widget to the paper's Python mechanics: highlight how indentation tracks spatial nesting, how negative numbers adapt to box size, and how Python decorators enable constraints, random variants, and loops.</aside>
+  <aside class="notes">Bridge from the hands-on cutting widget to the paper's Python mechanics using a cobblestone castle wall example: highlight how indentation tracks spatial nesting, how exact and relative numbers adapt to box size, and how Python decorators enable constraints, random variants, and loops.</aside>
 </section>
 
 <section class="slide chapter" id="rules-demo" data-part="How it works">
@@ -182,15 +178,15 @@
     <span class="ch-num">2</span>
     <div>
       <h2>Constraints, Random Variants &amp; Loops in Action</h2>
-      <p>Drag <strong>Width &lt; 7</strong> to fire <code>Constraint.ELSE</code>, toggle <strong>Repeat [3]</strong> for a loop, and click <strong>Regenerate</strong> to roll variants.</p>
+      <p>Drag <strong>Width &gt; 9</strong> to open a middle gate, toggle <strong>Repeat [1, 1]</strong> for battlements, and click <strong>Regenerate</strong> for variants.</p>
     </div>
   </header>
   <div class="play-room" data-max="1.5">
     <div class="play-set">
-      <iframe data-src="demo/rules.html" width="900" height="460" scrolling="no" title="Interactive Constraints, Variants, and Loops Demo"></iframe>
+      <iframe data-src="demo/rules.html" width="900" height="460" scrolling="no" title="Interactive Castle Wall Rules, Variants, and Loops Demo"></iframe>
     </div>
   </div>
-  <aside class="notes">Demonstrate the paper's other big idea: live Python rule dispatch. Resizing Width and Height shows -1 stretching while edge pillars stay 1 block wide; crossing Width=7 triggers Constraint.ELSE; Repeat [3] turns on split(..., repeat=True) in a while loop; and Regenerate samples between two @rule bay() variants.</aside>
+  <aside class="notes">Demonstrate the paper's other big idea using the cobblestone castle wall: when Width is 9 or less, Constraint.ELSE draws one continuous crenellated cobblestone wall; dragging Width > 9 fires Dimension.X > 9 and opens a gate in the middle; Repeat [1, 1] toggles alternating cobblestone/void battlements; and Regenerate samples between cobblestone and mossy cobblestone variants.</aside>
 </section>
 
 <section class="slide chapter" id="interactive-demo-3d" data-part="In 3D">

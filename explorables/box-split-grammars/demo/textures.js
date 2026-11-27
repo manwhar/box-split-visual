@@ -10,6 +10,7 @@
 export const TEXTURE_TYPES = {
   OAK_LOG: 'oak_log',
   COBBLESTONE: 'cobblestone',
+  MOSSY_COBBLESTONE: 'mossy_cobblestone',
   OAK_PLANKS: 'oak_planks',
   GLASS: 'glass'
 };
@@ -17,6 +18,7 @@ export const TEXTURE_TYPES = {
 export const TEXTURE_LABELS = {
   [TEXTURE_TYPES.OAK_LOG]: 'Oak Log',
   [TEXTURE_TYPES.COBBLESTONE]: 'Cobblestone',
+  [TEXTURE_TYPES.MOSSY_COBBLESTONE]: 'Mossy Cobblestone',
   [TEXTURE_TYPES.OAK_PLANKS]: 'Oak Planks',
   [TEXTURE_TYPES.GLASS]: 'Glass Window'
 };
@@ -83,6 +85,30 @@ const COBBLESTONE_ROWS = [
   '1511050101154250'
 ];
 
+// Official Minecraft Java 1.14+ Mossy Cobblestone 16x16 palette and raster map
+const MOSSY_COBBLESTONE_PALETTE = [
+  '#627941', '#525d39', '#a6a6a6', '#5a6d41', '#7a8f55', '#738552',
+  '#616161', '#888788', '#b5b5b5', '#6e6d6d', '#525252'
+];
+const MOSSY_COBBLESTONE_ROWS = [
+  '0122311345067825',
+  '1287713450716797',
+  '6272915003911179',
+  '6679317379105011',
+  'a961176366755503',
+  '81457296a7207037',
+  '2710277931177912',
+  '7711179155019767',
+  '91145010705036a9',
+  '1353009977301301',
+  '7900311119931052',
+  '7113130451617227',
+  '1345914505967797',
+  '0407715097791179',
+  '7579791977961701',
+  '1766931116678270'
+];
+
 const OAK_PLANKS_PALETTE = ['#b8945f', '#af8f55', '#c29d62', '#967441', '#9f844d', '#7e6237', '#67502c'];
 const OAK_PLANKS_ROWS = [
   '0102222202222203',
@@ -132,7 +158,7 @@ function createTextureCanvas(palette, rows) {
   for (let y = 0; y < 16; y++) {
     const row = rows[y];
     for (let x = 0; x < 16; x++) {
-      const colorIndex = parseInt(row[x], 10);
+      const colorIndex = parseInt(row[x], 16);
       ctx.fillStyle = palette[colorIndex];
       ctx.fillRect(x, y, 1, 1);
     }
@@ -145,6 +171,7 @@ export class TextureLibrary {
     this.canvases = {
       [TEXTURE_TYPES.OAK_LOG]: createTextureCanvas(OAK_LOG_PALETTE, OAK_LOG_ROWS),
       [TEXTURE_TYPES.COBBLESTONE]: createTextureCanvas(COBBLESTONE_PALETTE, COBBLESTONE_ROWS),
+      [TEXTURE_TYPES.MOSSY_COBBLESTONE]: createTextureCanvas(MOSSY_COBBLESTONE_PALETTE, MOSSY_COBBLESTONE_ROWS),
       [TEXTURE_TYPES.OAK_PLANKS]: createTextureCanvas(OAK_PLANKS_PALETTE, OAK_PLANKS_ROWS),
       [TEXTURE_TYPES.GLASS]: createTextureCanvas(GLASS_PALETTE, GLASS_ROWS)
     };

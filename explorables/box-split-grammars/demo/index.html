@@ -387,7 +387,7 @@
         <span class="control-label">Split Sizing</span>
         <div class="btn-group">
           <button id="sizing-fixed" class="btn-tab active" title="Use exact block counts">Exact</button>
-          <button id="sizing-relative" class="btn-tab" title="Use -1 for remaining blocks">-1 Auto</button>
+          <button id="sizing-relative" class="btn-tab" title="Use -1 for remaining blocks">Relative</button>
         </div>
       </div>
 
@@ -404,7 +404,7 @@
         <!-- Rendered code lines populate here -->
       </div>
       <div class="code-footer">
-        <span id="code-hint">Hover code to highlight region</span>
+        <span id="code-hint">Hover over code to highlight boxes</span>
         <span id="copy-status"></span>
       </div>
     </div>
@@ -596,7 +596,7 @@
       });
     });
 
-    // Split Sizing Toggle (Exact vs -1 Auto)
+    // Split Sizing Toggle (Exact vs Relative)
     const sizingFixed = document.getElementById('sizing-fixed');
     const sizingRelative = document.getElementById('sizing-relative');
     const codeHint = document.getElementById('code-hint');
@@ -605,7 +605,7 @@
       useRelativeSizing = false;
       sizingFixed.classList.add('active');
       sizingRelative.classList.remove('active');
-      codeHint.textContent = 'Hover code to highlight region';
+      codeHint.textContent = 'Hover over code to highlight boxes';
       updateCodePanel();
     });
 
@@ -613,7 +613,7 @@
       useRelativeSizing = true;
       sizingRelative.classList.add('active');
       sizingFixed.classList.remove('active');
-      codeHint.textContent = '-1 absorbs remaining blocks · Hover to inspect';
+      codeHint.textContent = 'Hover over code to highlight boxes';
       updateCodePanel();
     });
 
