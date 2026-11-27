@@ -14,99 +14,54 @@
   <aside class="notes">Introduce the paper cleanly: Markus Eger (FDG 2022) embeds procedural box-splitting rules directly in standard Python functions so architectural generation fits naturally into Minecraft and game engines.</aside>
 </section>
 
-<section class="slide s-intro-hook" id="intro" data-part="The idea">
-  <p class="kicker">Key Terms</p>
-  <h2>What is a Box-Split Grammar?</h2>
-
-  <div class="intro-grid">
-    <div class="def-stack">
-      <div class="terms-block">
-        <ul class="points terms-list">
-          <li><strong>Box-Split Grammar:</strong> A system that slices one big box into smaller pieces.</li>
-          <li><strong>Grammar:</strong> A set of rules that breaks one big box into smaller pieces step by step. You can think about it like grammar in English that breaks a sentence into phrases and words.</li>
-          <li><strong>Nonterminal:</strong> A rule that expands further instead of placing blocks. For example, one side of a castle splits into <code>tower()</code>, <code>wall()</code>, <code>gate()</code>, <code>wall()</code>, and <code>tower()</code>.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="wall-example" aria-label="Example: splitting one side of a castle into towers, walls, and a gate">
-      <div class="ex-head">
-        <span>Castle Side Example:</span>
-        <span class="ex-pill">with split(Dimension.X, [5, -1, 3, -1, 5])</span>
-      </div>
-      <svg viewBox="0 0 560 238" width="560" height="238" role="img" aria-label="One side of a castle split horizontally into tower, wall, gate, wall, and tower">
-        <rect x="12" y="16" width="536" height="206" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
-
-        <!-- Left Tower (5) -->
-        <g>
-          <rect x="24" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="58" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="92" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="22" y="54" width="92" height="156" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="2.5"/>
-          <rect x="60" y="84" width="16" height="32" rx="3" fill="#1e293b"/>
-          <text x="68" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700">tower()</text>
-        </g>
-
-        <!-- Left Wall (-1) -->
-        <g>
-          <rect x="126" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
-          <rect x="159" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
-          <rect x="192" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
-          <rect x="124" y="108" width="88" height="102" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="2.5"/>
-          <rect x="144" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
-          <rect x="178" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
-          <text x="168" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="17" font-weight="700">wall()</text>
-        </g>
-
-        <!-- Center Gate (3) -->
-        <g>
-          <rect x="224" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="255" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="287" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="318" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="222" y="58" width="116" height="152" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="2.5"/>
-          <!-- Arched gate opening -->
-          <path d="M252,210 V144 A28,28 0 0,1 308,144 V210 Z" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
-          <line x1="266" y1="124" x2="266" y2="210" stroke="#475569" stroke-width="2"/>
-          <line x1="280" y1="117" x2="280" y2="210" stroke="#475569" stroke-width="2"/>
-          <line x1="294" y1="124" x2="294" y2="210" stroke="#475569" stroke-width="2"/>
-          <rect x="240" y="72" width="80" height="30" rx="6" fill="#eff6ff" stroke="#3d63bf" stroke-width="2"/>
-          <text x="280" y="93" text-anchor="middle" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700">gate()</text>
-        </g>
-
-        <!-- Right Wall (-1) -->
-        <g>
-          <rect x="350" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
-          <rect x="383" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
-          <rect x="416" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
-          <rect x="348" y="108" width="88" height="102" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="2.5"/>
-          <rect x="368" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
-          <rect x="402" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
-          <text x="392" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="17" font-weight="700">wall()</text>
-        </g>
-
-        <!-- Right Tower (5) -->
-        <g>
-          <rect x="448" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="482" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="516" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
-          <rect x="446" y="54" width="92" height="156" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="2.5"/>
-          <rect x="484" y="84" width="16" height="32" rx="3" fill="#1e293b"/>
-          <text x="492" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700">tower()</text>
-        </g>
-
-        <!-- Cut dashed guides -->
-        <line x1="119" y1="22" x2="119" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
-        <line x1="217" y1="22" x2="217" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
-        <line x1="343" y1="22" x2="343" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
-        <line x1="441" y1="22" x2="441" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
-      </svg>
+<section class="slide s-intro-stage" id="intro" data-part="The idea">
+  <h2 class="sr-only">What is a Box-Split Grammar</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/intro.html?step=0" width="1600" height="900" scrolling="no" title="Title and 3D paper preview for What is a Box-Split Grammar"></iframe>
     </div>
   </div>
+  <aside class="notes">Introduce the question "What is a Box-Split Grammar" over a 3D perspective preview of Markus Eger's paper before walking through each term interactively.</aside>
+</section>
 
-  <p class="band intro-note">Python lets coders use loops, conditions, and other tools to assist them in building.</p>
+<section class="slide s-intro-stage" id="intro-grammar" data-part="The idea">
+  <h2 class="sr-only">What is a Box-Split Grammar · Grammar</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/intro.html?step=1" width="1600" height="900" scrolling="no" title="Interactive hover definition of Grammar"></iframe>
+    </div>
+  </div>
+  <aside class="notes">First hover over "Grammar" in the title: a grammar is a set of rules that breaks one big box into smaller pieces step by step, just like English grammar breaks a sentence into phrases and words.</aside>
+</section>
 
-  <aside class="notes">Define Box-Split Grammar, grammar, and nonterminal in plain language, paired with the castle-side split example (tower, wall, gate, wall, tower), before jumping straight into the interactive cutting demo.</aside>
+<section class="slide s-intro-stage" id="intro-box-split" data-part="The idea">
+  <h2 class="sr-only">What is a Box-Split Grammar · Box-Split</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/intro.html?step=2" width="1600" height="900" scrolling="no" title="Interactive definition of Box-Split Grammar"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Dock the Grammar definition at the top bullet, then hover "Box-Split" to highlight "Box-Split Grammar": Dr. Eger's nonterminal system that slices one big box into smaller pieces.</aside>
+</section>
+
+<section class="slide s-intro-stage" id="intro-nonterminal" data-part="The idea">
+  <h2 class="sr-only">What is a Box-Split Grammar · Nonterminal</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/intro.html?step=3" width="1600" height="900" scrolling="no" title="Interactive definition of Nonterminal"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Dock Box-Split Grammar into the bullet list, then hover "nonterminal" inside it to unpack what a nonterminal rule does—expanding further into sub-rules like tower(), wall(), and gate().</aside>
+</section>
+
+<section class="slide s-intro-stage" id="intro-complete" data-part="The idea">
+  <h2 class="sr-only">What is a Box-Split Grammar · Overview</h2>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/intro.html?step=4" width="1600" height="900" scrolling="no" title="Complete interactive assembly of definitions, castle side example, and Python snippet"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Assemble the complete reference view: dock Nonterminal, type out how Python assists builders, sketch the Castle Side Example, and drag Python into the split rule before trying the interactive cutting demo.</aside>
 </section>
 
 <section class="slide chapter" id="interactive-demo" data-part="Try it first">

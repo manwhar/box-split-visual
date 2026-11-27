@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2D Minecraft Mockup Studio</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top Toolbar -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-badge" aria-hidden="true">MC</span>
+        <div class="brand-text">
+          <h1>2D Minecraft Mockup Studio</h1>
+          <span class="brand-sub">Foreground / Background Layer Renderer</span>
+        </div>
+      </div>
+
+      <div class="topbar-group grid-config" aria-label="Grid dimensions">
+        <label class="field-inline">
+          <span>W</span>
+          <input type="number" id="grid-cols" min="1" max="64" value="12" title="Grid width in blocks">
+        </label>
+        <span class="dim-x">×</span>
+        <label class="field-inline">
+          <span>H</span>
+          <input type="number" id="grid-rows" min="1" max="64" value="10" title="Grid height in blocks">
+        </label>
+        <select id="resize-anchor" title="Anchor when resizing grid">
+          <option value="bottom-left" selected>Anchor: Bottom-Left</option>
+          <option value="top-left">Anchor: Top-Left</option>
+          <option value="center">Anchor: Center</option>
+        </select>
+        <button type="button" id="btn-apply-size" class="btn btn-secondary">Apply Size</button>
+      </div>
+
+      <div class="topbar-group history-actions">
+        <button type="button" id="btn-undo" class="btn btn-ghost" title="Undo (Ctrl+Z)">Undo</button>
+        <button type="button" id="btn-redo" class="btn btn-ghost" title="Redo (Ctrl+Y)">Redo</button>
+        <button type="button" id="btn-clear" class="btn btn-ghost btn-danger-hover" title="Clear canvas">Clear</button>
+        <span class="divider"></span>
+        <button type="button" id="btn-open-load" class="btn btn-secondary" title="Load mockup from assets folder">Load Saved</button>
+        <button type="button" id="btn-load-file" class="btn btn-ghost" title="Open a .json project file from disk">Open JSON</button>
+        <input type="file" id="file-import-input" accept=".json,application/json" hidden>
+      </div>
+
+      <div class="topbar-group export-actions">
+        <input type="text" id="export-name" value="mockup_1" maxlength="80" placeholder="mockup_name" aria-label="Export file name">
+        <button type="button" id="btn-export" class="btn btn-primary" title="Export transparent PNG + JSON to demo/assets (Ctrl+S)">Export to Assets</button>
+      </div>
+    </header>
+
+    <!-- Main 3-Pane Studio -->
+    <main class="workspace">
+      <!-- Left Sidebar: Layer Mode, Tools & Textures -->
+      <aside class="panel panel-left">
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Layer Mode</h2>
+            <span class="kbd-hint">1 / 2</span>
+          </div>
+          <div class="mode-switch" role="group" aria-label="Layer mode">
+            <button type="button" id="mode-fg" class="mode-btn is-fg active" data-mode="fg">
+              <span class="mode-dot fg"></span>
+              <span>Foreground</span>
+            </button>
+            <button type="button" id="mode-bg" class="mode-btn is-bg" data-mode="bg">
+              <span class="mode-dot bg"></span>
+              <span>Background</span>
+            </button>
+          </div>
+          <p id="mode-help" class="help-text">Normal brightness blocks that cast shadows onto nearby background blocks.</p>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Tools</h2>
+            <span class="kbd-hint">Right-click = Erase</span>
+          </div>
+          <div class="tool-grid">
+            <button type="button" id="tool-paint" class="tool-btn active" data-tool="paint" title="Paint / Drag (B)">Paint <span>B</span></button>
+            <button type="button" id="tool-fill" class="tool-btn" data-tool="fill" title="Flood Fill (G)">Fill <span>G</span></button>
+            <button type="button" id="tool-erase" class="tool-btn" data-tool="erase" title="Erase (E)">Erase <span>E</span></button>
+            <button type="button" id="tool-eyedropper" class="tool-btn" data-tool="eyedropper" title="Pick Block (I or Alt+Click)">Pick <span>I</span></button>
+          </div>
+
+          <div class="modifier-row">
+            <button type="button" id="btn-flip-x" class="toggle-chip" title="Flip texture horizontally (F)">
+              <span>Flip H</span>
+              <span class="chip-kbd">F</span>
+            </button>
+          </div>
+
+          <div id="torch-orientation-group" class="sub-control" hidden>
+            <div class="sub-label">Torch Placement</div>
+            <div class="segmented" role="group" aria-label="Torch orientation">
+              <button type="button" class="seg-btn active" data-variant="upright">Upright</button>
+              <button type="button" class="seg-btn" data-variant="wall-left">Wall L</button>
+              <button type="button" class="seg-btn" data-variant="wall-right">Wall R</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-section textures-section">
+          <div class="section-head">
+            <h2>Textures</h2>
+            <button type="button" id="btn-refresh-textures" class="icon-btn" title="Rescan demo/assets for new textures">↻</button>
+          </div>
+          <div id="texture-grid" class="texture-grid" role="listbox" aria-label="Minecraft textures">
+            <!-- Populated dynamically from /api/textures -->
+          </div>
+        </section>
+      </aside>
+
+      <!-- Center Viewport: Interactive Grid Canvas -->
+      <section class="canvas-stage">
+        <div class="canvas-toolbar">
+          <div class="toolbar-cluster">
+            <button type="button" id="btn-zoom-out" class="btn btn-xs" title="Zoom Out">-</button>
+            <span id="zoom-label" class="zoom-label">48 px</span>
+            <button type="button" id="btn-zoom-in" class="btn btn-xs" title="Zoom In">+</button>
+            <button type="button" id="btn-zoom-fit" class="btn btn-xs" title="Fit grid to viewport">Fit</button>
+          </div>
+
+          <div class="toolbar-cluster">
+            <button type="button" id="btn-toggle-grid" class="btn btn-xs is-active" title="Toggle grid lines (H)">Grid</button>
+            <select id="backdrop-select" aria-label="Editor backdrop" title="Editor transparency backdrop">
+              <option value="checker-light" selected>Checker (Light)</option>
+              <option value="checker-dark">Checker (Dark)</option>
+              <option value="white">White</option>
+              <option value="slate">Slate</option>
+            </select>
+          </div>
+
+          <div id="cursor-status" class="cursor-status">Ready</div>
+        </div>
+
+        <div id="canvas-viewport" class="canvas-viewport">
+          <div class="canvas-frame">
+            <canvas id="editor-canvas"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Sidebar: Render Look, Export Preview & Options -->
+      <aside class="panel panel-right">
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Transparent Preview</h2>
+            <span id="export-dims-label" class="dim-badge">768×640 px</span>
+          </div>
+          <div class="mini-preview-wrap">
+            <canvas id="preview-canvas"></canvas>
+          </div>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Depth &amp; Shadows</h2>
+          </div>
+
+          <label class="slider-field">
+            <div class="slider-top">
+              <span>Background Brightness</span>
+              <span id="val-bg-brightness" class="slider-val">62%</span>
+            </div>
+            <input type="range" id="setting-bg-brightness" min="15" max="100" step="1" value="62">
+          </label>
+
+          <label class="slider-field">
+            <div class="slider-top">
+              <span>Border Shadow Strength</span>
+              <span id="val-shadow-strength" class="slider-val">72%</span>
+            </div>
+            <input type="range" id="setting-shadow-strength" min="0" max="100" step="1" value="72">
+          </label>
+
+          <label class="slider-field">
+            <div class="slider-top">
+              <span>Border Shadow Spread</span>
+              <span id="val-shadow-spread" class="slider-val">100%</span>
+            </div>
+            <input type="range" id="setting-shadow-spread" min="30" max="200" step="5" value="100">
+          </label>
+
+          <label class="check-field">
+            <input type="checkbox" id="setting-auto-walls" checked>
+            <span>Auto-connect Cobblestone Walls</span>
+          </label>
+        </section>
+
+        <section class="panel-section">
+          <div class="section-head">
+            <h2>Export Settings</h2>
+          </div>
+
+          <label class="stack-field">
+            <span>Scale (Pixels per Block)</span>
+            <select id="setting-export-scale">
+              <option value="16">16 px (1:1 texel)</option>
+              <option value="32">32 px (2×)</option>
+              <option value="48">48 px (3×)</option>
+              <option value="64" selected>64 px (4× crisp)</option>
+              <option value="128">128 px (8×)</option>
+            </select>
+          </label>
+
+          <label class="check-field">
+            <input type="checkbox" id="setting-trim-empty">
+            <span>Trim empty outer rows &amp; columns</span>
+          </label>
+
+          <p class="help-text">Exports both <code>&lt;name&gt;.png</code> (transparent) and <code>&lt;name&gt;.json</code> into <code>demo/assets/</code>.</p>
+        </section>
+
+        <section class="panel-section tips-section">
+          <div class="section-head">
+            <h2>Shortcuts</h2>
+          </div>
+          <ul class="tips-list">
+            <li><strong>Click / Drag</strong>: Paint active layer</li>
+            <li><strong>Right-click</strong>: Erase (<strong>Shift+Right</strong> wipes cell)</li>
+            <li><strong>Alt+Click</strong>: Eyedropper</li>
+            <li><strong>1 / 2</strong>: Foreground / Background</li>
+            <li><strong>Ctrl+Z / Y</strong>: Undo / Redo · <strong>Ctrl+S</strong>: Export</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <!-- Load Saved Mockup Modal -->
+  <div id="load-modal" class="modal-backdrop" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="load-modal-title">
+      <div class="modal-header">
+        <h2 id="load-modal-title">Load Saved Mockup from Assets</h2>
+        <button type="button" id="btn-close-load" class="icon-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div id="projects-list" class="projects-list">
+        <!-- Populated dynamically from /api/projects -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Banner -->
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="/static/app.js"></script>
+</body>
+</html>

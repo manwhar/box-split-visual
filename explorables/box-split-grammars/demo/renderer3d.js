@@ -11,7 +11,7 @@ import { TEXTURE_TYPES, TextureLibrary } from './textures.js';
 
 const DEFAULT_YAW = 0.72;
 const DEFAULT_PITCH = 0.46;
-const DEFAULT_DIST = 13.2;
+const DEFAULT_DIST = 16.8;
 const FOV_DEG = 38;
 
 const AXIS_COLORS = {
@@ -274,7 +274,7 @@ export class BoxRenderer3D {
   }
 
   zoom(delta) {
-    this.distance = Math.max(8, Math.min(22, this.distance + delta));
+    this.distance = Math.max(8, Math.min(26, this.distance + delta));
     this.renderCurrent();
   }
 
