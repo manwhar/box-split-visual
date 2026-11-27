@@ -160,8 +160,7 @@
   display: grid;
   grid-template-columns: 710px 1fr;
   gap: 24px;
-  align-items: stretch;
-  flex: 1;
+  align-items: start;
 }
 
 .code-card {
@@ -187,12 +186,10 @@
 }
 
 .code-steps {
-  padding: 12px 14px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  flex: 1;
-  justify-content: center;
+  gap: 12px;
 }
 
 .code-step {
@@ -239,8 +236,7 @@
 .explain-stack {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  justify-content: space-between;
+  gap: 16px;
 }
 
 .explain-card {
