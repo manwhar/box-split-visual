@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "harness": "antigravity",
+  "session": "84fe7545-0771-4072-8b0f-58be2e76cb50",
+  "source": {
+    "app_data_dir": "C:\\Users\\USER\\.gemini\\antigravity"
+  },
+  "pending": [],
+  "baseline": {
+    "turnId": "step-412",
+    "itemId": "planner_response-412-1",
+    "digest": "24da9203fe55e84a4319f571e958f8487e54b5bcb9012c18a44f1ab93a1fe96a"
+  },
+  "lastHook": {
+    "event": "Stop",
+    "at": "2026-11-27T05:17:26.180435+00:00",
+    "status": "checkpoint"
+  }
+}

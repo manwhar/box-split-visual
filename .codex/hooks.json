@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness codex --event UserPromptSubmit --owner explorable-transcripts-v1",
+            "command": "powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand JgAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEEAcABwAEQAYQB0AGEAXABMAG8AYwBhAGwAXABQAHkAdABoAG8AbgBcAHAAeQB0AGgAbwBuAGMAbwByAGUALQAzAC4AMQA0AC0ANgA0AFwAcAB5AHQAaABvAG4ALgBlAHgAZQAnACAAJwAtAEIAJwAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEQAZQBzAGsAdABvAHAAXABNAGEAaQBuAFwAYwBsAGEAcwBzAFwAUwBsAG8AdABoACAATABhAGIAXABiAG8AeAAtAHMAcABsAGkAdAAtAHYAaQBzAHUAYQBsAFwAZQB4AHAAbABvAHIAYQBiAGwAZQBzAFwAdABvAG8AbABzAFwAdAByAGEAbgBzAGMAcgBpAHAAdABfAGgAbwBvAGsAcwAuAHAAeQAnACAAJwAtAC0AaABhAHIAbgBlAHMAcwAnACAAJwBjAG8AZABlAHgAJwAgACcALQAtAGUAdgBlAG4AdAAnACAAJwBVAHMAZQByAFAAcgBvAG0AcAB0AFMAdQBiAG0AaQB0ACcAIAAnAC0ALQBvAHcAbgBlAHIAJwAgACcAZQB4AHAAbABvAHIAYQBiAGwAZQAtAHQAcgBhAG4AcwBjAHIAaQBwAHQAcwAtAHYAMQAnADsAIABlAHgAaQB0ACAAJABMAEEAUwBUAEUAWABJAFQAQwBPAEQARQA=",
             "timeout": 90,
             "statusMessage": "Save authoring transcript before Codex replies"
           }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness codex --event Stop --owner explorable-transcripts-v1",
+            "command": "powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand JgAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEEAcABwAEQAYQB0AGEAXABMAG8AYwBhAGwAXABQAHkAdABoAG8AbgBcAHAAeQB0AGgAbwBuAGMAbwByAGUALQAzAC4AMQA0AC0ANgA0AFwAcAB5AHQAaABvAG4ALgBlAHgAZQAnACAAJwAtAEIAJwAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEQAZQBzAGsAdABvAHAAXABNAGEAaQBuAFwAYwBsAGEAcwBzAFwAUwBsAG8AdABoACAATABhAGIAXABiAG8AeAAtAHMAcABsAGkAdAAtAHYAaQBzAHUAYQBsAFwAZQB4AHAAbABvAHIAYQBiAGwAZQBzAFwAdABvAG8AbABzAFwAdAByAGEAbgBzAGMAcgBpAHAAdABfAGgAbwBvAGsAcwAuAHAAeQAnACAAJwAtAC0AaABhAHIAbgBlAHMAcwAnACAAJwBjAG8AZABlAHgAJwAgACcALQAtAGUAdgBlAG4AdAAnACAAJwBTAHQAbwBwACcAIAAnAC0ALQBvAHcAbgBlAHIAJwAgACcAZQB4AHAAbABvAHIAYQBiAGwAZQAtAHQAcgBhAG4AcwBjAHIAaQBwAHQAcwAtAHYAMQAnADsAIABlAHgAaQB0ACAAJABMAEEAUwBUAEUAWABJAFQAQwBPAEQARQA=",
             "timeout": 90,
             "statusMessage": "Save authoring transcript after Codex replies"
           }

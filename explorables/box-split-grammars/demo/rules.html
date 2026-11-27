@@ -1,0 +1,748 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Nunito:wght@400;600;700;800&family=Nunito+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap">
+  <style>
+    :root {
+      --f-cover: "Nunito", "Nunito Sans", system-ui, -apple-system, sans-serif;
+      --f-head: "Gill Sans", "Gill Sans MT", "Nunito Sans", system-ui, -apple-system, sans-serif;
+      --f-body: "Nunito Sans", system-ui, -apple-system, sans-serif;
+      --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 900px;
+      height: 460px;
+      overflow: hidden;
+      background: #f8fafc;
+      color: #1e293b;
+      font-family: var(--f-body);
+    }
+
+    .demo-container {
+      display: grid;
+      grid-template-columns: 304px 154px 1fr;
+      gap: 12px;
+      width: 900px;
+      height: 460px;
+      padding: 12px 14px;
+      align-items: center;
+    }
+
+    /* Column 1: Wall Elevation Canvas */
+    .canvas-wrap {
+      width: 304px;
+      height: 434px;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+      border: 1px solid #cbd5e1;
+      overflow: hidden;
+    }
+
+    .canvas-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 12px;
+      background: #f1f5f9;
+      border-bottom: 1px solid #e2e8f0;
+      font-family: var(--f-head);
+      font-size: 11px;
+      font-weight: 700;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .status-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0.02em;
+    }
+
+    .status-pill.wide {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-pill.narrow {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .canvas-stage {
+      flex: 1;
+      position: relative;
+      background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 78%, #e2e8f0 78%, #cbd5e1 100%);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .canvas-foot {
+      padding: 6px 12px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      font-size: 11px;
+      color: #475569;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Column 2: Controls */
+    .controls-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      height: 434px;
+      justify-content: center;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 9px 10px;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .control-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #64748b;
+      font-family: var(--f-head);
+    }
+
+    .control-val {
+      font-family: var(--f-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #1d4ed8;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #2563eb;
+      cursor: pointer;
+      margin: 2px 0 0;
+    }
+
+    .tick-note {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    .btn-group {
+      display: flex;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f1f5f9;
+      padding: 2px;
+      gap: 2px;
+    }
+
+    .btn-tab {
+      flex: 1;
+      padding: 6px 4px;
+      font-size: 11.5px;
+      font-weight: 600;
+      background: transparent;
+      color: #64748b;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: center;
+      font-family: var(--f-head);
+    }
+
+    .btn-tab:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .btn-tab.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-regen {
+      padding: 10px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border: 1px solid #1d4ed8;
+      border-radius: 9px;
+      background: #2563eb;
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: var(--f-head);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-regen:hover {
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-regen:active {
+      transform: translateY(0);
+    }
+
+    .btn-regen:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Column 3: Live Python Grammar Rules Panel */
+    .code-panel {
+      display: flex;
+      flex-direction: column;
+      height: 434px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+      min-width: 0;
+    }
+
+    .code-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      background: #f1f5f9;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .code-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #334155;
+      font-family: var(--f-head);
+    }
+
+    .code-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
+    }
+
+    .rule-card {
+      border: 1px solid #e2e8f0;
+      border-left: 3.5px solid #94a3b8;
+      border-radius: 6px;
+      padding: 4px 8px;
+      background: #f8fafc;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .rule-card.active {
+      border-color: #cbd5e1;
+      border-left-color: #16a34a;
+      background: #ffffff;
+    }
+
+    .rule-card.skipped {
+      opacity: 0.45;
+      background: #f8fafc;
+    }
+
+    .rule-card.hovered {
+      border-color: #38bdf8;
+      border-left-color: #0284c7;
+      background: #f0f9ff;
+      opacity: 1;
+    }
+
+    .rule-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+      font-family: var(--f-head);
+      font-size: 9.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge {
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-size: 9px;
+    }
+
+    .badge.fired {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge.skipped {
+      background: #e2e8f0;
+      color: #64748b;
+    }
+
+    .badge.variant {
+      background: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .rule-code {
+      font-family: var(--f-mono);
+      font-size: 10px;
+      line-height: 1.28;
+      white-space: pre;
+      color: #1e293b;
+      overflow-x: auto;
+    }
+
+    .kw { color: #be185d; font-weight: 600; }
+    .fn { color: #1d4ed8; font-weight: 600; }
+    .dim { color: #7c3aed; font-weight: 600; }
+    .num { color: #b45309; font-weight: 600; }
+    .neg { color: #be185d; background: rgba(190, 24, 93, 0.1); padding: 0 3px; border-radius: 3px; }
+    .const { color: #047857; font-weight: 600; }
+
+    .code-footer {
+      padding: 5px 12px;
+      background: #f1f5f9;
+      border-top: 1px solid #e2e8f0;
+      font-size: 10px;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="demo-container">
+
+    <!-- Left: Minecraft Wall Canvas -->
+    <div class="canvas-wrap">
+      <div class="canvas-head">
+        <span>Generated Wall (<span id="dim-badge">9 × 5</span>)</span>
+        <span id="constraint-pill" class="status-pill wide">Width ≥ 7: Full Facade</span>
+      </div>
+      <div class="canvas-stage">
+        <canvas id="wall-canvas"></canvas>
+      </div>
+      <div class="canvas-foot">
+        <span id="bay-summary">1 bay · Hover a rule to highlight</span>
+      </div>
+    </div>
+
+    <!-- Middle: Controls -->
+    <div class="controls-wrap">
+      <div class="control-group">
+        <div class="label-row">
+          <span class="control-label">Wall Width (X)</span>
+          <span class="control-val" id="width-val">9 blocks</span>
+        </div>
+        <input type="range" id="slider-width" min="5" max="13" step="1" value="9">
+        <div class="tick-note"><span>5 (narrow)</span><span>7 (rule gate)</span><span>13</span></div>
+      </div>
+
+      <div class="control-group">
+        <div class="label-row">
+          <span class="control-label">Wall Height (Y)</span>
+          <span class="control-val" id="height-val">5 blocks</span>
+        </div>
+        <input type="range" id="slider-height" min="4" max="7" step="1" value="5">
+        <div class="tick-note"><span>4</span><span>-1 stretches center</span><span>7</span></div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">Center Loop</span>
+        <div class="btn-group">
+          <button id="loop-off" class="btn-tab active">1 Bay</button>
+          <button id="loop-on" class="btn-tab">Repeat [3]</button>
+        </div>
+      </div>
+
+      <button id="btn-regenerate" class="btn-regen">
+        <span>&#8635;</span>
+        <span>Regenerate Variants</span>
+      </button>
+    </div>
+
+    <!-- Right: Live Rule Dispatch Panel -->
+    <div class="code-panel">
+      <div class="code-header">
+        <span class="code-title">Python Grammar Rules</span>
+        <span style="font-size: 10.5px; color: #64748b;" id="seed-label">Seed #42</span>
+      </div>
+      <div class="code-body" id="rules-list"></div>
+      <div class="code-footer">
+        <span>Hover a rule card to highlight its blocks</span>
+      </div>
+    </div>
+
+  </div>
+
+  <script type="module">
+    import { TextureLibrary } from './textures.js';
+    import { evaluateWallGrammar } from './rules_engine.js';
+
+    const canvas = document.getElementById('wall-canvas');
+    const ctx = canvas.getContext('2d');
+    const textureLib = new TextureLibrary();
+
+    const state = {
+      width: 9,
+      height: 5,
+      repeatLoop: false,
+      seed: 45,
+      hoverRule: null,
+      detailScale: window.devicePixelRatio || 1,
+      isVisible: true
+    };
+
+    let lastResult = evaluateWallGrammar(state);
+
+    const sliderWidth = document.getElementById('slider-width');
+    const sliderHeight = document.getElementById('slider-height');
+    const widthVal = document.getElementById('width-val');
+    const heightVal = document.getElementById('height-val');
+    const dimBadge = document.getElementById('dim-badge');
+    const constraintPill = document.getElementById('constraint-pill');
+    const baySummary = document.getElementById('bay-summary');
+    const seedLabel = document.getElementById('seed-label');
+    const loopOff = document.getElementById('loop-off');
+    const loopOn = document.getElementById('loop-on');
+    const btnRegen = document.getElementById('btn-regenerate');
+    const rulesList = document.getElementById('rules-list');
+
+    function resize() {
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      if (!w || !h) return;
+      canvas.width = Math.round(w * state.detailScale);
+      canvas.height = Math.round(h * state.detailScale);
+      ctx.setTransform(state.detailScale, 0, 0, state.detailScale, 0, 0);
+    }
+
+    function matchesHover(cell, hoverRule) {
+      if (!hoverRule) return true;
+      if (hoverRule === 'wall_wide') {
+        return cell.ruleTag.startsWith('wall_wide') || cell.ruleTag.startsWith('bay_');
+      }
+      if (hoverRule === 'wall_narrow') {
+        return cell.ruleTag === 'wall_narrow';
+      }
+      if (hoverRule === 'center_rule') {
+        return cell.ruleTag.startsWith('bay_');
+      }
+      return cell.ruleTag === hoverRule;
+    }
+
+    function renderCanvas() {
+      if (!state.isVisible) return;
+      const cw = canvas.clientWidth;
+      const ch = canvas.clientHeight;
+      if (!cw || !ch) return;
+
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.imageSmoothingEnabled = false;
+
+      const padX = 24;
+      const padTop = 28;
+      const padBot = 36;
+      const maxCell = Math.floor(Math.min((cw - padX * 2) / 13, (ch - padTop - padBot) / 7));
+      const cellSize = Math.max(18, maxCell);
+      const totalW = state.width * cellSize;
+      const totalH = state.height * cellSize;
+      const ox = Math.round((cw - totalW) / 2);
+      const oy = Math.round(ch - padBot - totalH);
+
+      // Draw each placed box cell using 16x16 Minecraft textures
+      for (const cell of lastResult.cells) {
+        const tex = textureLib.getSideCanvas(cell.material) || textureLib.getCanvas(cell.material);
+        const isMatched = matchesHover(cell, state.hoverRule);
+        ctx.save();
+        if (!isMatched) ctx.globalAlpha = 0.25;
+
+        for (let dx = 0; dx < cell.w; dx++) {
+          for (let dy = 0; dy < cell.h; dy++) {
+            const gx = cell.x + dx;
+            // Flip y so y=0 is ground bottom
+            const gy = state.height - 1 - (cell.y + dy);
+            const px = ox + gx * cellSize;
+            const py = oy + gy * cellSize;
+            if (tex) {
+              ctx.drawImage(tex, px, py, cellSize, cellSize);
+            }
+          }
+        }
+
+        // Subtle scope outline when hovering a rule
+        if (state.hoverRule && isMatched) {
+          const rx = ox + cell.x * cellSize;
+          const ry = oy + (state.height - cell.y - cell.h) * cellSize;
+          ctx.strokeStyle = '#0284c7';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(rx + 1, ry + 1, cell.w * cellSize - 2, cell.h * cellSize - 2);
+        }
+        ctx.restore();
+      }
+
+      // Outer box border
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(ox, oy, totalW, totalH);
+
+      // Bottom dimension labels showing fixed 1 vs -1 stretch
+      ctx.fillStyle = '#334155';
+      ctx.font = '600 11px "JetBrains Mono", monospace';
+      ctx.textAlign = 'center';
+      if (lastResult.wideActive) {
+        const innerW = state.width - 2;
+        ctx.fillText('1', ox + cellSize * 0.5, oy + totalH + 15);
+        ctx.fillStyle = '#be185d';
+        ctx.fillText(`-1 (${innerW})`, ox + cellSize + (innerW * cellSize) / 2, oy + totalH + 15);
+        ctx.fillStyle = '#334155';
+        ctx.fillText('1', ox + totalW - cellSize * 0.5, oy + totalH + 15);
+      } else {
+        ctx.fillText(`Width = ${state.width} (< 7 fallback)`, ox + totalW / 2, oy + totalH + 15);
+      }
+    }
+
+    function buildRuleCards() {
+      const fired = lastResult.firedRules;
+      const cards = [
+        {
+          id: 'wall_wide',
+          label: '1. Constraint Gate (X & Y)',
+          active: fired.has('wall_wide'),
+          badge: fired.has('wall_wide') ? 'ACTIVE' : 'SKIPPED',
+          badgeCls: fired.has('wall_wide') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(constraint=<span class="dim">Dimension.X</span> &gt;= <span class="num">7</span>)
+<span class="kw">def</span> <span class="fn">wall</span>():
+  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]):
+    <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)
+    <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.Y</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]):
+      <span class="fn">fill</span>(<span class="const">COBBLESTONE</span>); <span class="fn">center</span>(); <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)
+    <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)`
+        },
+        {
+          id: 'wall_narrow',
+          label: 'Fallback Rule',
+          active: fired.has('wall_narrow'),
+          badge: fired.has('wall_narrow') ? 'ACTIVE' : 'SKIPPED',
+          badgeCls: fired.has('wall_narrow') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(constraint=<span class="const">Constraint.ELSE</span>)
+<span class="kw">def</span> <span class="fn">wall</span>():
+  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]): <span class="fn">fill</span>(<span class="const">OAK_LOG</span>); <span class="fn">fill</span>(<span class="const">COBBLESTONE</span>); <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)`
+        },
+        {
+          id: 'center_rule',
+          label: '2. Interior Loop',
+          active: fired.has('center_loop') || fired.has('center_single'),
+          badge: state.repeatLoop ? 'REPEAT=TRUE' : 'SINGLE BAY',
+          badgeCls: state.repeatLoop ? 'fired' : 'variant',
+          html: state.repeatLoop
+            ? `<span class="kw">@rule</span>
+<span class="kw">def</span> <span class="fn">center</span>():
+  pieces = <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">3</span>], repeat=<span class="kw">True</span>)
+  <span class="kw">while</span> pieces: <span class="fn">bay</span>()`
+            : `<span class="kw">@rule</span>
+<span class="kw">def</span> <span class="fn">center</span>():
+  <span class="fn">bay</span>()`
+        },
+        {
+          id: 'bay_window',
+          label: '3a. Random Variant A',
+          active: fired.has('bay_window'),
+          badge: fired.has('bay_window') ? 'PICKED' : (lastResult.wideActive ? 'NOT PICKED' : 'SKIPPED'),
+          badgeCls: fired.has('bay_window') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(probability=<span class="num">0.5</span>, constraint=<span class="dim">Dimension.X</span> &gt;= <span class="num">3</span>)
+<span class="kw">def</span> <span class="fn">bay</span>():
+  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]): <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>); <span class="fn">fill</span>(<span class="const">GLASS</span>); <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>)`
+        },
+        {
+          id: 'bay_timber',
+          label: '3b. Random Variant B',
+          active: fired.has('bay_timber'),
+          badge: fired.has('bay_timber') ? 'PICKED' : (lastResult.wideActive ? 'NOT PICKED' : 'SKIPPED'),
+          badgeCls: fired.has('bay_timber') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(probability=<span class="num">0.5</span>, constraint=<span class="dim">Dimension.X</span> &gt;= <span class="num">3</span>)
+<span class="kw">def</span> <span class="fn">bay</span>():
+  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num neg">-1</span>, <span class="num">1</span>, <span class="num neg">-1</span>]): <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>); <span class="fn">fill</span>(<span class="const">OAK_LOG</span>); <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>)`
+        },
+        {
+          id: 'bay_narrow',
+          label: '3c. Remainder Filler',
+          active: fired.has('bay_narrow'),
+          badge: fired.has('bay_narrow') ? 'PICKED' : 'NOT NEEDED',
+          badgeCls: fired.has('bay_narrow') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(constraint=<span class="const">Constraint.ELSE</span>)
+<span class="kw">def</span> <span class="fn">bay</span>(): <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>)`
+        }
+      ];
+
+      rulesList.innerHTML = '';
+      for (const c of cards) {
+        const el = document.createElement('div');
+        el.className = `rule-card ${c.active ? 'active' : 'skipped'}`;
+        el.innerHTML = `
+          <div class="rule-meta">
+            <span>${c.label}</span>
+            <span class="badge ${c.badgeCls}">${c.badge}</span>
+          </div>
+          <div class="rule-code">${c.html}</div>
+        `;
+        el.addEventListener('mouseenter', () => {
+          state.hoverRule = c.id;
+          el.classList.add('hovered');
+          renderCanvas();
+        });
+        el.addEventListener('mouseleave', () => {
+          state.hoverRule = null;
+          el.classList.remove('hovered');
+          renderCanvas();
+        });
+        rulesList.appendChild(el);
+      }
+    }
+
+    function update() {
+      lastResult = evaluateWallGrammar(state);
+      widthVal.textContent = `${state.width} blocks`;
+      heightVal.textContent = `${state.height} blocks`;
+      dimBadge.textContent = `${state.width} × ${state.height}`;
+      seedLabel.textContent = `Seed #${state.seed}`;
+
+      if (lastResult.wideActive) {
+        constraintPill.textContent = 'Width ≥ 7: Full Facade';
+        constraintPill.className = 'status-pill wide';
+        btnRegen.disabled = false;
+        const winCount = lastResult.bayResults.filter(b => b.variant === 'window').length;
+        const timCount = lastResult.bayResults.filter(b => b.variant === 'timber').length;
+        const remCount = lastResult.bayResults.filter(b => b.variant === 'narrow').length;
+        const parts = [`${lastResult.bayResults.length} bay${lastResult.bayResults.length > 1 ? 's' : ''}`];
+        if (winCount) parts.push(`${winCount} window`);
+        if (timCount) parts.push(`${timCount} timber`);
+        if (remCount) parts.push(`${remCount} filler`);
+        baySummary.textContent = parts.join(' · ');
+      } else {
+        constraintPill.textContent = 'Width < 7: Else Fallback';
+        constraintPill.className = 'status-pill narrow';
+        btnRegen.disabled = true;
+        baySummary.textContent = 'Constraint.ELSE fired (no bays)';
+      }
+
+      buildRuleCards();
+      renderCanvas();
+    }
+
+    sliderWidth.addEventListener('input', () => {
+      state.width = Number(sliderWidth.value);
+      update();
+    });
+
+    sliderHeight.addEventListener('input', () => {
+      state.height = Number(sliderHeight.value);
+      update();
+    });
+
+    loopOff.addEventListener('click', () => {
+      state.repeatLoop = false;
+      loopOff.classList.add('active');
+      loopOn.classList.remove('active');
+      update();
+    });
+
+    loopOn.addEventListener('click', () => {
+      state.repeatLoop = true;
+      loopOn.classList.add('active');
+      loopOff.classList.remove('active');
+      update();
+    });
+
+    btnRegen.addEventListener('click', () => {
+      const prevVariants = lastResult.bayResults.map((b) => b.variant).join(',');
+      for (let i = 0; i < 16; i++) {
+        state.seed += 1;
+        const candidate = evaluateWallGrammar(state);
+        const nextVariants = candidate.bayResults.map((b) => b.variant).join(',');
+        if (nextVariants !== prevVariants) break;
+      }
+      update();
+    });
+
+    window.addEventListener('resize', () => {
+      resize();
+      renderCanvas();
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.data?.type === 'deck:visibility') {
+        state.isVisible = Boolean(event.data.visible);
+        if (state.isVisible) renderCanvas();
+      }
+      if (event.data?.type === 'deck:resolution') {
+        state.detailScale = event.data.detail || window.devicePixelRatio || 1;
+        resize();
+        renderCanvas();
+      }
+    });
+
+    resize();
+    update();
+  </script>
+</body>
+
+</html>

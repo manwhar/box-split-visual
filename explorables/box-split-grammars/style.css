@@ -53,172 +53,413 @@
   }
 }
 
-/* Global slide stage accents */
-.stage {
-  --minecraft-green: #2e7d32;
-  --minecraft-stone: #546e7a;
-  --minecraft-gold: #c79a24;
-}
-
-/* Slide 1: Paper Intro */
+/* Slide 1: Paper Title Intro (matching s-paper-intro look) */
 .slide.s-paper-intro {
   background: #ffffff;
+  justify-content: center;
 }
 
 .slide.s-paper-intro .kicker {
   font-family: var(--f-head);
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 26px;
+  font-style: italic;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .slide.s-paper-intro h2 {
-  font-size: 68px;
+  font-size: 52px;
   line-height: 1.15;
   color: var(--ink);
-  font-weight: 800;
-  max-width: 1350px;
+  font-weight: 500;
+  max-width: 1420px;
 }
 
 .slide.s-paper-intro .sub {
-  font-size: 32px;
-  color: var(--ink-2);
-  margin-top: 16px;
-  padding-bottom: 24px;
-  border-bottom: 2px solid var(--line);
-  max-width: 1200px;
+  font-size: 28px;
+  color: var(--ink-3);
+  margin-top: 12px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+  max-width: 1220px;
 }
 
 .slide.s-paper-intro .points {
-  margin-top: 36px;
-  font-size: 36px;
+  margin-top: 34px;
+  font-size: 34px;
   line-height: 1.45;
-  color: var(--ink);
+  color: var(--ink-2);
+  max-width: 1320px;
 }
 
 .slide.s-paper-intro .points li {
   margin-bottom: 24px;
 }
 
-/* Slide 2: Big Ideas */
-.slide.s-big-ideas {
-  background: #ffffff;
-}
-
-.slide.s-big-ideas .kicker {
-  font-family: var(--f-head);
-  font-size: 28px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--blue-tone);
-  margin-bottom: 24px;
-}
-
-.slide.s-big-ideas .big-idea mark {
-  background: var(--marker);
-  padding: 0.05em 0.22em;
-  border-radius: 8px;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
-
-/* Slide 3: Core Building Blocks */
-#core-mechanisms {
+/* Slide 2: Plain-English Intro + Wall Example */
+.slide.s-intro-hook {
   justify-content: center;
 }
 
-#core-mechanisms .kicker {
-  font-family: var(--f-head);
-  font-size: 24px;
+.slide.s-intro-hook .kicker {
+  font-size: 25px;
+  font-style: normal;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  margin-bottom: 6px;
+  letter-spacing: 0.08em;
+  color: var(--blue-tone);
+  margin-bottom: 10px;
 }
 
-#core-mechanisms h2 {
-  font-size: 64px;
+.slide.s-intro-hook h2 {
+  font-size: 62px;
   font-weight: 800;
+  line-height: 1.12;
   color: var(--ink);
-  line-height: 1.15;
+  margin-bottom: 24px;
 }
 
-#core-mechanisms .lede {
+.slide.s-intro-hook .band.intro-note {
+  width: fit-content;
+  max-width: 100%;
+  margin: 28px 0 0;
+  padding: 16px 28px;
+  font-size: 28px;
+  line-height: 1.35;
+}
+
+.slide.s-intro-hook .lede {
   font-size: 30px;
-  color: var(--ink-2);
-  margin-top: 8px;
-  margin-bottom: 36px;
+  line-height: 1.35;
+  margin-top: 14px;
+  margin-bottom: 30px;
+  max-width: 1320px;
 }
 
-#core-mechanisms .grid-3 {
+.intro-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 28px;
+  grid-template-columns: 1fr 670px;
+  gap: 36px;
+  align-items: stretch;
 }
 
-#core-mechanisms .card {
-  padding: 34px 30px;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(30, 40, 60, 0.05);
-  border: 1px solid rgba(223, 229, 239, 0.7);
+.def-stack {
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
-#core-mechanisms .card .tag {
-  font-size: 24px;
-  letter-spacing: 0.08em;
-  font-weight: 700;
-  margin-bottom: 8px;
+.terms-block {
+  padding: 4px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-#core-mechanisms .card b {
-  font-size: 32px;
-  line-height: 1.22;
-  margin-bottom: 12px;
-}
-
-#core-mechanisms .card .text {
-  font-size: 24px;
-  line-height: 1.45;
+.points.terms-list {
+  margin: 0;
+  font-size: 27px;
+  line-height: 1.44;
   color: var(--ink-2);
 }
 
-#core-mechanisms .card pre {
-  margin-top: auto;
-  margin-bottom: 0;
-  padding: 12px 14px;
-  background: rgba(15, 23, 42, 0.06);
-  border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-}
-
-#core-mechanisms .card code {
-  font-family: var(--f-mono);
-  font-size: 24px;
-  color: var(--ink);
-  font-weight: 600;
-}
-
-/* Slide 4: Chapter / Interactive Demo Frame */
-.slide.chapter .ch-head {
-  grid-template-columns: minmax(0, 1fr);
+.points.terms-list li {
   margin-bottom: 22px;
 }
 
+.points.terms-list li:last-child {
+  margin-bottom: 0;
+}
+
+.points.terms-list strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.wall-example {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.wall-example svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ex-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  font-family: var(--f-head);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.ex-pill {
+  font-family: var(--f-mono);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--blue-tone);
+  white-space: nowrap;
+}
+
+/* Chapter / Interactive Demo Frame Slides */
+.slide.chapter .ch-head {
+  margin-bottom: 18px;
+}
+
+.slide.chapter .ch-head p {
+  font-size: 25px;
+  line-height: 1.35;
+}
+
 .slide.chapter .play-room {
+  margin-top: 12px;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(30, 40, 60, 0.1);
   border: 1px solid var(--line);
 }
 
-/* Slide 5: Discussion */
+/* Slide 3: Post-Demo Takeaway + Python Anatomy */
+.slide.s-takeaway {
+  justify-content: center;
+}
+
+.slide.s-takeaway .kicker {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blue-tone);
+  margin-bottom: 6px;
+}
+
+.slide.s-takeaway h2 {
+  font-size: 52px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.slide.s-takeaway .band {
+  margin-top: 14px;
+  margin-bottom: 18px;
+  padding: 16px 24px;
+  font-size: 26px;
+  line-height: 1.32;
+}
+
+.anatomy-grid {
+  display: grid;
+  grid-template-columns: 710px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.code-card {
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--f-mono);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.code-badge {
+  font-family: var(--f-head);
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 12px;
+  border-radius: 10px;
+  background: var(--blue-tint);
+  color: var(--blue-tone);
+}
+
+.code-steps {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  justify-content: center;
+}
+
+.code-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border-left: 6px solid var(--blue-tone);
+  background: rgba(61, 99, 191, 0.06);
+}
+
+.code-step code {
+  font-family: var(--f-mono);
+  font-size: 24px;
+  line-height: 1.45;
+  white-space: pre;
+  color: var(--ink);
+}
+
+.step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--blue-tone);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-num);
+  font-size: 24px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.hl-kw { color: #be185d; font-weight: 700; }
+.hl-fn { color: #1d4ed8; font-weight: 700; }
+.hl-dim { color: #7c3aed; font-weight: 700; }
+.hl-num { color: #b45309; font-weight: 700; }
+.hl-neg { color: #be185d; font-weight: 700; background: rgba(190, 24, 93, 0.12); padding: 0 4px; border-radius: 4px; }
+.hl-const { color: #047857; font-weight: 700; }
+.hl-cmt { color: #64748b; font-style: italic; }
+
+.explain-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.explain-card {
+  padding: 13px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--blue-tone);
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.explain-tag {
+  font-family: var(--f-head);
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--blue-tone);
+}
+
+.explain-card b {
+  font-family: var(--f-head);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.explain-card p {
+  font-size: 24px;
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+
+/* Slide 6: Possibilities Showcase */
+.slide.s-possibilities {
+  justify-content: center;
+}
+
+.slide.s-possibilities .kicker {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--blue-tone);
+  margin-bottom: 6px;
+}
+
+.slide.s-possibilities h2 {
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.12;
+}
+
+.slide.s-possibilities .lede {
+  font-size: 28px;
+  margin-top: 8px;
+  margin-bottom: 24px;
+}
+
+.poss-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.poss-grid .card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 24px;
+  gap: 10px;
+}
+
+.poss-grid .card .tag {
+  margin-bottom: 0;
+  font-size: 24px;
+}
+
+.poss-grid .card b {
+  font-size: 28px;
+  line-height: 1.18;
+}
+
+.poss-grid .card svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 4px 0;
+}
+
+.poss-grid .card .text {
+  font-size: 24px;
+  line-height: 1.35;
+  margin-top: auto;
+}
+
+/* Slide 7: Discussion */
 .slide.s-discuss .kicker {
   font-family: var(--f-head);
   font-size: 26px;
@@ -242,5 +483,4 @@
 .slide.s-discuss .share li {
   font-size: 34px;
   line-height: 1.42;
-  margin-bottom: 28px;
 }

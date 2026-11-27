@@ -5,120 +5,307 @@
 
 <section class="slide s-paper-intro" id="paper" data-part="The paper">
   <p class="kicker">Research Paper</p>
-  <h2 style="font-size: 48px;">Instant Architecture in Minecraft using Box-Split Grammars</h2>
-  <p class="sub" style="font-size: 28px;">Markus Eger • 2022 • Foundations of Digital Games (FDG '22)<span class="num"></span> <span class="nowrap"></span></p>
+  <h2>Instant Architecture in Minecraft using Box-Split Grammars</h2>
+  <p class="sub">Presented by Markus Eger at Foundations of Digital Games (FDG <span class="num">'22</span>)</p>
   <ul class="points">
-    <li>Procedural architecture generation has previously relied on domain-specific frameworks, our Python implementation integrates directly into game engines.</li>
-    <li>How can we combine Box Grammars and Split Grammars into a single system driven by standard Python functions?</li>
+    <li>Past building tools forced creators to make specialized coding languages to generate structures.</li>
+    <li>Instead, this paper uses Box-Split Grammars written in Python to work with most game engines, letting you generate a building simply by slicing boxes.</li>
   </ul>
-  <aside class="notes">Introduce the paper: Markus Eger presented Box-Split Grammars at FDG 2022 to provide an expressive and convenient framework for procedural architecture in Minecraft.</aside>
+  <aside class="notes">Introduce the paper cleanly: Markus Eger (FDG 2022) embeds procedural box-splitting rules directly in standard Python functions so architectural generation fits naturally into Minecraft and game engines.</aside>
 </section>
 
-<section class="slide s-big-ideas" id="big-ideas" data-part="The paper">
-  <p class="kicker">Contributions</p>
-  <h2 class="sr-only">The paper's big ideas</h2>
-  <p class="big-idea">Splitting 3D integer bounding boxes using <mark class="m-sun">absolute and relative rules</mark> with local coordinate reorientation.</p>
-  <p class="big-idea">Expressing grammar rules as <mark class="m-sun">standard Python functions</mark> with nondeterministic selection, iteration, and arithmetic constraints.</p>
-  <aside class="notes">Two big ideas: (1) A clean geometric representation over discrete voxel boxes with mixed absolute/proportional split slicing; (2) Embedding the grammar directly into Python via decorators that support non-deterministic rule selection and constraints.</aside>
-</section>
+<section class="slide s-intro-hook" id="intro" data-part="The idea">
+  <p class="kicker">Key Terms</p>
+  <h2>What is a Box-Split Grammar?</h2>
 
-<section class="slide" id="core-mechanisms" data-part="How it works">
-  <p class="kicker">Architecture and Rules</p>
-  <h2 style="font-size: 58px; font-weight: 800; color: var(--ink); line-height: 1.15;">The Box-Split Grammar System</h2>
-  <p class="lede" style="font-size: 26px; color: var(--ink-2); margin-top: 6px; margin-bottom: 22px;">How can Box-Split Grammars split a bounding box into complex architecture?</p>
-
-  <div style="display: grid; grid-template-columns: 680px 1fr; gap: 28px; align-items: stretch;">
-    <!-- Left Column: 3 Structured Code Blocks -->
-    <div style="background: #ffffff; border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 4px 24px rgba(30, 40, 60, 0.06); display: flex; flex-direction: column; overflow: hidden; align-self: start;">
-      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: var(--surface-2); border-bottom: 1px solid var(--line);">
-        <span style="font-family: var(--f-mono); font-size: 24px; font-weight: 600; color: var(--ink-2);">temple_wall.py</span>
-        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 12px; border-radius: 12px; background: var(--blue-tint); color: var(--blue-tone);">Python Rule</span>
-      </div>
-
-      <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; font-family: var(--f-mono); font-size: 24px; line-height: 1.5;">
-        <!-- Block 1: @rule & Structure Name -->
-        <div style="display: flex; align-items: flex-start; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--blue-tone); background: rgba(61, 99, 191, 0.07);">
-          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--blue-tone); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">1</span>
-          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);"><span style="color: #be185d; font-weight: 700;">@rule</span>(<span style="color: #1d4ed8; font-weight: 600;">constraint</span>=Dimension.X % 2 == 1)
-<span style="color: #be185d; font-weight: 700;">def</span> <span style="color: #1d4ed8; font-weight: 700;">temple_wall</span>():</code>
-        </div>
-
-        <!-- Block 2: Spatial Partitioning -->
-        <div style="display: flex; align-items: center; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--blue-tone); background: rgba(61, 99, 191, 0.07);">
-          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--blue-tone); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0;">2</span>
-          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);">    <span style="color: #be185d; font-weight: 700;">with</span> <span style="color: #1d4ed8; font-weight: 700;">split</span>(Dimension.X, [<span style="color: #1d4ed8; font-weight: 700;">1</span>, <span style="color: #1d4ed8; font-weight: 700;">-1</span>, <span style="color: #1d4ed8; font-weight: 700;">1</span>]):</code>
-        </div>
-
-        <!-- Block 3: Minecraft Blocks & Void -->
-        <div style="display: flex; align-items: flex-start; gap: 14px; padding: 8px 12px; border-radius: 8px; border-left: 6px solid var(--blue-tone); background: rgba(61, 99, 191, 0.07);">
-          <span style="width: 36px; height: 36px; border-radius: 50%; background: var(--blue-tone); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; font-family: var(--f-num); font-size: 24px; font-weight: 700; flex-shrink: 0; margin-top: 2px;">3</span>
-          <code style="font-family: inherit; font-size: inherit; white-space: pre; color: var(--ink);">        <span style="color: #1d4ed8; font-weight: 700;">fill</span>(<span style="color: #1d4ed8; font-weight: 700;">COBBLESTONE</span>)
-        <span style="color: #1d4ed8; font-weight: 700;">void</span>()
-        <span style="color: #1d4ed8; font-weight: 700;">fill</span>(<span style="color: #1d4ed8; font-weight: 700;">COBBLESTONE</span>)</code>
-        </div>
+  <div class="intro-grid">
+    <div class="def-stack">
+      <div class="terms-block">
+        <ul class="points terms-list">
+          <li><strong>Box-Split Grammar:</strong> A system that slices one big box into smaller pieces.</li>
+          <li><strong>Grammar:</strong> A set of rules that breaks one big box into smaller pieces step by step. You can think about it like grammar in English that breaks a sentence into phrases and words.</li>
+          <li><strong>Nonterminal:</strong> A rule that expands further instead of placing blocks. For example, one side of a castle splits into <code>tower()</code>, <code>wall()</code>, <code>gate()</code>, <code>wall()</code>, and <code>tower()</code>.</li>
+        </ul>
       </div>
     </div>
 
-    <!-- Right Column: 3 Explanatory Cards -->
-    <div style="display: flex; flex-direction: column; gap: 14px; justify-content: space-between;">
-      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--blue-tone); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
-        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue-tone); margin-bottom: 2px;">1. Structure</span>
-        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">@rule &amp; Function Name</b>
-        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">The function name defines the non-terminal symbol.  Shared function names create random variants, regulated by constraints that ensure rules only execute on valid bounding boxes.</span>
+    <div class="wall-example" aria-label="Example: splitting one side of a castle into towers, walls, and a gate">
+      <div class="ex-head">
+        <span>Castle Side Example:</span>
+        <span class="ex-pill">with split(Dimension.X, [5, -1, 3, -1, 5])</span>
       </div>
+      <svg viewBox="0 0 560 238" width="560" height="238" role="img" aria-label="One side of a castle split horizontally into tower, wall, gate, wall, and tower">
+        <rect x="12" y="16" width="536" height="206" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/>
 
-      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--blue-tone); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
-        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue-tone); margin-bottom: 2px;">2. Splitting</span>
-        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">with split(axis, [sizes])</b>
-        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">Slice the scope along an axis. Positive integers are absolute block counts (<code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">1</code>), negative integers allocate the proportional remainder (<code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">-1</code>).</span>
-      </div>
+        <!-- Left Tower (5) -->
+        <g>
+          <rect x="24" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="58" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="92" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="22" y="54" width="92" height="156" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="2.5"/>
+          <rect x="60" y="84" width="16" height="32" rx="3" fill="#1e293b"/>
+          <text x="68" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700">tower()</text>
+        </g>
 
-      <div style="padding: 16px 22px; border-radius: 16px; border: 1px solid var(--line); border-left: 6px solid var(--blue-tone); background: #ffffff; box-shadow: 0 4px 18px rgba(30, 40, 60, 0.04); display: flex; flex-direction: column;">
-        <span style="font-family: var(--f-head); font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--blue-tone); margin-bottom: 2px;">3. MATERIALS</span>
-        <b style="font-family: var(--f-head); font-size: 30px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px;">fill(BLOCK) &amp; void()</b>
-        <span style="font-family: var(--f-body); font-size: 24px; line-height: 1.35; color: var(--ink-2);">void() acts as AIR. Scopes can also call other rules such as <code style="font-family: var(--f-mono); font-size: 24px; background: rgba(15, 23, 42, 0.06); padding: 0 4px; border-radius: 4px; color: var(--ink);">columns()</code>.</span>
-      </div>
+        <!-- Left Wall (-1) -->
+        <g>
+          <rect x="126" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
+          <rect x="159" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
+          <rect x="192" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
+          <rect x="124" y="108" width="88" height="102" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="2.5"/>
+          <rect x="144" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
+          <rect x="178" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
+          <text x="168" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="17" font-weight="700">wall()</text>
+        </g>
+
+        <!-- Center Gate (3) -->
+        <g>
+          <rect x="224" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="255" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="287" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="318" y="42" width="18" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="222" y="58" width="116" height="152" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="2.5"/>
+          <!-- Arched gate opening -->
+          <path d="M252,210 V144 A28,28 0 0,1 308,144 V210 Z" fill="#1e293b" stroke="#0f172a" stroke-width="2"/>
+          <line x1="266" y1="124" x2="266" y2="210" stroke="#475569" stroke-width="2"/>
+          <line x1="280" y1="117" x2="280" y2="210" stroke="#475569" stroke-width="2"/>
+          <line x1="294" y1="124" x2="294" y2="210" stroke="#475569" stroke-width="2"/>
+          <rect x="240" y="72" width="80" height="30" rx="6" fill="#eff6ff" stroke="#3d63bf" stroke-width="2"/>
+          <text x="280" y="93" text-anchor="middle" fill="#1e293b" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700">gate()</text>
+        </g>
+
+        <!-- Right Wall (-1) -->
+        <g>
+          <rect x="350" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
+          <rect x="383" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
+          <rect x="416" y="94" width="18" height="14" fill="#888788" stroke="#475569" stroke-width="2"/>
+          <rect x="348" y="108" width="88" height="102" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="2.5"/>
+          <rect x="368" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
+          <rect x="402" y="130" width="14" height="28" rx="3" fill="#1e293b"/>
+          <text x="392" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="17" font-weight="700">wall()</text>
+        </g>
+
+        <!-- Right Tower (5) -->
+        <g>
+          <rect x="448" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="482" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="516" y="38" width="20" height="16" fill="#64748b" stroke="#334155" stroke-width="2"/>
+          <rect x="446" y="54" width="92" height="156" rx="4" fill="#94a3b8" stroke="#334155" stroke-width="2.5"/>
+          <rect x="484" y="84" width="16" height="32" rx="3" fill="#1e293b"/>
+          <text x="492" y="192" text-anchor="middle" fill="#0f172a" font-family="JetBrains Mono, monospace" font-size="16" font-weight="700">tower()</text>
+        </g>
+
+        <!-- Cut dashed guides -->
+        <line x1="119" y1="22" x2="119" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
+        <line x1="217" y1="22" x2="217" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
+        <line x1="343" y1="22" x2="343" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
+        <line x1="441" y1="22" x2="441" y2="216" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="6 5"/>
+      </svg>
     </div>
   </div>
 
-  <aside class="notes">Walk through the three components: (1) @rule decorator registers the function as a grammar non-terminal and checks arithmetic constraints; (2) split() partitions integer box scopes using absolute and relative sizes; (3) fill() and void() assign terminal Minecraft blocks or allow recursive grammar calls.</aside>
+  <p class="band intro-note">Python lets coders use loops, conditions, and other tools to assist them in building.</p>
+
+  <aside class="notes">Define Box-Split Grammar, grammar, and nonterminal in plain language, paired with the castle-side split example (tower, wall, gate, wall, tower), before jumping straight into the interactive cutting demo.</aside>
 </section>
 
-<section class="slide chapter" id="interactive-demo" data-part="Explore it">
+<section class="slide chapter" id="interactive-demo" data-part="Try it first">
   <header class="ch-head">
+    <span class="ch-num">1</span>
     <div>
-      <h2>Interactive Box-Split &amp; Grammar Demonstration</h2>
-      <p style="width: 1286.32px; max-width: none; flex-shrink: 0; min-width: 0px; flex-basis: auto;">Cut and fill selected regions with Minecraft blocks and hover over Python rules to highlight their active scopes.</p>
+      <h2>Try Cutting &amp; Filling a Box</h2>
+      <p><strong>1. Cut</strong> the grid first · <strong>2. Fill</strong> boxes with blocks (filled boxes lock!) · <strong>3. Toggle -1 Auto</strong> to see proportional sizing.</p>
     </div>
   </header>
   <div class="play-room" data-max="1.5">
     <div class="play-set">
-      <iframe data-src="demo/index.html" width="900" height="460" scrolling="no" title="Interactive 2D Box Split Knife &amp; Fill Tool"></iframe>
+      <iframe data-src="demo/index.html" width="900" height="460" scrolling="no" title="Interactive 2D Box Split Knife and Fill Tool"></iframe>
     </div>
   </div>
-  <aside class="notes">Demonstrate partitioning and material assignment: place horizontal/vertical cuts on the 10x10 grid, fill regions with official Minecraft blocks (Oak Log, Cobblestone, Oak Planks), and hover lines in the live-generated Python code panel to inspect how rules map directly to spatial scopes.</aside>
+  <aside class="notes">Let readers play immediately: make horizontal or vertical cuts on the 10x10 box, fill regions with Minecraft blocks (noting that filled leaf boxes lock against further cuts), hover the live Python lines to see each split scope highlight, and toggle Exact vs -1 Auto to preview proportional remainder syntax.</aside>
 </section>
 
-<section class="slide chapter" id="interactive-demo-3d" data-part="Explore it">
+<section class="slide s-takeaway" id="takeaway-python" data-part="How it works">
+  <p class="kicker">What You Just Built · The Python Side</p>
+  <h2>Every cut is a nested Python scope</h2>
+  <p class="band"><b>Key takeaway:</b> Splitting a box creates smaller boxes inside a <code>with split(...)</code> block; filling a box ends that branch as a terminal Minecraft block.</p>
+
+  <div class="anatomy-grid">
+    <div class="code-card">
+      <div class="code-card-head">
+        <span>temple_wall.py</span>
+        <span class="code-badge">Python Rule</span>
+      </div>
+      <div class="code-steps">
+        <div class="code-step">
+          <span class="step-num">1</span>
+          <code><span class="hl-kw">@rule</span>(constraint=<span class="hl-dim">Dimension.X</span> &gt;= <span class="hl-num">7</span>)
+<span class="hl-kw">def</span> <span class="hl-fn">wall</span>():</code>
+        </div>
+        <div class="code-step">
+          <span class="step-num">2</span>
+          <code>  <span class="hl-kw">with</span> <span class="hl-fn">split</span>(<span class="hl-dim">Dimension.X</span>, [<span class="hl-num">1</span>, <span class="hl-neg">-1</span>, <span class="hl-num">1</span>]):</code>
+        </div>
+        <div class="code-step">
+          <span class="step-num">3</span>
+          <code>    <span class="hl-fn">fill</span>(<span class="hl-const">OAK_LOG</span>)
+    <span class="hl-fn">center</span>()     <span class="hl-cmt"># calls another rule</span>
+    <span class="hl-fn">fill</span>(<span class="hl-const">OAK_LOG</span>)</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="explain-stack">
+      <div class="explain-card">
+        <span class="explain-tag">1. Rules &amp; Constraints</span>
+        <b>Same function name = variants</b>
+        <p>Multiple <code>@rule</code> functions share one name; Python picks among those whose constraint holds.</p>
+      </div>
+      <div class="explain-card">
+        <span class="explain-tag">2. Absolute vs. Negative</span>
+        <b>Positive = exact, -1 = stretch</b>
+        <p>Positive sizes claim fixed blocks first; <code>-1</code> divides whatever space remains.</p>
+      </div>
+      <div class="explain-card">
+        <span class="explain-tag">3. Composition &amp; Loops</span>
+        <b>Call rules or repeat slices</b>
+        <p>Scopes call <code>fill()</code>/<code>void()</code>, invoke rules like <code>center()</code>, or loop with <code>repeat=True</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">Bridge from the hands-on cutting widget to the paper's Python mechanics: highlight how indentation tracks spatial nesting, how negative numbers adapt to box size, and how Python decorators enable constraints, random variants, and loops.</aside>
+</section>
+
+<section class="slide chapter" id="rules-demo" data-part="How it works">
   <header class="ch-head">
+    <span class="ch-num">2</span>
     <div>
-      <h2>Interactive 3D Box-Split &amp; Grammar Demonstration</h2>
-      <p style="width: 1286.32px; max-width: none; flex-shrink: 0; min-width: 0px; flex-basis: auto;">Orbit, slice along X, Y, or Z, and fill 3D voxel scopes with Minecraft blocks as Python grammar rules update live.</p>
+      <h2>Constraints, Random Variants &amp; Loops in Action</h2>
+      <p>Drag <strong>Width &lt; 7</strong> to fire <code>Constraint.ELSE</code>, toggle <strong>Repeat [3]</strong> for a loop, and click <strong>Regenerate</strong> to roll variants.</p>
     </div>
   </header>
   <div class="play-room" data-max="1.5">
     <div class="play-set">
-      <iframe data-src="demo/3d.html" width="900" height="460" scrolling="no" title="Interactive 3D Box Split &amp; Minecraft Grammar Tool"></iframe>
+      <iframe data-src="demo/rules.html" width="900" height="460" scrolling="no" title="Interactive Constraints, Variants, and Loops Demo"></iframe>
     </div>
   </div>
-  <aside class="notes">Extend box-splitting into 3D: switch between Slice (scissors) along X, Y, or Z and Move (grabber hand) to orbit and fill 3D sub-boxes with tiled Minecraft Oak Log, Cobblestone, and Oak Planks textures while hovering the live Python grammar code to inspect 3D scopes.</aside>
+  <aside class="notes">Demonstrate the paper's other big idea: live Python rule dispatch. Resizing Width and Height shows -1 stretching while edge pillars stay 1 block wide; crossing Width=7 triggers Constraint.ELSE; Repeat [3] turns on split(..., repeat=True) in a while loop; and Regenerate samples between two @rule bay() variants.</aside>
+</section>
+
+<section class="slide chapter" id="interactive-demo-3d" data-part="In 3D">
+  <header class="ch-head">
+    <span class="ch-num">3</span>
+    <div>
+      <h2>Box-Splitting in 3D Minecraft Space</h2>
+      <p>Slice along <strong>X, Y, or Z</strong>, switch to <strong>Move</strong> to orbit and fill 3D sub-boxes, and hover code lines to inspect 3D scopes.</p>
+    </div>
+  </header>
+  <div class="play-room" data-max="1.5">
+    <div class="play-set">
+      <iframe data-src="demo/3d.html" width="900" height="460" scrolling="no" title="Interactive 3D Box Split and Minecraft Grammar Tool"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Extend the 2D box-splitting model into 3D voxel scopes: slice along X, Y, or Z, switch to Move to orbit and fill sub-boxes with Oak Log, Cobblestone, and Oak Planks, and hover the live Python grammar panel to highlight 3D nested scopes.</aside>
+</section>
+
+<section class="slide s-possibilities" id="possibilities" data-part="Possibilities">
+  <p class="kicker">Beyond One Wall</p>
+  <h2>What Box-Split Grammars can generate</h2>
+  <p class="lede">The same small set of Python primitives scales from 2D pixel patterns to full multi-room buildings.</p>
+
+  <div class="poss-grid">
+    <div class="card">
+      <span class="tag">Fig. 4 · Floor Plans</span>
+      <b>Greek Temple Layouts</b>
+      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="7 by 11 tetrastyle temple floor plan grid">
+        <rect x="10" y="10" width="260" height="100" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <!-- Horizontal representation of 11 deep x 7 tall plan -->
+        <!-- Front columns (col 0) -->
+        <rect x="26" y="18" width="14" height="10" fill="#3d63bf"/><rect x="26" y="42" width="14" height="10" fill="#3d63bf"/><rect x="26" y="66" width="14" height="10" fill="#3d63bf"/><rect x="26" y="90" width="14" height="10" fill="#3d63bf"/>
+        <!-- Naos front columns (col 2) -->
+        <rect x="66" y="18" width="14" height="10" fill="#3d63bf"/><rect x="66" y="42" width="14" height="10" fill="#3d63bf"/><rect x="66" y="66" width="14" height="10" fill="#3d63bf"/><rect x="66" y="90" width="14" height="10" fill="#3d63bf"/>
+        <!-- Naos side walls (cols 3..7) -->
+        <rect x="86" y="18" width="100" height="10" fill="#475569"/>
+        <rect x="86" y="90" width="100" height="10" fill="#475569"/>
+        <!-- Naos back wall (col 8) -->
+        <rect x="186" y="18" width="14" height="82" fill="#475569"/>
+        <!-- Back columns (col 10) -->
+        <rect x="226" y="18" width="14" height="10" fill="#3d63bf"/><rect x="226" y="42" width="14" height="10" fill="#3d63bf"/><rect x="226" y="66" width="14" height="10" fill="#3d63bf"/><rect x="226" y="90" width="14" height="10" fill="#3d63bf"/>
+      </svg>
+      <span class="text">Composes <code>columns()</code>, <code>chamber()</code>, and <code>naos()</code> with <code>-1</code> spacing.</span>
+    </div>
+
+    <div class="card">
+      <span class="tag">Sec. 4 · Architecture</span>
+      <b>Multi-Story Houses &amp; Towers</b>
+      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="Multi-story Minecraft house facade and tower generated by repeated splits">
+        <rect x="10" y="10" width="260" height="100" rx="8" fill="#eff6ff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <!-- Roof -->
+        <polygon points="36,42 104,16 172,42" fill="#9a3412"/>
+        <!-- House body -->
+        <rect x="44" y="42" width="120" height="60" fill="#b8945f" stroke="#5f4a2b" stroke-width="2"/>
+        <rect x="44" y="88" width="120" height="14" fill="#6e6d6d"/>
+        <rect x="60" y="54" width="20" height="22" fill="#bae6fd" stroke="#475569" stroke-width="1.5"/>
+        <rect x="94" y="54" width="20" height="22" fill="#bae6fd" stroke="#475569" stroke-width="1.5"/>
+        <rect x="128" y="54" width="20" height="22" fill="#bae6fd" stroke="#475569" stroke-width="1.5"/>
+        <!-- Tower -->
+        <rect x="184" y="28" width="56" height="74" fill="#888788" stroke="#525252" stroke-width="2"/>
+        <rect x="184" y="20" width="12" height="8" fill="#6e6d6d"/>
+        <rect x="206" y="20" width="12" height="8" fill="#6e6d6d"/>
+        <rect x="228" y="20" width="12" height="8" fill="#6e6d6d"/>
+        <rect x="204" y="46" width="16" height="22" fill="#1e293b"/>
+      </svg>
+      <span class="text">Loops tile floors and battlements while <code>reorient()</code> wraps all four walls.</span>
+    </div>
+
+    <div class="card">
+      <span class="tag">Fig. 9 · 2D Patterns</span>
+      <b>Recursive Fractals &amp; Tiles</b>
+      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="Recursive blue and white spiral pattern">
+        <rect x="10" y="10" width="260" height="100" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <!-- Two recursive spiral tiles side by side -->
+        <g transform="translate(54,18)">
+          <rect width="78" height="78" fill="#ffffff" stroke="#cbd5e1"/>
+          <path d="M8,8 H70 V70 H16 V18 H60 V60 H26 V28 H50 V50 H36" fill="none" stroke="#2563eb" stroke-width="6"/>
+        </g>
+        <g transform="translate(148,18)">
+          <rect width="78" height="78" fill="#ffffff" stroke="#cbd5e1"/>
+          <path d="M8,8 H70 V70 H16 V18 H60 V60 H26 V28 H50 V50 H36" fill="none" stroke="#2563eb" stroke-width="6"/>
+        </g>
+      </svg>
+      <span class="text">Mutual recursion with <code>Dimension &gt; 10</code> stops cleanly at small boxes.</span>
+    </div>
+
+    <div class="card">
+      <span class="tag">Sec. 3.1 · Backends</span>
+      <b>Same Rules, Any Output</b>
+      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="One Python grammar outputting to Minecraft blocks, VoxelGrid, or PNG images">
+        <rect x="10" y="10" width="260" height="100" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+        <rect x="18" y="34" width="84" height="52" rx="8" fill="#e9f0ff" stroke="#3d63bf" stroke-width="2"/>
+        <text x="60" y="66" text-anchor="middle" fill="#1e2742" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700">@rule</text>
+        <line x1="104" y1="60" x2="132" y2="30" stroke="#64748b" stroke-width="2"/>
+        <line x1="104" y1="60" x2="132" y2="60" stroke="#64748b" stroke-width="2"/>
+        <line x1="104" y1="60" x2="132" y2="90" stroke="#64748b" stroke-width="2"/>
+        <rect x="134" y="16" width="128" height="25" rx="5" fill="#dcfce7" stroke="#16a34a"/>
+        <text x="198" y="34" text-anchor="middle" fill="#166534" font-family="Nunito Sans, sans-serif" font-size="16" font-weight="700">Minecraft</text>
+        <rect x="134" y="47" width="128" height="25" rx="5" fill="#fef3c7" stroke="#d97706"/>
+        <text x="198" y="65" text-anchor="middle" fill="#92400e" font-family="Nunito Sans, sans-serif" font-size="16" font-weight="700">Voxel Grid</text>
+        <rect x="134" y="78" width="128" height="25" rx="5" fill="#e0e7ff" stroke="#4f46e5"/>
+        <text x="198" y="96" text-anchor="middle" fill="#3730a3" font-family="Nunito Sans, sans-serif" font-size="16" font-weight="700">2D PNG</text>
+      </svg>
+      <span class="text">Swapping <code>set_material()</code> targets Minecraft, ASCII grids, or images.</span>
+    </div>
+  </div>
+
+  <aside class="notes">Show the breadth of what Box-Split Grammars generate in the paper and lab: temple floor plans (Figure 4), multi-story facades and towers, recursive 2D patterns (Figure 9), and backend portability across Minecraft, voxel grids, and PNG images.</aside>
 </section>
 
 <section class="slide s-big-list s-discuss" id="discuss" data-part="Discussion">
   <p class="kicker">Reflection</p>
   <h2>Discuss with your table</h2>
   <ol class="share">
-    <li>What are the advantages of writing grammar rules as ordinary Python functions rather than creating a domain-specific frameworks?</li>
+    <li>What are the advantages of writing grammar rules as ordinary Python functions rather than creating a domain-specific framework?</li>
     <li>How could box splitting be applied to handle connected structures like roads, bridges, and walls?</li>
     <li>Where else in procedural generation could Box-Split Grammars be applied?</li>
   </ol>

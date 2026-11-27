@@ -12,7 +12,8 @@ const MATERIAL_MAP = {
   [TEXTURE_TYPES.OAK_PLANKS]: 'OAK_PLANKS'
 };
 
-export function generateGrammarCode(rootRegion) {
+export function generateGrammarCode(rootRegion, options = {}) {
+  const { useRelative = false } = options;
   const lines = [];
 
   // Line 0: @rule decorator
@@ -73,8 +74,22 @@ export function generateGrammarCode(rootRegion) {
     const size1 = axis === 'V' ? c1.w : c1.h;
     const size2 = axis === 'V' ? c2.w : c2.h;
 
-    const rawSplit = `with split(${dim}, [${size1}, ${size2}]):`;
-    const splitHtml = `<span class="kw">with</span> <span class="fn">split</span>(${dimHtml}, [<span class="num">${size1}</span>, <span class="num">${size2}</span>]):`;
+    let arg1 = String(size1);
+    let arg2 = String(size2);
+    if (useRelative) {
+      if (size1 === size2) {
+        arg1 = '-1';
+        arg2 = '-1';
+      } else {
+        arg1 = String(size1);
+        arg2 = '-1';
+      }
+    }
+
+    const cls1 = arg1.startsWith('-') ? 'num neg' : 'num';
+    const cls2 = arg2.startsWith('-') ? 'num neg' : 'num';
+    const rawSplit = `with split(${dim}, [${arg1}, ${arg2}]):`;
+    const splitHtml = `<span class="kw">with</span> <span class="fn">split</span>(${dimHtml}, [<span class="${cls1}">${arg1}</span>, <span class="${cls2}">${arg2}</span>]):`;
 
     lines.push({
       rawText: indentSpaces + rawSplit,

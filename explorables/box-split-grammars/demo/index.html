@@ -68,7 +68,7 @@
     .controls-wrap {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       height: 380px;
       justify-content: center;
     }
@@ -314,6 +314,13 @@
       font-weight: 600;
     }
 
+    .code-line .num.neg {
+      color: #be185d;
+      background: rgba(190, 24, 93, 0.1);
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+
     .code-line .const {
       color: #047857;
       font-weight: 600;
@@ -361,18 +368,26 @@
       <div id="fill-options" class="control-group" style="display: none;">
         <span class="control-label">Minecraft Block</span>
         <div class="texture-list">
-          <div class="texture-option active" data-texture="oak_log">
+          <button type="button" class="texture-option active" data-texture="oak_log">
             <canvas class="texture-swatch" id="swatch-oak-log" width="16" height="16"></canvas>
             <span>Oak Log</span>
-          </div>
-          <div class="texture-option" data-texture="cobblestone">
+          </button>
+          <button type="button" class="texture-option" data-texture="cobblestone">
             <canvas class="texture-swatch" id="swatch-cobblestone" width="16" height="16"></canvas>
             <span>Cobblestone</span>
-          </div>
-          <div class="texture-option" data-texture="oak_planks">
+          </button>
+          <button type="button" class="texture-option" data-texture="oak_planks">
             <canvas class="texture-swatch" id="swatch-oak-planks" width="16" height="16"></canvas>
             <span>Oak Planks</span>
-          </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <span class="control-label">Split Sizing</span>
+        <div class="btn-group">
+          <button id="sizing-fixed" class="btn-tab active" title="Use exact block counts">Exact</button>
+          <button id="sizing-relative" class="btn-tab" title="Use -1 for remaining blocks">-1 Auto</button>
         </div>
       </div>
 
@@ -389,7 +404,7 @@
         <!-- Rendered code lines populate here -->
       </div>
       <div class="code-footer">
-        <span>Hover code to highlight region</span>
+        <span id="code-hint">Hover code to highlight region</span>
         <span id="copy-status"></span>
       </div>
     </div>
@@ -407,6 +422,7 @@
     let model = createInitialModel();
     const renderer = new CanvasRenderer(canvas);
     let isVisible = true;
+    let useRelativeSizing = false;
     let currentRawCode = '';
     let currentCodeLines = [];
 
@@ -456,7 +472,7 @@
         hoverTimer = null;
       }
 
-      const { lines, fullRawText } = generateGrammarCode(model);
+      const { lines, fullRawText } = generateGrammarCode(model, { useRelative: useRelativeSizing });
       currentRawCode = fullRawText;
       currentCodeLines = lines;
 
@@ -578,6 +594,27 @@
         const tex = opt.getAttribute('data-texture');
         controller.setTexture(tex);
       });
+    });
+
+    // Split Sizing Toggle (Exact vs -1 Auto)
+    const sizingFixed = document.getElementById('sizing-fixed');
+    const sizingRelative = document.getElementById('sizing-relative');
+    const codeHint = document.getElementById('code-hint');
+
+    sizingFixed.addEventListener('click', () => {
+      useRelativeSizing = false;
+      sizingFixed.classList.add('active');
+      sizingRelative.classList.remove('active');
+      codeHint.textContent = 'Hover code to highlight region';
+      updateCodePanel();
+    });
+
+    sizingRelative.addEventListener('click', () => {
+      useRelativeSizing = true;
+      sizingRelative.classList.add('active');
+      sizingFixed.classList.remove('active');
+      codeHint.textContent = '-1 absorbs remaining blocks · Hover to inspect';
+      updateCodePanel();
     });
 
     // Reset Button

@@ -10,13 +10,15 @@
 export const TEXTURE_TYPES = {
   OAK_LOG: 'oak_log',
   COBBLESTONE: 'cobblestone',
-  OAK_PLANKS: 'oak_planks'
+  OAK_PLANKS: 'oak_planks',
+  GLASS: 'glass'
 };
 
 export const TEXTURE_LABELS = {
   [TEXTURE_TYPES.OAK_LOG]: 'Oak Log',
   [TEXTURE_TYPES.COBBLESTONE]: 'Cobblestone',
-  [TEXTURE_TYPES.OAK_PLANKS]: 'Oak Planks'
+  [TEXTURE_TYPES.OAK_PLANKS]: 'Oak Planks',
+  [TEXTURE_TYPES.GLASS]: 'Glass Window'
 };
 
 // Official Minecraft Java Edition 16x16 pixel palettes and raster index maps
@@ -101,6 +103,27 @@ const OAK_PLANKS_ROWS = [
   '6556653335656666'
 ];
 
+// Minecraft-style framed glass pane texture (pale sky tint + glint streaks)
+const GLASS_PALETTE = ['#89b4c4', '#d8f1fa', '#eef9fd', '#ffffff', '#64748b'];
+const GLASS_ROWS = [
+  '4444444444444444',
+  '4000000000000004',
+  '4011111111111104',
+  '4012331111111104',
+  '4012311111111104',
+  '4011111111111104',
+  '4011111111111104',
+  '4011111112111104',
+  '4011111121111104',
+  '4011111111111104',
+  '4011111111111104',
+  '4011111111112104',
+  '4011111111123104',
+  '4011111111111104',
+  '4000000000000004',
+  '4444444444444444'
+];
+
 function createTextureCanvas(palette, rows) {
   const c = document.createElement('canvas');
   c.width = 16;
@@ -122,7 +145,8 @@ export class TextureLibrary {
     this.canvases = {
       [TEXTURE_TYPES.OAK_LOG]: createTextureCanvas(OAK_LOG_PALETTE, OAK_LOG_ROWS),
       [TEXTURE_TYPES.COBBLESTONE]: createTextureCanvas(COBBLESTONE_PALETTE, COBBLESTONE_ROWS),
-      [TEXTURE_TYPES.OAK_PLANKS]: createTextureCanvas(OAK_PLANKS_PALETTE, OAK_PLANKS_ROWS)
+      [TEXTURE_TYPES.OAK_PLANKS]: createTextureCanvas(OAK_PLANKS_PALETTE, OAK_PLANKS_ROWS),
+      [TEXTURE_TYPES.GLASS]: createTextureCanvas(GLASS_PALETTE, GLASS_ROWS)
     };
     this.sideCanvases = {
       [TEXTURE_TYPES.OAK_LOG]: createTextureCanvas(OAK_LOG_BARK_PALETTE, OAK_LOG_BARK_ROWS)

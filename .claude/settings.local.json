@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness claude --event UserPromptSubmit --owner explorable-transcripts-v1",
+            "command": "powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand JgAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEEAcABwAEQAYQB0AGEAXABMAG8AYwBhAGwAXABQAHkAdABoAG8AbgBcAHAAeQB0AGgAbwBuAGMAbwByAGUALQAzAC4AMQA0AC0ANgA0AFwAcAB5AHQAaABvAG4ALgBlAHgAZQAnACAAJwAtAEIAJwAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEQAZQBzAGsAdABvAHAAXABNAGEAaQBuAFwAYwBsAGEAcwBzAFwAUwBsAG8AdABoACAATABhAGIAXABiAG8AeAAtAHMAcABsAGkAdAAtAHYAaQBzAHUAYQBsAFwAZQB4AHAAbABvAHIAYQBiAGwAZQBzAFwAdABvAG8AbABzAFwAdAByAGEAbgBzAGMAcgBpAHAAdABfAGgAbwBvAGsAcwAuAHAAeQAnACAAJwAtAC0AaABhAHIAbgBlAHMAcwAnACAAJwBjAGwAYQB1AGQAZQAnACAAJwAtAC0AZQB2AGUAbgB0ACcAIAAnAFUAcwBlAHIAUAByAG8AbQBwAHQAUwB1AGIAbQBpAHQAJwAgACcALQAtAG8AdwBuAGUAcgAnACAAJwBlAHgAcABsAG8AcgBhAGIAbABlAC0AdAByAGEAbgBzAGMAcgBpAHAAdABzAC0AdgAxACcAOwAgAGUAeABpAHQAIAAkAEwAQQBTAFQARQBYAEkAVABDAE8ARABFAA==",
             "timeout": 90
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness claude --event Stop --owner explorable-transcripts-v1",
+            "command": "powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand JgAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEEAcABwAEQAYQB0AGEAXABMAG8AYwBhAGwAXABQAHkAdABoAG8AbgBcAHAAeQB0AGgAbwBuAGMAbwByAGUALQAzAC4AMQA0AC0ANgA0AFwAcAB5AHQAaABvAG4ALgBlAHgAZQAnACAAJwAtAEIAJwAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEQAZQBzAGsAdABvAHAAXABNAGEAaQBuAFwAYwBsAGEAcwBzAFwAUwBsAG8AdABoACAATABhAGIAXABiAG8AeAAtAHMAcABsAGkAdAAtAHYAaQBzAHUAYQBsAFwAZQB4AHAAbABvAHIAYQBiAGwAZQBzAFwAdABvAG8AbABzAFwAdAByAGEAbgBzAGMAcgBpAHAAdABfAGgAbwBvAGsAcwAuAHAAeQAnACAAJwAtAC0AaABhAHIAbgBlAHMAcwAnACAAJwBjAGwAYQB1AGQAZQAnACAAJwAtAC0AZQB2AGUAbgB0ACcAIAAnAFMAdABvAHAAJwAgACcALQAtAG8AdwBuAGUAcgAnACAAJwBlAHgAcABsAG8AcgBhAGIAbABlAC0AdAByAGEAbgBzAGMAcgBpAHAAdABzAC0AdgAxACcAOwAgAGUAeABpAHQAIAAkAEwAQQBTAFQARQBYAEkAVABDAE8ARABFAA==",
             "timeout": 90
           }
         ]
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/opt/homebrew/opt/python@3.14/bin/python3.14 -B /Users/michaeldudzinski/Desktop/box-split-visual/explorables/tools/transcript_hooks.py --harness claude --event StopFailure --owner explorable-transcripts-v1",
+            "command": "powershell.exe -NoLogo -NoProfile -NonInteractive -EncodedCommand JgAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEEAcABwAEQAYQB0AGEAXABMAG8AYwBhAGwAXABQAHkAdABoAG8AbgBcAHAAeQB0AGgAbwBuAGMAbwByAGUALQAzAC4AMQA0AC0ANgA0AFwAcAB5AHQAaABvAG4ALgBlAHgAZQAnACAAJwAtAEIAJwAgACcAQwA6AFwAVQBzAGUAcgBzAFwAVQBTAEUAUgBcAEQAZQBzAGsAdABvAHAAXABNAGEAaQBuAFwAYwBsAGEAcwBzAFwAUwBsAG8AdABoACAATABhAGIAXABiAG8AeAAtAHMAcABsAGkAdAAtAHYAaQBzAHUAYQBsAFwAZQB4AHAAbABvAHIAYQBiAGwAZQBzAFwAdABvAG8AbABzAFwAdAByAGEAbgBzAGMAcgBpAHAAdABfAGgAbwBvAGsAcwAuAHAAeQAnACAAJwAtAC0AaABhAHIAbgBlAHMAcwAnACAAJwBjAGwAYQB1AGQAZQAnACAAJwAtAC0AZQB2AGUAbgB0ACcAIAAnAFMAdABvAHAARgBhAGkAbAB1AHIAZQAnACAAJwAtAC0AbwB3AG4AZQByACcAIAAnAGUAeABwAGwAbwByAGEAYgBsAGUALQB0AHIAYQBuAHMAYwByAGkAcAB0AHMALQB2ADEAJwA7ACAAZQB4AGkAdAAgACQATABBAFMAVABFAFgASQBUAEMATwBEAEUA",
             "timeout": 90
           }
         ]
