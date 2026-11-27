@@ -1,9 +1,11 @@
 /**
  * rules_engine.js
- * Implements Box-Split Grammar execution faithful to SplitGrammar.py:
- * - makeSplit with positive (absolute) and negative (proportional) sizes + repeat=True
- * - @rule constraint dispatch + Constraint.ELSE fallback
- * - Weighted nondeterministic selection with deterministic seeded PRNG
+ * Implements Box-Split Grammar execution for the Castle Wall demo, faithful to SplitGrammar.py:
+ * - makeSplit with positive (absolute) and negative (proportional) sizes + repeat=True + Rounding.START
+ * - @rule constraint dispatch:
+ *   - Dimension.X > 9 triggers gate_layout() vs Constraint.ELSE plain wall
+ *   - Dimension.X % 2 == 1 centers a 3-wide gate vs Dimension.X % 2 == 0 centers a 4-wide gate
+ * - Weighted nondeterministic selection for wall_body() (Cobblestone vs Mossy Cobblestone)
  */
 
 import { TEXTURE_TYPES } from './textures.js';
@@ -21,8 +23,6 @@ export function mulberry32(seed) {
 
 /**
  * Exact port of SplitGrammar.make_split(a, b, sizes, Rounding.START, repeat)
- * Allocates positive absolute sizes first, then divides remaining space across
- * negative relative weights, distributing integer remainder from the start.
  */
 export function makeSplit(a, b, sizes, repeat = false) {
   const abssizes = sizes.filter((s) => s > 0).reduce((acc, s) => acc + s, 0);
@@ -73,95 +73,85 @@ export function makeSplit(a, b, sizes, repeat = false) {
 }
 
 /**
- * Execute the interactive wall grammar for given dimensions, loop toggle, and seed.
- * Returns placed cells plus execution metadata for highlighting rules in the code panel.
+ * Execute the castle_wall grammar for given dimensions, loop toggle, and seed.
+ * Splits Y into [-1, 1] first so top battlements alternate cleanly across the whole wall
+ * without pressing two tall merlons together next to the gate.
  */
 export function evaluateWallGrammar({ width, height, repeatLoop, seed }) {
   const rng = mulberry32(seed);
-  const cells = []; // { x, y, w, h, material, ruleTag, bayIndex }
+  const cells = []; // { x, y, w, h, material, ruleTag }
   const firedRules = new Set();
-  const bayResults = []; // track variant choices per bay
+  const bayResults = [];
 
-  // Coordinate convention for elevation rendering:
-  // x: 0..width (left to right), y: 0..height (bottom=0 to top=height-1)
-  function fillBox(x, y, w, h, material, ruleTag, bayIndex = null) {
+  function fillBox(x, y, w, h, material, ruleTag) {
     if (w <= 0 || h <= 0) return;
-    cells.push({ x, y, w, h, material, ruleTag, bayIndex });
+    cells.push({ x, y, w, h, material, ruleTag });
   }
 
-  // @rule dispatch for bay()
-  function evalBay(bx, by, bw, bh, bayIndex) {
-    if (bw >= 3) {
-      const pickWindow = rng() < 0.5;
-      if (pickWindow) {
-        firedRules.add('bay_window');
-        bayResults.push({ index: bayIndex, variant: 'window', w: bw });
-        // with split(Dimension.X, [1, -1, 1]):
-        const slices = makeSplit(bx, bx + bw, [1, -1, 1], false);
-        const [s0, s1, s2] = slices;
-        fillBox(s0[0], by, s0[1] - s0[0], bh, TEXTURE_TYPES.OAK_PLANKS, 'bay_window', bayIndex);
-        fillBox(s1[0], by, s1[1] - s1[0], bh, TEXTURE_TYPES.GLASS, 'bay_window', bayIndex);
-        fillBox(s2[0], by, s2[1] - s2[0], bh, TEXTURE_TYPES.OAK_PLANKS, 'bay_window', bayIndex);
-      } else {
-        firedRules.add('bay_timber');
-        bayResults.push({ index: bayIndex, variant: 'timber', w: bw });
-        // with split(Dimension.X, [-1, 1, -1]):
-        const slices = makeSplit(bx, bx + bw, [-1, 1, -1], false);
-        const [s0, s1, s2] = slices;
-        fillBox(s0[0], by, s0[1] - s0[0], bh, TEXTURE_TYPES.OAK_PLANKS, 'bay_timber', bayIndex);
-        fillBox(s1[0], by, s1[1] - s1[0], bh, TEXTURE_TYPES.OAK_LOG, 'bay_timber', bayIndex);
-        fillBox(s2[0], by, s2[1] - s2[0], bh, TEXTURE_TYPES.OAK_PLANKS, 'bay_timber', bayIndex);
-      }
+  // Top battlement row across full width: split(X, [1, 1], repeat=True) -> X _ X _ X
+  function evalBattlement(bx, by, bw) {
+    if (bw <= 0) return;
+    if (!repeatLoop) {
+      firedRules.add('wall_flat');
+      fillBox(bx, by, bw, 1, TEXTURE_TYPES.COBBLESTONE, 'wall_flat');
+      return;
+    }
+    firedRules.add('wall_loop');
+    const slices = makeSplit(bx, bx + bw, [1, 1], true);
+    slices.forEach(([a, b], idx) => {
+      const mat = idx % 2 === 0 ? TEXTURE_TYPES.COBBLESTONE : null;
+      fillBox(a, by, b - a, 1, mat, 'wall_loop');
+    });
+  }
+
+  // Gate opening in the lower wall body: cobblestone jambs + open void() doorway + lintel
+  function evalGate(gx, gy, gw, gh, ruleTag) {
+    const ySlices = makeSplit(gy, gy + gh, [-1, 1], false);
+    const [doorY, lintelY] = ySlices;
+    const xSlices = makeSplit(gx, gx + gw, [1, -1, 1], false);
+    const [leftJamb, openSpan, rightJamb] = xSlices;
+    const dh = doorY[1] - doorY[0];
+
+    fillBox(leftJamb[0], doorY[0], leftJamb[1] - leftJamb[0], dh, TEXTURE_TYPES.COBBLESTONE, ruleTag);
+    fillBox(openSpan[0], doorY[0], openSpan[1] - openSpan[0], dh, null, ruleTag);
+    fillBox(rightJamb[0], doorY[0], rightJamb[1] - rightJamb[0], dh, TEXTURE_TYPES.COBBLESTONE, ruleTag);
+    fillBox(gx, lintelY[0], gw, lintelY[1] - lintelY[0], TEXTURE_TYPES.COBBLESTONE, ruleTag);
+  }
+
+  // Random @rule variants for wall_body(): Cobblestone vs Mossy Cobblestone
+  function evalWallBody(bx, by, bw, bh, wallIndex) {
+    const pickCobble = rng() < 0.5;
+    if (pickCobble) {
+      firedRules.add('body_cobble');
+      bayResults.push({ index: wallIndex, variant: 'cobble', w: bw });
+      fillBox(bx, by, bw, bh, TEXTURE_TYPES.COBBLESTONE, 'body_cobble');
     } else {
-      // @rule(constraint=Constraint.ELSE)
-      firedRules.add('bay_narrow');
-      bayResults.push({ index: bayIndex, variant: 'narrow', w: bw });
-      fillBox(bx, by, bw, bh, TEXTURE_TYPES.OAK_PLANKS, 'bay_narrow', bayIndex);
+      firedRules.add('body_mossy');
+      bayResults.push({ index: wallIndex, variant: 'mossy', w: bw });
+      fillBox(bx, by, bw, bh, TEXTURE_TYPES.MOSSY_COBBLESTONE, 'body_mossy');
     }
   }
 
-  // @rule dispatch for center()
-  function evalCenter(cx, cy, cw, ch) {
-    if (repeatLoop) {
-      firedRules.add('center_loop');
-      const slices = makeSplit(cx, cx + cw, [3], true);
-      slices.forEach(([a, b], idx) => {
-        evalBay(a, cy, b - a, ch, idx);
-      });
+  // @rule dispatch for lower_wall(): Dimension.X > 9 opens a 3-wide gate vs Constraint.ELSE
+  function evalLowerWall(lx, ly, lw, lh) {
+    if (lw > 9) {
+      firedRules.add('lower_gate');
+      const xSlices = makeSplit(lx, lx + lw, [-1, 3, -1], false);
+      const [leftWall, gate, rightWall] = xSlices;
+      evalWallBody(leftWall[0], ly, leftWall[1] - leftWall[0], lh, 0);
+      evalGate(gate[0], ly, gate[1] - gate[0], lh, 'lower_gate');
+      evalWallBody(rightWall[0], ly, rightWall[1] - rightWall[0], lh, 1);
     } else {
-      firedRules.add('center_single');
-      evalBay(cx, cy, cw, ch, 0);
+      firedRules.add('lower_plain');
+      evalWallBody(lx, ly, lw, lh, 0);
     }
   }
 
-  // @rule dispatch for wall()
-  if (width >= 7) {
-    firedRules.add('wall_wide');
-    // with split(Dimension.X, [1, -1, 1]):
-    const xSlices = makeSplit(0, width, [1, -1, 1], false);
-    const [leftPillar, midSpan, rightPillar] = xSlices;
-
-    fillBox(leftPillar[0], 0, leftPillar[1] - leftPillar[0], height, TEXTURE_TYPES.OAK_LOG, 'wall_wide_pillar');
-    fillBox(rightPillar[0], 0, rightPillar[1] - rightPillar[0], height, TEXTURE_TYPES.OAK_LOG, 'wall_wide_pillar');
-
-    // Interior: with split(Dimension.Y, [1, -1, 1]):
-    const mx = midSpan[0];
-    const mw = midSpan[1] - midSpan[0];
-    const ySlices = makeSplit(0, height, [1, -1, 1], false);
-    const [baseSlice, midY, topSlice] = ySlices;
-
-    fillBox(mx, baseSlice[0], mw, baseSlice[1] - baseSlice[0], TEXTURE_TYPES.COBBLESTONE, 'wall_wide_base');
-    evalCenter(mx, midY[0], mw, midY[1] - midY[0]);
-    fillBox(mx, topSlice[0], mw, topSlice[1] - topSlice[0], TEXTURE_TYPES.OAK_LOG, 'wall_wide_top');
-  } else {
-    // @rule(constraint=Constraint.ELSE)
-    firedRules.add('wall_narrow');
-    const xSlices = makeSplit(0, width, [1, -1, 1], false);
-    const [leftPillar, midSpan, rightPillar] = xSlices;
-    fillBox(leftPillar[0], 0, leftPillar[1] - leftPillar[0], height, TEXTURE_TYPES.OAK_LOG, 'wall_narrow');
-    fillBox(midSpan[0], 0, midSpan[1] - midSpan[0], height, TEXTURE_TYPES.COBBLESTONE, 'wall_narrow');
-    fillBox(rightPillar[0], 0, rightPillar[1] - rightPillar[0], height, TEXTURE_TYPES.OAK_LOG, 'wall_narrow');
-  }
+  // Root castle_wall(): split(Dimension.Y, [-1, 1]) -> lower_wall() + battlement()
+  const ySlices = makeSplit(0, height, [-1, 1], false);
+  const [bodyY, capY] = ySlices;
+  evalLowerWall(0, bodyY[0], width, bodyY[1] - bodyY[0]);
+  evalBattlement(0, capY[0], width);
 
   return {
     width,
@@ -170,6 +160,7 @@ export function evaluateWallGrammar({ width, height, repeatLoop, seed }) {
     cells,
     firedRules,
     bayResults,
-    wideActive: width >= 7
+    gateActive: width > 9,
+    gateWidth: width > 9 ? 3 : 0
   };
 }

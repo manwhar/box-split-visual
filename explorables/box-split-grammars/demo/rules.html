@@ -34,7 +34,7 @@
 
     .demo-container {
       display: grid;
-      grid-template-columns: 304px 154px 1fr;
+      grid-template-columns: 312px 154px 1fr;
       gap: 12px;
       width: 900px;
       height: 460px;
@@ -42,9 +42,9 @@
       align-items: center;
     }
 
-    /* Column 1: Wall Elevation Canvas */
+    /* Column 1: Castle Wall Elevation Canvas */
     .canvas-wrap {
-      width: 304px;
+      width: 312px;
       height: 434px;
       display: flex;
       flex-direction: column;
@@ -59,7 +59,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 7px 12px;
+      padding: 7px 11px;
       background: #f1f5f9;
       border-bottom: 1px solid #e2e8f0;
       font-family: var(--f-head);
@@ -67,7 +67,7 @@
       font-weight: 700;
       color: #334155;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
     .status-pill {
@@ -92,7 +92,7 @@
     .canvas-stage {
       flex: 1;
       position: relative;
-      background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 78%, #e2e8f0 78%, #cbd5e1 100%);
+      background: linear-gradient(180deg, #dbeafe 0%, #eff6ff 76%, #cbd5e1 76%, #94a3b8 100%);
     }
 
     canvas {
@@ -102,7 +102,7 @@
     }
 
     .canvas-foot {
-      padding: 6px 12px;
+      padding: 6px 11px;
       background: #f8fafc;
       border-top: 1px solid #e2e8f0;
       font-size: 11px;
@@ -149,7 +149,7 @@
 
     .control-val {
       font-family: var(--f-mono);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       color: #1d4ed8;
     }
@@ -164,7 +164,7 @@
     .tick-note {
       display: flex;
       justify-content: space-between;
-      font-size: 10px;
+      font-size: 9.5px;
       color: #64748b;
     }
 
@@ -205,8 +205,8 @@
     }
 
     .btn-regen {
-      padding: 10px 12px;
-      font-size: 12.5px;
+      padding: 10px 10px;
+      font-size: 12px;
       font-weight: 700;
       border: 1px solid #1d4ed8;
       border-radius: 9px;
@@ -283,7 +283,7 @@
       border: 1px solid #e2e8f0;
       border-left: 3.5px solid #94a3b8;
       border-radius: 6px;
-      padding: 4px 8px;
+      padding: 5px 8px;
       background: #f8fafc;
       transition: all 0.15s ease;
       cursor: pointer;
@@ -343,7 +343,7 @@
     .rule-code {
       font-family: var(--f-mono);
       font-size: 10px;
-      line-height: 1.28;
+      line-height: 1.3;
       white-space: pre;
       color: #1e293b;
       overflow-x: auto;
@@ -371,17 +371,17 @@
 <body>
   <div class="demo-container">
 
-    <!-- Left: Minecraft Wall Canvas -->
+    <!-- Left: Castle Wall Elevation Canvas -->
     <div class="canvas-wrap">
       <div class="canvas-head">
-        <span>Generated Wall (<span id="dim-badge">9 × 5</span>)</span>
-        <span id="constraint-pill" class="status-pill wide">Width ≥ 7: Full Facade</span>
+        <span>Castle Wall (<span id="dim-badge">11 × 4</span>)</span>
+        <span id="constraint-pill" class="status-pill wide">Width &gt; 9: Gate in Middle</span>
       </div>
       <div class="canvas-stage">
         <canvas id="wall-canvas"></canvas>
       </div>
       <div class="canvas-foot">
-        <span id="bay-summary">1 bay · Hover a rule to highlight</span>
+        <span id="bay-summary">Repeat [1, 1] battlements · Hover rule</span>
       </div>
     </div>
 
@@ -389,27 +389,27 @@
     <div class="controls-wrap">
       <div class="control-group">
         <div class="label-row">
-          <span class="control-label">Wall Width (X)</span>
-          <span class="control-val" id="width-val">9 blocks</span>
+          <span class="control-label">Width (X)</span>
+          <span class="control-val" id="width-val">11 blocks</span>
         </div>
-        <input type="range" id="slider-width" min="5" max="13" step="1" value="9">
-        <div class="tick-note"><span>5 (narrow)</span><span>7 (rule gate)</span><span>13</span></div>
+        <input type="range" id="slider-width" min="6" max="15" step="1" value="11">
+        <div class="tick-note"><span>6 (no gate)</span><span>&gt; 9 (gate)</span><span>15</span></div>
       </div>
 
       <div class="control-group">
         <div class="label-row">
-          <span class="control-label">Wall Height (Y)</span>
-          <span class="control-val" id="height-val">5 blocks</span>
+          <span class="control-label">Height (Y)</span>
+          <span class="control-val" id="height-val">4 blocks</span>
         </div>
-        <input type="range" id="slider-height" min="4" max="7" step="1" value="5">
-        <div class="tick-note"><span>4</span><span>-1 stretches center</span><span>7</span></div>
+        <input type="range" id="slider-height" min="4" max="7" step="1" value="4">
+        <div class="tick-note"><span>4</span><span>-1 stretches</span><span>7</span></div>
       </div>
 
       <div class="control-group">
-        <span class="control-label">Center Loop</span>
+        <span class="control-label">Battlement Loop</span>
         <div class="btn-group">
-          <button id="loop-off" class="btn-tab active">1 Bay</button>
-          <button id="loop-on" class="btn-tab">Repeat [3]</button>
+          <button id="loop-off" class="btn-tab">Flat Top</button>
+          <button id="loop-on" class="btn-tab active">Repeat [1, 1]</button>
         </div>
       </div>
 
@@ -419,10 +419,10 @@
       </button>
     </div>
 
-    <!-- Right: Live Rule Dispatch Panel -->
+    <!-- Right: Live Python Grammar Rules Panel -->
     <div class="code-panel">
       <div class="code-header">
-        <span class="code-title">Python Grammar Rules</span>
+        <span class="code-title">castle_wall.py</span>
         <span style="font-size: 10.5px; color: #64748b;" id="seed-label">Seed #42</span>
       </div>
       <div class="code-body" id="rules-list"></div>
@@ -442,10 +442,10 @@
     const textureLib = new TextureLibrary();
 
     const state = {
-      width: 9,
-      height: 5,
-      repeatLoop: false,
-      seed: 45,
+      width: 11,
+      height: 4,
+      repeatLoop: true,
+      seed: 42,
       hoverRule: null,
       detailScale: window.devicePixelRatio || 1,
       isVisible: true
@@ -477,14 +477,14 @@
 
     function matchesHover(cell, hoverRule) {
       if (!hoverRule) return true;
-      if (hoverRule === 'wall_wide') {
-        return cell.ruleTag.startsWith('wall_wide') || cell.ruleTag.startsWith('bay_');
+      if (hoverRule === 'wall_rule') {
+        return cell.ruleTag === 'wall_loop' || cell.ruleTag === 'wall_flat';
       }
-      if (hoverRule === 'wall_narrow') {
-        return cell.ruleTag === 'wall_narrow';
+      if (hoverRule === 'lower_gate') {
+        return cell.ruleTag === 'lower_gate' || cell.ruleTag.startsWith('body_');
       }
-      if (hoverRule === 'center_rule') {
-        return cell.ruleTag.startsWith('bay_');
+      if (hoverRule === 'lower_plain') {
+        return cell.ruleTag.startsWith('body_');
       }
       return cell.ruleTag === hoverRule;
     }
@@ -498,38 +498,42 @@
       ctx.clearRect(0, 0, cw, ch);
       ctx.imageSmoothingEnabled = false;
 
-      const padX = 24;
-      const padTop = 28;
-      const padBot = 36;
-      const maxCell = Math.floor(Math.min((cw - padX * 2) / 13, (ch - padTop - padBot) / 7));
-      const cellSize = Math.max(18, maxCell);
+      const padX = 16;
+      const padTop = 32;
+      const padBot = 52;
+      const maxCell = Math.floor(Math.min((cw - padX * 2) / 15, (ch - padTop - padBot) / 7));
+      const cellSize = Math.max(16, maxCell);
       const totalW = state.width * cellSize;
       const totalH = state.height * cellSize;
       const ox = Math.round((cw - totalW) / 2);
       const oy = Math.round(ch - padBot - totalH);
 
-      // Draw each placed box cell using 16x16 Minecraft textures
+      // Draw castle blocks (skip null = void/air so sky shows cleanly)
       for (const cell of lastResult.cells) {
-        const tex = textureLib.getSideCanvas(cell.material) || textureLib.getCanvas(cell.material);
         const isMatched = matchesHover(cell, state.hoverRule);
         ctx.save();
         if (!isMatched) ctx.globalAlpha = 0.25;
 
-        for (let dx = 0; dx < cell.w; dx++) {
-          for (let dy = 0; dy < cell.h; dy++) {
-            const gx = cell.x + dx;
-            // Flip y so y=0 is ground bottom
-            const gy = state.height - 1 - (cell.y + dy);
-            const px = ox + gx * cellSize;
-            const py = oy + gy * cellSize;
-            if (tex) {
-              ctx.drawImage(tex, px, py, cellSize, cellSize);
+        if (cell.material) {
+          const tex = textureLib.getSideCanvas(cell.material) || textureLib.getCanvas(cell.material);
+          for (let dx = 0; dx < cell.w; dx++) {
+            for (let dy = 0; dy < cell.h; dy++) {
+              const gx = cell.x + dx;
+              const gy = state.height - 1 - (cell.y + dy);
+              const px = ox + gx * cellSize;
+              const py = oy + gy * cellSize;
+              if (tex) ctx.drawImage(tex, px, py, cellSize, cellSize);
             }
           }
+        } else if (state.hoverRule && isMatched) {
+          // Subtle sky tint highlight for void() arrow slits when hovering a rule
+          const rx = ox + cell.x * cellSize;
+          const ry = oy + (state.height - cell.y - cell.h) * cellSize;
+          ctx.fillStyle = 'rgba(2, 132, 199, 0.16)';
+          ctx.fillRect(rx, ry, cell.w * cellSize, cell.h * cellSize);
         }
 
-        // Subtle scope outline when hovering a rule
-        if (state.hoverRule && isMatched) {
+        if (state.hoverRule && isMatched && cell.material) {
           const rx = ox + cell.x * cellSize;
           const ry = oy + (state.height - cell.y - cell.h) * cellSize;
           ctx.strokeStyle = '#0284c7';
@@ -539,24 +543,35 @@
         ctx.restore();
       }
 
-      // Outer box border
-      ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 2;
+      // Faint outer bounding box guide showing the root scope
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.35)';
+      ctx.setLineDash([4, 4]);
+      ctx.lineWidth = 1.5;
       ctx.strokeRect(ox, oy, totalW, totalH);
+      ctx.setLineDash([]);
 
-      // Bottom dimension labels showing fixed 1 vs -1 stretch
-      ctx.fillStyle = '#334155';
-      ctx.font = '600 11px "JetBrains Mono", monospace';
+      // Bottom dimension labels matching [-1, 3, -1] (3-wide gate)
+      ctx.font = '600 10.5px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
-      if (lastResult.wideActive) {
-        const innerW = state.width - 2;
-        ctx.fillText('1', ox + cellSize * 0.5, oy + totalH + 15);
-        ctx.fillStyle = '#be185d';
-        ctx.fillText(`-1 (${innerW})`, ox + cellSize + (innerW * cellSize) / 2, oy + totalH + 15);
-        ctx.fillStyle = '#334155';
-        ctx.fillText('1', ox + totalW - cellSize * 0.5, oy + totalH + 15);
+      if (lastResult.gateActive) {
+        const innerTotal = state.width - 3;
+        const leftWallW = Math.floor(innerTotal / 2) + (innerTotal % 2);
+        const rightWallW = Math.floor(innerTotal / 2);
+        const spans = [
+          { w: leftWallW, label: `-1 (${leftWallW})`, color: '#be185d' },
+          { w: 3, label: '3 (gate)', color: '#334155' },
+          { w: rightWallW, label: `-1 (${rightWallW})`, color: '#be185d' }
+        ];
+        let cursorX = ox;
+        for (const sp of spans) {
+          const pxW = sp.w * cellSize;
+          ctx.fillStyle = sp.color;
+          ctx.fillText(sp.label, cursorX + pxW / 2, oy + totalH + 16);
+          cursorX += pxW;
+        }
       } else {
-        ctx.fillText(`Width = ${state.width} (< 7 fallback)`, ox + totalW / 2, oy + totalH + 15);
+        ctx.fillStyle = '#92400e';
+        ctx.fillText(`Width = ${state.width} (≤ 9: continuous wall)`, ox + totalW / 2, oy + totalH + 16);
       }
     }
 
@@ -564,72 +579,60 @@
       const fired = lastResult.firedRules;
       const cards = [
         {
-          id: 'wall_wide',
-          label: '1. Constraint Gate (X & Y)',
-          active: fired.has('wall_wide'),
-          badge: fired.has('wall_wide') ? 'ACTIVE' : 'SKIPPED',
-          badgeCls: fired.has('wall_wide') ? 'fired' : 'skipped',
-          html: `<span class="kw">@rule</span>(constraint=<span class="dim">Dimension.X</span> &gt;= <span class="num">7</span>)
-<span class="kw">def</span> <span class="fn">wall</span>():
-  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]):
-    <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)
-    <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.Y</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]):
-      <span class="fn">fill</span>(<span class="const">COBBLESTONE</span>); <span class="fn">center</span>(); <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)
-    <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)`
-        },
-        {
-          id: 'wall_narrow',
-          label: 'Fallback Rule',
-          active: fired.has('wall_narrow'),
-          badge: fired.has('wall_narrow') ? 'ACTIVE' : 'SKIPPED',
-          badgeCls: fired.has('wall_narrow') ? 'fired' : 'skipped',
-          html: `<span class="kw">@rule</span>(constraint=<span class="const">Constraint.ELSE</span>)
-<span class="kw">def</span> <span class="fn">wall</span>():
-  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]): <span class="fn">fill</span>(<span class="const">OAK_LOG</span>); <span class="fn">fill</span>(<span class="const">COBBLESTONE</span>); <span class="fn">fill</span>(<span class="const">OAK_LOG</span>)`
-        },
-        {
-          id: 'center_rule',
-          label: '2. Interior Loop',
-          active: fired.has('center_loop') || fired.has('center_single'),
-          badge: state.repeatLoop ? 'REPEAT=TRUE' : 'SINGLE BAY',
+          id: 'wall_rule',
+          label: '1. Height & Battlement Loop',
+          active: fired.has('wall_loop') || fired.has('wall_flat'),
+          badge: state.repeatLoop ? 'REPEAT=TRUE' : 'FLAT TOP',
           badgeCls: state.repeatLoop ? 'fired' : 'variant',
           html: state.repeatLoop
             ? `<span class="kw">@rule</span>
-<span class="kw">def</span> <span class="fn">center</span>():
-  pieces = <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">3</span>], repeat=<span class="kw">True</span>)
-  <span class="kw">while</span> pieces: <span class="fn">bay</span>()`
+<span class="kw">def</span> <span class="fn">castle_wall</span>():
+  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.Y</span>, [<span class="num neg">-1</span>, <span class="num">1</span>]):
+    <span class="fn">lower_wall</span>()
+    pieces = <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">1</span>, <span class="num">1</span>], repeat=<span class="kw">True</span>)
+    <span class="kw">while</span> pieces: <span class="fn">fill</span>(<span class="const">COBBLESTONE</span>); <span class="fn">void</span>()`
             : `<span class="kw">@rule</span>
-<span class="kw">def</span> <span class="fn">center</span>():
-  <span class="fn">bay</span>()`
+<span class="kw">def</span> <span class="fn">castle_wall</span>():
+  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.Y</span>, [<span class="num neg">-1</span>, <span class="num">1</span>]):
+    <span class="fn">lower_wall</span>(); <span class="fn">fill</span>(<span class="const">COBBLESTONE</span>)`
         },
         {
-          id: 'bay_window',
-          label: '3a. Random Variant A',
-          active: fired.has('bay_window'),
-          badge: fired.has('bay_window') ? 'PICKED' : (lastResult.wideActive ? 'NOT PICKED' : 'SKIPPED'),
-          badgeCls: fired.has('bay_window') ? 'fired' : 'skipped',
-          html: `<span class="kw">@rule</span>(probability=<span class="num">0.5</span>, constraint=<span class="dim">Dimension.X</span> &gt;= <span class="num">3</span>)
-<span class="kw">def</span> <span class="fn">bay</span>():
-  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num">1</span>, <span class="num neg">-1</span>, <span class="num">1</span>]): <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>); <span class="fn">fill</span>(<span class="const">GLASS</span>); <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>)`
+          id: 'lower_gate',
+          label: '2a. Gate Constraint (Width > 9)',
+          active: fired.has('lower_gate'),
+          badge: fired.has('lower_gate') ? 'ACTIVE' : 'SKIPPED',
+          badgeCls: fired.has('lower_gate') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(constraint=<span class="dim">Dimension.X</span> &gt; <span class="num">9</span>)
+<span class="kw">def</span> <span class="fn">lower_wall</span>():
+  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num neg">-1</span>, <span class="num">3</span>, <span class="num neg">-1</span>]):
+    <span class="fn">wall_body</span>(); <span class="fn">gate</span>(); <span class="fn">wall_body</span>()`
         },
         {
-          id: 'bay_timber',
-          label: '3b. Random Variant B',
-          active: fired.has('bay_timber'),
-          badge: fired.has('bay_timber') ? 'PICKED' : (lastResult.wideActive ? 'NOT PICKED' : 'SKIPPED'),
-          badgeCls: fired.has('bay_timber') ? 'fired' : 'skipped',
-          html: `<span class="kw">@rule</span>(probability=<span class="num">0.5</span>, constraint=<span class="dim">Dimension.X</span> &gt;= <span class="num">3</span>)
-<span class="kw">def</span> <span class="fn">bay</span>():
-  <span class="kw">with</span> <span class="fn">split</span>(<span class="dim">Dimension.X</span>, [<span class="num neg">-1</span>, <span class="num">1</span>, <span class="num neg">-1</span>]): <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>); <span class="fn">fill</span>(<span class="const">OAK_LOG</span>); <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>)`
-        },
-        {
-          id: 'bay_narrow',
-          label: '3c. Remainder Filler',
-          active: fired.has('bay_narrow'),
-          badge: fired.has('bay_narrow') ? 'PICKED' : 'NOT NEEDED',
-          badgeCls: fired.has('bay_narrow') ? 'fired' : 'skipped',
+          id: 'lower_plain',
+          label: '2b. Plain Wall Fallback',
+          active: fired.has('lower_plain'),
+          badge: fired.has('lower_plain') ? 'ACTIVE' : 'SKIPPED',
+          badgeCls: fired.has('lower_plain') ? 'fired' : 'skipped',
           html: `<span class="kw">@rule</span>(constraint=<span class="const">Constraint.ELSE</span>)
-<span class="kw">def</span> <span class="fn">bay</span>(): <span class="fn">fill</span>(<span class="const">OAK_PLANKS</span>)`
+<span class="kw">def</span> <span class="fn">lower_wall</span>(): <span class="fn">wall_body</span>()`
+        },
+        {
+          id: 'body_cobble',
+          label: '3a. Variant A (Cobblestone)',
+          active: fired.has('body_cobble'),
+          badge: fired.has('body_cobble') ? 'PICKED' : 'NOT PICKED',
+          badgeCls: fired.has('body_cobble') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(probability=<span class="num">0.5</span>)
+<span class="kw">def</span> <span class="fn">wall_body</span>(): <span class="fn">fill</span>(<span class="const">COBBLESTONE</span>)`
+        },
+        {
+          id: 'body_mossy',
+          label: '3b. Variant B (Mossy Cobblestone)',
+          active: fired.has('body_mossy'),
+          badge: fired.has('body_mossy') ? 'PICKED' : 'NOT PICKED',
+          badgeCls: fired.has('body_mossy') ? 'fired' : 'skipped',
+          html: `<span class="kw">@rule</span>(probability=<span class="num">0.5</span>)
+<span class="kw">def</span> <span class="fn">wall_body</span>(): <span class="fn">fill</span>(<span class="const">MOSSY_COBBLESTONE</span>)`
         }
       ];
 
@@ -665,24 +668,20 @@
       dimBadge.textContent = `${state.width} × ${state.height}`;
       seedLabel.textContent = `Seed #${state.seed}`;
 
-      if (lastResult.wideActive) {
-        constraintPill.textContent = 'Width ≥ 7: Full Facade';
+      if (lastResult.gateActive) {
+        constraintPill.textContent = 'Width > 9: Gate in Middle';
         constraintPill.className = 'status-pill wide';
-        btnRegen.disabled = false;
-        const winCount = lastResult.bayResults.filter(b => b.variant === 'window').length;
-        const timCount = lastResult.bayResults.filter(b => b.variant === 'timber').length;
-        const remCount = lastResult.bayResults.filter(b => b.variant === 'narrow').length;
-        const parts = [`${lastResult.bayResults.length} bay${lastResult.bayResults.length > 1 ? 's' : ''}`];
-        if (winCount) parts.push(`${winCount} window`);
-        if (timCount) parts.push(`${timCount} timber`);
-        if (remCount) parts.push(`${remCount} filler`);
-        baySummary.textContent = parts.join(' · ');
       } else {
-        constraintPill.textContent = 'Width < 7: Else Fallback';
+        constraintPill.textContent = 'Width ≤ 9: Plain Wall';
         constraintPill.className = 'status-pill narrow';
-        btnRegen.disabled = true;
-        baySummary.textContent = 'Constraint.ELSE fired (no bays)';
       }
+      btnRegen.disabled = false;
+      const cobbleCount = lastResult.bayResults.filter(b => b.variant === 'cobble').length;
+      const mossyCount = lastResult.bayResults.filter(b => b.variant === 'mossy').length;
+      const parts = [state.repeatLoop ? 'Repeat [1, 1] top' : 'Flat top'];
+      if (cobbleCount) parts.push(`${cobbleCount} cobble`);
+      if (mossyCount) parts.push(`${mossyCount} mossy`);
+      baySummary.textContent = parts.join(' · ');
 
       buildRuleCards();
       renderCanvas();

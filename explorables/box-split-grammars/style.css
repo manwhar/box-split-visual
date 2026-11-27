@@ -53,50 +53,68 @@
   }
 }
 
-/* Slide 1: Paper Title Intro (matching s-paper-intro look) */
+/* Consistent top alignment and header baseline across Slides 1-4 */
+.slide.s-paper-intro,
+.slide.s-intro-hook,
+.slide.s-takeaway,
+.slide.s-possibilities {
+  padding: 44px 72px 42px;
+  justify-content: flex-start;
+}
+
+.slide.chapter {
+  padding: 44px 72px 32px;
+}
+
+/* Slide 1: Paper Title Intro */
 .slide.s-paper-intro {
   background: #ffffff;
-  justify-content: center;
 }
 
-.slide.s-paper-intro .kicker {
+.slide.s-paper-intro .kicker,
+.slide.s-intro-hook .kicker,
+.slide.s-takeaway .kicker,
+.slide.s-possibilities .kicker {
   font-family: var(--f-head);
-  font-size: 26px;
-  font-style: italic;
-  font-weight: 400;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--accent);
-  margin-bottom: 10px;
+  color: var(--blue-tone);
+  margin-bottom: 8px;
 }
 
-.slide.s-paper-intro h2 {
+.slide.s-paper-intro h2,
+.slide.s-intro-hook h2,
+.slide.s-takeaway h2,
+.slide.s-possibilities h2 {
   font-size: 52px;
   line-height: 1.15;
   color: var(--ink);
-  font-weight: 500;
-  max-width: 1420px;
+  font-weight: 700;
+  max-width: 1456px;
 }
 
 .slide.s-paper-intro .sub {
   font-size: 28px;
   color: var(--ink-3);
   margin-top: 12px;
-  padding-bottom: 20px;
+  padding-bottom: 22px;
   border-bottom: 1px solid var(--line);
   max-width: 1220px;
 }
 
 .slide.s-paper-intro .points {
-  margin-top: 34px;
+  margin-top: 44px;
   font-size: 34px;
-  line-height: 1.45;
+  line-height: 1.48;
   color: var(--ink-2);
-  max-width: 1320px;
+  max-width: 1340px;
 }
 
 .slide.s-paper-intro .points li {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 /* Slide 2.0 - 2.4: Choreographed full-stage interactive intro */
@@ -129,31 +147,10 @@
   border: 1px solid var(--line);
 }
 
-/* Slide 3: Post-Demo Takeaway + Python Anatomy */
-.slide.s-takeaway {
-  justify-content: center;
-}
-
-.slide.s-takeaway .kicker {
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--blue-tone);
-  margin-bottom: 6px;
-}
-
-.slide.s-takeaway h2 {
-  font-size: 52px;
-  font-weight: 800;
-  color: var(--ink);
-  line-height: 1.1;
-}
-
+/* Slide 4: Post-Demo Takeaway + Python Anatomy */
 .slide.s-takeaway .band {
-  margin-top: 14px;
-  margin-bottom: 18px;
+  margin-top: 18px;
+  margin-bottom: 22px;
   padding: 16px 24px;
   font-size: 26px;
   line-height: 1.32;
@@ -164,6 +161,7 @@
   grid-template-columns: 710px 1fr;
   gap: 24px;
   align-items: stretch;
+  flex: 1;
 }
 
 .code-card {
@@ -178,26 +176,14 @@
 
 .code-card-head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 14px 20px;
   background: var(--surface-2);
   border-bottom: 1px solid var(--line);
   font-family: var(--f-mono);
   font-size: 24px;
   font-weight: 600;
   color: var(--ink-2);
-}
-
-.code-badge {
-  font-family: var(--f-head);
-  font-size: 24px;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 2px 12px;
-  border-radius: 10px;
-  background: var(--blue-tint);
-  color: var(--blue-tone);
 }
 
 .code-steps {
@@ -290,28 +276,7 @@
   color: var(--ink-2);
 }
 
-/* Slide 6: Possibilities Showcase */
-.slide.s-possibilities {
-  justify-content: center;
-}
-
-.slide.s-possibilities .kicker {
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--blue-tone);
-  margin-bottom: 6px;
-}
-
-.slide.s-possibilities h2 {
-  font-size: 56px;
-  font-weight: 800;
-  color: var(--ink);
-  line-height: 1.12;
-}
-
+/* Slide 7: Possibilities Showcase */
 .slide.s-possibilities .lede {
   font-size: 28px;
   margin-top: 8px;
