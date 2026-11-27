@@ -2,7 +2,7 @@
   "format": 1,
   "title": "Instant Architecture with Box-Split Grammars",
   "description": "Procedural 3D architecture in Minecraft using split grammars expressed as native Python functions.",
-  "authors": ["Explorable Contributor"],
+  "authors": ["Manu Jhawar", "Michael Dudzinski"],
   "paper": {
     "title": "Instant Architecture in Minecraft using Box-Split Grammars",
     "authors": "Markus Eger",

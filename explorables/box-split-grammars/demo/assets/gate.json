@@ -1,0 +1,704 @@
+{
+  "format": "minecraft-mockup-2d",
+  "version": 1,
+  "name": "gate",
+  "cols": 7,
+  "rows": 12,
+  "settings": {
+    "bgBrightness": 0.62,
+    "shadowStrength": 0.72,
+    "shadowSpread": 1,
+    "autoConnectWalls": true,
+    "exportScale": 64,
+    "trimEmpty": false
+  },
+  "cells": [
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": {
+          "texture": "torch"
+        },
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": {
+          "texture": "cobblestone_wall"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "cobblestone_wall"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "cobblestone_wall"
+        },
+        "bg": {
+          "texture": "oak_planks"
+        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ]
+  ],
+  "savedAt": "2026-11-27T08:27:51.332466+00:00"
+}

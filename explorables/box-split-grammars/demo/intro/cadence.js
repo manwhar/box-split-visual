@@ -92,7 +92,7 @@ export async function streamPreparedChars(anim, token, prepared, plainHtml, cont
   });
 
   if (!anim.isCurrent(token)) return;
-  await anim.wait(120, token);
+  await anim.wait(160, token);
   if (!anim.isCurrent(token)) return;
   container.innerHTML = plainHtml;
 }

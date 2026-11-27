@@ -39,6 +39,7 @@ export const els = {
   bubbleBeak: document.getElementById('bubble-beak'),
   bubbleBody: document.getElementById('bubble-body'),
   dockBubble: document.getElementById('dock-bubble'),
+  dockBeak: document.getElementById('dock-beak'),
   dockBody: document.getElementById('dock-body'),
   marqueeBox: document.getElementById('marquee-box'),
   dragChip: document.getElementById('drag-chip'),
@@ -62,9 +63,9 @@ export function rectOf(el) {
   };
 }
 
-export function paddedRect(el, padX = 8, padY = 3) {
+export function paddedRect(el, padX = 8, padY = 3, padRight = padX) {
   const r = rectOf(el);
-  return { left: r.left - padX, top: r.top - padY, width: r.width + padX * 2, height: r.height + padY * 2 };
+  return { left: r.left - padX, top: r.top - padY, width: r.width + padX + padRight, height: r.height + padY * 2 };
 }
 
 export function setVisible(el, visible, opacity = visible ? 1 : 0) {
@@ -113,50 +114,58 @@ export function placeBubbleForStep(step) {
   if (step === 1) {
     const gr = rectOf(els.wordGrammar);
     const width = 720;
-    const left = clamp(gr.cx - width * 0.56, 80, 1600 - 80 - width);
-    const top = gr.bottom + 26;
+    const left = Math.round(clamp(gr.cx - width * 0.56, 80, 1600 - 80 - width));
+    const top = Math.round(gr.bottom + 26);
+    const beakLeft = Math.round(clamp(gr.cx - left - 8, 28, width - 48));
     els.defBubble.style.width = `${width}px`;
     els.defBubble.style.left = `${left}px`;
     els.defBubble.style.top = `${top}px`;
+    els.defBubble.style.transformOrigin = `${beakLeft + 8}px 0px`;
     els.defBubble.style.transform = 'scale(1)';
     els.bubbleBody.innerHTML = BUBBLE_COPY[1];
     els.bubbleBeak.className = 'bubble-beak top';
-    els.bubbleBeak.style.left = `${clamp(gr.cx - left - 8, 28, width - 48)}px`;
+    els.bubbleBeak.style.left = `${beakLeft}px`;
     els.bubbleBeak.style.top = '-10px';
     els.bubbleBeak.style.opacity = '1';
   } else if (step === 2) {
     const bsgRect = rectOf(els.phraseBsg);
     const left = 848;
     const width = 640;
-    const top = bsgRect.right > left + 32 ? 186 : 162;
+    const top = bsgRect.right > left + 32 ? Math.round(bsgRect.bottom + 26) : 162;
     els.defBubble.style.width = `${width}px`;
     els.defBubble.style.left = `${left}px`;
     els.defBubble.style.top = `${top}px`;
     els.defBubble.style.transform = 'scale(1)';
     els.bubbleBody.innerHTML = BUBBLE_COPY[2];
     if (bsgRect.right > left + 32) {
+      const overlapCx = (Math.max(bsgRect.left, left) + Math.min(bsgRect.right, left + width)) / 2;
+      const beakLeft = Math.round(clamp(overlapCx - left - 8, 28, width - 48));
       els.bubbleBeak.className = 'bubble-beak top';
-      els.bubbleBeak.style.left = `${clamp(bsgRect.right - 30 - left, 24, 200)}px`;
+      els.bubbleBeak.style.left = `${beakLeft}px`;
       els.bubbleBeak.style.top = '-10px';
+      els.defBubble.style.transformOrigin = `${beakLeft + 8}px 0px`;
     } else {
       els.bubbleBeak.className = 'bubble-beak left';
       els.bubbleBeak.style.left = '-10px';
       els.bubbleBeak.style.top = '20px';
+      els.defBubble.style.transformOrigin = '0px 28px';
     }
     els.bubbleBeak.style.opacity = '1';
   } else if (step === 3) {
     const ntRect = rectOf(els.wordNonterminal);
     const left = 848;
     const width = 650;
-    const top = clamp(ntRect.cy - 68, 184, 480);
+    const top = Math.round(clamp(ntRect.cy - 68, 184, 480));
+    const beakTop = Math.round(clamp(ntRect.cy - top - 8, 26, 130));
     els.defBubble.style.width = `${width}px`;
     els.defBubble.style.left = `${left}px`;
     els.defBubble.style.top = `${top}px`;
+    els.defBubble.style.transformOrigin = `0px ${beakTop + 8}px`;
     els.defBubble.style.transform = 'scale(1)';
     els.bubbleBody.innerHTML = BUBBLE_COPY[3];
     els.bubbleBeak.className = 'bubble-beak left';
     els.bubbleBeak.style.left = '-10px';
-    els.bubbleBeak.style.top = `${clamp(ntRect.cy - top - 8, 26, 130)}px`;
+    els.bubbleBeak.style.top = `${beakTop}px`;
     els.bubbleBeak.style.opacity = '1';
   }
 }
@@ -173,12 +182,20 @@ export function resetOverlays(onClearInteractive) {
   els.dockBubble.style.backgroundColor = '';
   els.dockBubble.style.color = '';
   els.dockBubble.style.boxShadow = '';
+  els.dockBeak.style.opacity = '0';
+  els.dockBeak.style.transform = '';
   els.dockBody.innerHTML = '';
   setVisible(els.marqueeBox, false, 0);
+  els.wallExample.style.transform = '';
+  els.wallExample.querySelectorAll('.castle-piece, .castle-cut').forEach((el) => {
+    el.style.opacity = '';
+  });
   setVisible(els.dragChip, false, 0);
+  els.dragChip.style.transform = '';
   setVisible(els.cursorRipple, false, 0);
   els.pythonBand.style.minWidth = '';
   els.pythonBand.style.width = '';
+  els.pythonBand.style.transform = '';
   els.typingCaret.classList.remove('is-blinking');
   els.replayBtn.classList.remove('is-visible');
   onClearInteractive?.();
@@ -207,39 +224,60 @@ export async function dockBubbleIntoBullet(anim, bulletEl, token) {
     : els.bubbleBody.innerHTML;
 
   els.dockBody.innerHTML =
-    `<span class="dock-marker" aria-hidden="true">•</span>` +
+    `<span class="dock-marker" aria-hidden="true"></span>` +
     `<span class="dock-label">${labelEl ? labelEl.innerHTML : ''}</span>` +
     `<span class="dock-text">${safeBodyHtml}</span>`;
 
   const markerEl = els.dockBody.querySelector('.dock-marker');
   const dockLabelEl = els.dockBody.querySelector('.dock-label');
 
+  const isLeftBeak = els.bubbleBeak.classList.contains('left');
+  if (isLeftBeak) {
+    els.dockBeak.className = 'bubble-beak left';
+    els.dockBeak.style.left = '-8px';
+    els.dockBeak.style.top = `${(parseFloat(els.bubbleBeak.style.top) || 20) + 2}px`;
+  } else {
+    els.dockBeak.className = 'bubble-beak top';
+    els.dockBeak.style.top = '-8px';
+    els.dockBeak.style.left = `${(parseFloat(els.bubbleBeak.style.left) || 28) + 2}px`;
+  }
+  const beakDeg = isLeftBeak ? -45 : 45;
+  els.dockBeak.style.opacity = '1';
+  els.dockBeak.style.transform = `rotate(${beakDeg}deg) scale(1)`;
+
   els.dockBubble.style.left = `${fromRect.left}px`;
   els.dockBubble.style.top = `${fromRect.top}px`;
   els.dockBubble.style.width = `${fromRect.width}px`;
-  els.dockBubble.style.padding = '20px 26px';
-  els.dockBubble.style.borderWidth = '2px';
+  els.dockBubble.style.padding = '22px 28px';
   els.dockBubble.style.borderRadius = '20px';
   els.dockBubble.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+  els.dockBubble.style.boxShadow =
+    'inset 0 0 0 2px rgba(61, 99, 191, 1), 0 18px 44px rgba(30, 39, 66, 0.18), 0 4px 12px rgba(61, 99, 191, 0.10)';
   els.dockBubble.style.color = 'rgb(30, 39, 66)';
   els.dockBubble.style.transform = 'none';
   setVisible(els.dockBubble, true, 1);
   setVisible(els.defBubble, false, 0);
 
-  await anim.animate(1150, token, (t) => {
-    // Finish all spatial/box/label interpolation by t = 0.86 so final cross-fade aligns to 0px
-    const geoP = easeInOutCubic(clamp(t / 0.86, 0, 1));
+  await anim.animate(980, token, (t) => {
+    const geoP = easeInOutCubic(t);
     els.dockBubble.style.left = `${lerp(fromRect.left, toRect.left, geoP)}px`;
     els.dockBubble.style.top = `${lerp(fromRect.top, toRect.top, geoP)}px`;
     els.dockBubble.style.width = `${lerp(fromRect.width, toRect.width, geoP)}px`;
-    els.dockBubble.style.padding = `${lerp(20, 0, geoP)}px ${lerp(26, 0, geoP)}px`;
-    els.dockBubble.style.borderWidth = `${lerp(2, 0, geoP)}px`;
+    els.dockBubble.style.padding = `${lerp(22, 0, geoP)}px ${lerp(28, 0, geoP)}px`;
     els.dockBubble.style.borderRadius = `${lerp(20, 0, geoP)}px`;
 
-    const chromeFade = clamp(1 - geoP * 1.4, 0, 1);
+    const beakP = clamp(1 - t / 0.22, 0, 1);
+    const beakTuck = (1 - beakP) * 7;
+    const beakShift = isLeftBeak ? `translateX(${beakTuck}px)` : `translateY(${beakTuck}px)`;
+    els.dockBeak.style.opacity = String(clamp(beakP * 1.6, 0, 1));
+    els.dockBeak.style.transform = `${beakShift} rotate(${beakDeg}deg) scale(${lerp(0.4, 1, beakP)})`;
+
+    const chromeFade = clamp(1 - geoP * 1.45, 0, 1);
     els.dockBubble.style.backgroundColor = `rgba(255, 255, 255, ${1 - geoP})`;
-    els.dockBubble.style.borderColor = `rgba(61, 99, 191, ${chromeFade})`;
-    els.dockBubble.style.boxShadow = `0 18px 44px rgba(30, 39, 66, ${0.18 * chromeFade})`;
+    els.dockBubble.style.boxShadow =
+      chromeFade > 0.001
+        ? `inset 0 0 0 2px rgba(61, 99, 191, ${chromeFade}), 0 18px 44px rgba(30, 39, 66, ${0.18 * chromeFade}), 0 4px 12px rgba(61, 99, 191, ${0.10 * chromeFade})`
+        : 'none';
 
     const r = Math.round(lerp(30, 74, geoP));
     const g = Math.round(lerp(39, 84, geoP));
@@ -247,28 +285,31 @@ export async function dockBubbleIntoBullet(anim, bulletEl, token) {
     els.dockBubble.style.color = `rgb(${r}, ${g}, ${b})`;
 
     if (dockLabelEl) {
-      const lp = easeInOutCubic(clamp((t - 0.10) / 0.62, 0, 1));
-      dockLabelEl.style.width = lp >= 0.999 ? 'auto' : `${targetLabelWidth * lp}px`;
-      dockLabelEl.style.opacity = String(clamp((lp - 0.15) / 0.85, 0, 1));
+      const lp = easeInOutCubic(clamp((t - 0.05) / 0.85, 0, 1));
+      if (lp >= 0.999) {
+        dockLabelEl.style.width = 'auto';
+        dockLabelEl.style.opacity = '1';
+        dockLabelEl.style.clipPath = 'none';
+      } else {
+        dockLabelEl.style.width = `${targetLabelWidth * lp}px`;
+        dockLabelEl.style.opacity = String(clamp((lp - 0.12) / 0.88, 0, 1));
+        dockLabelEl.style.clipPath = 'inset(-8px 0 -8px 0)';
+      }
     }
     if (markerEl) {
-      markerEl.style.opacity = String(clamp((geoP - 0.55) / 0.38, 0, 1));
+      const mp = easeOutCubic(clamp((geoP - 0.58) / 0.36, 0, 1));
+      markerEl.style.opacity = String(mp);
+      markerEl.style.transform = `scale(${lerp(0.5, 1, mp)})`;
     }
 
-    if (t < 0.86) {
-      els.dockBubble.style.opacity = '1';
-      setVisible(bulletEl, false, 0);
-    } else {
-      const cross = (t - 0.86) / 0.14;
-      els.dockBubble.style.opacity = String(1 - cross);
-      setVisible(bulletEl, true, cross);
-    }
+    els.dockBubble.style.opacity = '1';
+    setVisible(bulletEl, false, 0);
   });
 
   if (!anim.isCurrent(token)) return;
+  setVisible(bulletEl, true, 1);
   setVisible(els.dockBubble, false, 0);
   els.dockBody.innerHTML = '';
-  setVisible(bulletEl, true, 1);
 }
 
 export function applyStaticState(step, { onEnableInteractive, onClearInteractive } = {}) {
@@ -292,7 +333,7 @@ export function applyStaticState(step, { onEnableInteractive, onClearInteractive
     setPaperState({ visible: true, opacity: 0.28, blur: 1.5, y: 14, scale: 0.96 });
     const gr = rectOf(els.wordGrammar);
     els.wordGrammar.classList.add('is-highlighted');
-    setHighlightBox(paddedRect(els.wordGrammar, 8, 3), 1);
+    setHighlightBox(paddedRect(els.wordGrammar, 8, 3, 2), 1);
     placeBubbleForStep(1);
     setVisible(els.defBubble, true, 1);
     setCursor(gr.right - 18, gr.top + gr.height * 0.44, { mode: 'pointer', opacity: 1 });
@@ -301,7 +342,7 @@ export function applyStaticState(step, { onEnableInteractive, onClearInteractive
     const bs = rectOf(els.wordBoxSplit);
     els.wordBoxSplit.classList.add('is-highlighted');
     els.wordGrammar.classList.add('is-highlighted');
-    setHighlightBox(paddedRect(els.phraseBsg, 8, 3), 1);
+    setHighlightBox(paddedRect(els.phraseBsg, 8, 3, 2), 1);
     placeBubbleForStep(2);
     setVisible(els.defBubble, true, 1);
     setCursor(bs.cx + 4, bs.cy + 10, { mode: 'pointer', opacity: 1 });
@@ -309,7 +350,7 @@ export function applyStaticState(step, { onEnableInteractive, onClearInteractive
     setPaperState({ visible: false, opacity: 0 });
     const nt = rectOf(els.wordNonterminal);
     els.wordNonterminal.classList.add('is-highlighted');
-    setHighlightBox(paddedRect(els.wordNonterminal, 5, 2), 1);
+    setHighlightBox(paddedRect(els.wordNonterminal, 6, 2), 1);
     placeBubbleForStep(3);
     setVisible(els.defBubble, true, 1);
     setCursor(nt.right - 8, nt.bottom - 4, { mode: 'pointer', opacity: 1 });

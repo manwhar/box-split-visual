@@ -32,7 +32,7 @@ async function revealHighlight(anim, token, wordEl, targetHl, durationMs = 320) 
   });
 }
 
-async function popBubble(anim, token, step, axis = 'Y', offset = -14) {
+async function popBubble(anim, token, step, axis = 'Y', offset = -8) {
   placeBubbleForStep(step);
   const plainHtml = BUBBLE_COPY[step];
   const prepared = prepareStreamableHtml(els.bubbleBody, plainHtml);
@@ -56,7 +56,7 @@ export async function playStep1(anim, token) {
   const startY = 470;
   const endX = gr.right - 18;
   const endY = gr.top + gr.height * 0.44;
-  const targetHl = paddedRect(els.wordGrammar, 8, 3);
+  const targetHl = paddedRect(els.wordGrammar, 8, 3, 2);
 
   await anim.wait(220, token);
   if (!anim.isCurrent(token)) return;
@@ -85,12 +85,12 @@ export async function playStep1(anim, token) {
 
   await anim.wait(240, token);
   if (!anim.isCurrent(token)) return;
-  await popBubble(anim, token, 1, 'Y', -14);
+  await popBubble(anim, token, 1, 'Y', -8);
 }
 
 export async function playStep2(anim, token) {
-  const fromHl = paddedRect(els.wordGrammar, 8, 3);
-  const toHl = paddedRect(els.phraseBsg, 8, 3);
+  const fromHl = paddedRect(els.wordGrammar, 8, 3, 2);
+  const toHl = paddedRect(els.phraseBsg, 8, 3, 2);
   const gr = rectOf(els.wordGrammar);
   const bs = rectOf(els.wordBoxSplit);
   const startX = gr.right - 18;
@@ -138,14 +138,14 @@ export async function playStep2(anim, token) {
 
   await anim.wait(320, token);
   if (!anim.isCurrent(token)) return;
-  await popBubble(anim, token, 2, 'Y', -14);
+  await popBubble(anim, token, 2, 'Y', -8);
 }
 
 export async function playStep3(anim, token) {
-  const fromHl = paddedRect(els.phraseBsg, 8, 3);
+  const fromHl = paddedRect(els.phraseBsg, 8, 3, 2);
   const bs = rectOf(els.wordBoxSplit);
   const nt = rectOf(els.wordNonterminal);
-  const toHl = paddedRect(els.wordNonterminal, 5, 2);
+  const toHl = paddedRect(els.wordNonterminal, 6, 2);
   const startX = bs.cx + 4;
   const startY = bs.cy + 10;
   const endX = nt.right - 8;
@@ -184,7 +184,7 @@ export async function playStep3(anim, token) {
 
   await anim.wait(260, token);
   if (!anim.isCurrent(token)) return;
-  await popBubble(anim, token, 3, 'X', -16);
+  await popBubble(anim, token, 3, 'X', -10);
 }
 
 async function beatTypePythonCallout(anim, token, fromPos, pyBoxRect) {
@@ -203,10 +203,17 @@ async function beatTypePythonCallout(anim, token, fromPos, pyBoxRect) {
   triggerRipple(anim, typeStartX, typeY, token);
   setPythonFullText(0);
   els.pythonBand.style.minWidth = '78px';
-  setVisible(els.pythonBand, true, 1);
   els.typingCaret.classList.add('is-blinking');
+  await anim.animate(180, token, (t) => {
+    const e = easeOutCubic(t);
+    setVisible(els.pythonBand, true, e);
+    els.pythonBand.style.transform = `scale(${lerp(0.97, 1, e)})`;
+  });
+  if (!anim.isCurrent(token)) return null;
+  setVisible(els.pythonBand, true, 1);
+  els.pythonBand.style.transform = '';
 
-  await anim.wait(340, token);
+  await anim.wait(160, token);
   if (!anim.isCurrent(token)) return null;
 
   await streamStringWithCadence(anim, token, PYTHON_LINE, (count) => {
@@ -269,20 +276,53 @@ async function beatMarqueeCastleExample(anim, token, fromPos) {
   els.codeDropSlot.classList.add('is-empty');
   setVisible(els.codeSnippetText, false, 0);
 
-  await anim.animate(460, token, (t) => {
-    const e = easeOutCubic(t);
-    setVisible(els.marqueeBox, true, 1 - e);
-    setVisible(els.wallExample, true, e);
-  });
-  if (!anim.isCurrent(token)) return null;
-  setVisible(els.marqueeBox, false, 0);
+  const castlePieces = [...els.wallExample.querySelectorAll('.castle-piece')];
+  const castleCuts = [...els.wallExample.querySelectorAll('.castle-cut')];
+  const clearCastleInlineOpacity = () => {
+    castlePieces.forEach((p) => { p.style.opacity = ''; });
+    castleCuts.forEach((c) => { c.style.opacity = ''; });
+  };
+  castlePieces.forEach((p) => { p.style.opacity = '0'; });
+  castleCuts.forEach((c) => { c.style.opacity = '0'; });
 
-  return { x: dragEndX, y: dragEndY };
+  try {
+    await anim.animate(460, token, (t) => {
+      const e = easeOutCubic(t);
+      setVisible(els.marqueeBox, true, 1 - e);
+      setVisible(els.wallExample, true, e);
+      els.wallExample.style.transform = `scale(${lerp(0.985, 1, e)})`;
+    });
+    if (!anim.isCurrent(token)) return null;
+    els.wallExample.style.transform = '';
+    setVisible(els.marqueeBox, false, 0);
+
+    // Fade in the 5 castle pieces (tower, wall, gate, wall, tower) 1s each -> 5s total
+    for (let i = 0; i < castlePieces.length; i++) {
+      const piece = castlePieces[i];
+      const cut = i > 0 ? castleCuts[i - 1] : null;
+      await anim.animate(1000, token, (t) => {
+        const e = easeOutCubic(t);
+        piece.style.opacity = String(e);
+        if (cut) cut.style.opacity = String(clamp(e * 1.4, 0, 1));
+      });
+      if (!anim.isCurrent(token)) return null;
+      piece.style.opacity = '';
+      if (cut) cut.style.opacity = '';
+    }
+
+    clearCastleInlineOpacity();
+    return { x: dragEndX, y: dragEndY };
+  } finally {
+    if (!anim.isCurrent(token)) {
+      els.wallExample.style.transform = '';
+      clearCastleInlineOpacity();
+    }
+  }
 }
 
 async function beatDragPythonRule(anim, token, fromPos) {
   const pyWordRect = rectOf(els.wordPython);
-  const pyHlRect = paddedRect(els.wordPython, 5, 2);
+  const pyHlRect = paddedRect(els.wordPython, 6, 2);
   const pickX = pyWordRect.cx;
   const pickY = pyWordRect.cy + 4;
 
@@ -303,21 +343,25 @@ async function beatDragPythonRule(anim, token, fromPos) {
 
   triggerRipple(anim, pickX, pickY, token);
   setCursor(pickX, pickY, { mode: 'pointer', opacity: 1, scale: 0.9 });
-  const chipStartLeft = pyWordRect.left - 10;
-  const chipStartTop = pyWordRect.top - 5;
+  const chipW = els.dragChip.offsetWidth;
+  const chipH = els.dragChip.offsetHeight;
+  const chipStartLeft = pyWordRect.cx - chipW / 2;
+  const chipStartTop = pyWordRect.cy - chipH / 2;
   els.dragChip.style.left = `${chipStartLeft}px`;
   els.dragChip.style.top = `${chipStartTop}px`;
-  els.dragChip.style.transform = 'translate(0px, 0px) scale(1.05)';
-  setVisible(els.dragChip, true, 1);
 
-  await anim.wait(160, token);
+  await anim.animate(160, token, (t) => {
+    const e = easeOutCubic(t);
+    setVisible(els.dragChip, true, e);
+    els.dragChip.style.transform = `translate(0px, 0px) scale(${lerp(0.96, 1.05, e)})`;
+  });
   if (!anim.isCurrent(token)) return;
 
   const slotRect = rectOf(els.codeDropSlot);
   const dropTargetX = slotRect.left + slotRect.width * 0.42;
   const dropTargetY = slotRect.cy;
-  const chipDx = (dropTargetX - 54) - chipStartLeft;
-  const chipDy = (dropTargetY - 21) - chipStartTop;
+  const chipDx = (dropTargetX - chipW / 2) - chipStartLeft;
+  const chipDy = (dropTargetY - chipH / 2) - chipStartTop;
 
   await anim.animate(1380, token, (t) => {
     const e = easeInOutCubic(t);
@@ -344,6 +388,7 @@ async function beatDragPythonRule(anim, token, fromPos) {
   await anim.animate(480, token, (t) => {
     const e = easeOutCubic(t);
     setVisible(els.dragChip, true, 1 - e);
+    els.dragChip.style.transform = `translate(${chipDx}px, ${chipDy}px) scale(${lerp(1, 0.94, e)})`;
     setVisible(els.codeSnippetText, true, e);
     setHighlightBox(pyHlRect, 1 - e);
     setVisible(els.simCursor, true, 1 - clamp((t - 0.25) / 0.75, 0, 1));
@@ -351,6 +396,7 @@ async function beatDragPythonRule(anim, token, fromPos) {
   if (!anim.isCurrent(token)) return;
 
   setVisible(els.dragChip, false, 0);
+  els.dragChip.style.transform = '';
   setVisible(els.codeSnippetText, true, 1);
   setVisible(els.highlightPill, false, 0);
   setVisible(els.simCursor, false, 0);
@@ -358,7 +404,7 @@ async function beatDragPythonRule(anim, token, fromPos) {
 
 export async function playStep4(anim, token, onComplete) {
   const nt = rectOf(els.wordNonterminal);
-  const ntHl = paddedRect(els.wordNonterminal, 5, 2);
+  const ntHl = paddedRect(els.wordNonterminal, 6, 2);
 
   setPythonFullText(PYTHON_LINE.length);
   els.pythonBand.style.width = '';
