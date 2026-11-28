@@ -28,8 +28,8 @@
     html, body {
       margin: 0;
       padding: 0;
-      width: 1454px;
-      height: 704px;
+      width: 1290px;
+      height: 380px;
       overflow: hidden;
       background: var(--bg);
       color: var(--ink);
@@ -39,12 +39,12 @@
     }
 
     .rules-stage {
-      width: 1454px;
-      height: 704px;
-      padding: 22px 28px;
+      width: 1290px;
+      height: 380px;
+      padding: 16px 18px;
       display: grid;
-      grid-template-columns: 516px 220px 614px;
-      gap: 24px;
+      grid-template-columns: 460px 222px 536px;
+      gap: 18px;
       align-items: center;
     }
 
@@ -55,13 +55,13 @@
     }
 
     .col-caption {
-      height: 28px;
-      margin-bottom: 10px;
+      height: 26px;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       padding-left: 4px;
       font-family: var(--f-head);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       letter-spacing: 0.02em;
       color: var(--ink-2);
@@ -69,14 +69,14 @@
 
     .col-caption code {
       font-family: var(--f-mono);
-      font-size: 19px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--ink);
     }
 
     .wall-card,
     .grammar-panel {
-      height: 612px;
+      height: 314px;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 20px;
@@ -84,7 +84,7 @@
     }
 
     .wall-card {
-      padding: 20px;
+      padding: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -92,8 +92,8 @@
 
     #wall-canvas {
       display: block;
-      width: 476px;
-      height: 560px;
+      width: 436px;
+      height: 282px;
       cursor: default;
     }
 
@@ -102,19 +102,19 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 16px;
-      padding-top: 38px;
+      gap: 12px;
+      padding-top: 34px;
     }
 
     .control-card {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 14px 16px;
+      padding: 12px 14px;
       box-shadow: var(--shadow);
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .control-head {
@@ -148,33 +148,12 @@
     }
 
     .threshold-bar {
-      display: grid;
-      grid-template-columns: auto 1fr 1fr auto;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 6px;
       font-family: var(--f-mono);
       font-size: 11px;
       color: var(--ink-3);
-    }
-
-    .threshold-pill {
-      text-align: center;
-      padding: 2px 5px;
-      border-radius: 5px;
-      font-weight: 600;
-      background: #f1f5f9;
-      color: #64748b;
-      transition: background-color 0.16s ease, color 0.16s ease;
-    }
-
-    .threshold-pill.is-solid.is-active {
-      background: #dcfce7;
-      color: #15803d;
-    }
-
-    .threshold-pill.is-gate.is-active {
-      background: #dbeafe;
-      color: #1d4ed8;
     }
 
     .btn-group {
@@ -187,10 +166,11 @@
     }
 
     .btn-tab {
-      flex: 1;
-      padding: 8px 6px;
+      flex: 1 1 auto;
+      white-space: nowrap;
+      padding: 8px 8px;
       font-family: var(--f-head);
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 600;
       border: 0;
       border-radius: 7px;
@@ -248,8 +228,8 @@
     .variant-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 7px 9px;
+      gap: 7px;
+      padding: 6px 8px;
       border-radius: 10px;
       border: 1px solid #e2e8f0;
       background: #f8fafc;
@@ -264,8 +244,8 @@
     }
 
     .variant-swatch {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
       border-radius: 4px;
       border: 1px solid rgba(15, 23, 42, 0.16);
       image-rendering: pixelated;
@@ -275,21 +255,22 @@
     .variant-name {
       flex: 1;
       font-family: var(--f-head);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--ink);
+      white-space: nowrap;
     }
 
     .variant-prob {
       font-family: var(--f-mono);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
       color: #b45309;
     }
 
     /* Right Column: Clean Single-File castle_wall.py Panel */
     .grammar-panel {
-      padding: 22px 22px;
+      padding: 14px 16px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -301,17 +282,17 @@
       display: flex;
       flex-direction: column;
       font-family: var(--f-mono);
-      font-size: 16.5px;
+      font-size: 14.5px;
       line-height: 1.42;
       color: #1e293b;
     }
 
     .code-gap {
-      height: 14px;
+      height: 9px;
     }
 
     .code-line {
-      padding: 2px 10px;
+      padding: 2px 8px;
       border-radius: 6px;
       border-left: 3.5px solid transparent;
       white-space: pre;
@@ -381,7 +362,7 @@
       evaluateLoopsWall,
       evaluateVariantsWall,
       nextDistinctSeed
-    } from './rules_engine.js?v=5';
+    } from './rules_engine.js?v=6';
 
     const params = new URLSearchParams(location.search);
     const rawMode = params.get('mode') || 'constraints';
@@ -395,7 +376,7 @@
     const con = (s) => `<span class="const">${s}</span>`;
     const sp = (n) => '&nbsp;'.repeat(n);
 
-    const CELL_PX = 31;
+    const CELL_PX = 28;
 
     const canvas = document.getElementById('wall-canvas');
     const ctx = canvas.getContext('2d');
@@ -714,13 +695,11 @@
         card.innerHTML = `
           <div class="control-head">
             <span class="control-label">Width (X)</span>
-            <span class="control-val" id="width-val">${state.width} blocks</span>
+            <span class="control-val" id="width-val">${state.width} Blocks</span>
           </div>
           <input type="range" id="slider-width" min="6" max="15" step="1" value="${state.width}" aria-label="Wall width in blocks">
           <div class="threshold-bar">
             <span>6</span>
-            <span class="threshold-pill is-solid" id="pill-solid">&le; 9 solid</span>
-            <span class="threshold-pill is-gate is-active" id="pill-gate">&gt; 9 gate</span>
             <span>15</span>
           </div>
         `;
@@ -749,7 +728,7 @@
         widthCard.innerHTML = `
           <div class="control-head">
             <span class="control-label">Width (X)</span>
-            <span class="control-val" id="width-val">${state.width} blocks</span>
+            <span class="control-val" id="width-val">${state.width} Blocks</span>
           </div>
           <input type="range" id="slider-width" min="7" max="15" step="1" value="${state.width}" aria-label="Wall width in blocks">
         `;
@@ -797,8 +776,8 @@
 
         const listEl = document.getElementById('variant-list');
         const rows = [
-          { tag: 'v_bricks', lineId: 'v-dec-bricks', mat: 'stone_bricks', name: 'Stone Bricks', prob: '0.60' },
-          { tag: 'v_mossy', lineId: 'v-dec-mossy', mat: 'mossy_cobblestone', name: 'Mossy Stone', prob: '0.25' },
+          { tag: 'v_bricks', lineId: 'v-dec-bricks', mat: 'stone_bricks', name: 'Stone Brick', prob: '0.60' },
+          { tag: 'v_mossy', lineId: 'v-dec-mossy', mat: 'mossy_cobblestone', name: 'Mossy Cobblestone', prob: '0.25' },
           { tag: 'v_cobble', lineId: 'v-dec-cobble', mat: 'cobblestone', name: 'Cobblestone', prob: '0.15' }
         ];
 
@@ -999,8 +978,8 @@
 
     function renderCanvas() {
       if (!state.isVisible) return;
-      const cw = canvas.clientWidth || 476;
-      const ch = canvas.clientHeight || 560;
+      const cw = canvas.clientWidth || 436;
+      const ch = canvas.clientHeight || 282;
       const targetW = Math.round(cw * state.detailScale);
       const targetH = Math.round(ch * state.detailScale);
       if (canvas.width !== targetW) canvas.width = targetW;
@@ -1163,16 +1142,7 @@
       currentEval = evaluateState();
 
       const widthVal = document.getElementById('width-val');
-      if (widthVal) widthVal.textContent = `${state.width} blocks`;
-
-      if (MODE === 'constraints') {
-        const pillSolid = document.getElementById('pill-solid');
-        const pillGate = document.getElementById('pill-gate');
-        if (pillSolid && pillGate) {
-          pillSolid.classList.toggle('is-active', !currentEval.gateActive);
-          pillGate.classList.toggle('is-active', currentEval.gateActive);
-        }
-      }
+      if (widthVal) widthVal.textContent = `${state.width} Blocks`;
 
       renderCodeLines();
       syncRuleHighlightStyles();
@@ -1181,8 +1151,8 @@
 
     function resolveCanvasHit(clientX, clientY) {
       const r = canvas.getBoundingClientRect();
-      const cw = canvas.clientWidth || 476;
-      const ch = canvas.clientHeight || 560;
+      const cw = canvas.clientWidth || 436;
+      const ch = canvas.clientHeight || 282;
       const scaleX = cw / r.width;
       const scaleY = ch / r.height;
       const localX = (clientX - r.left) * scaleX;

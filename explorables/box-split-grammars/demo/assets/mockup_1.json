@@ -1,0 +1,758 @@
+{
+  "format": "minecraft-mockup-2d",
+  "version": 1,
+  "name": "mockup_1",
+  "cols": 12,
+  "rows": 10,
+  "settings": {
+    "bgBrightness": 0.62,
+    "shadowStrength": 0.72,
+    "shadowSpread": 1,
+    "autoConnectWalls": true,
+    "exportScale": 64,
+    "trimEmpty": false
+  },
+  "cells": [
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ]
+  ],
+  "savedAt": "2026-11-28T01:36:01.154346+00:00"
+}

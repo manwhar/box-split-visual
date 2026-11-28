@@ -212,7 +212,7 @@ export function evaluateLoopsWall(width, repeatLoop = true, height = 6) {
     for (let x = 0; x < width; x++) {
       cells.push({ x, y: 0, fg: 'stone_bricks', bg: null, scopeTag: 'l_flat' });
     }
-    topLabels.push({ x: 0, w: width, text: `Flat top (1 × ${width})` });
+    topLabels.push({ x: 0, w: width, text: `Flat (1 × ${width})` });
   }
 
   return {

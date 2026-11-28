@@ -243,14 +243,6 @@
       {
         "fg": null,
         "bg": null,
-        "fgDecor": {
-          "texture": "torch"
-        },
-        "bgDecor": null
-      },
-      {
-        "fg": null,
-        "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
@@ -269,9 +261,13 @@
       {
         "fg": null,
         "bg": null,
-        "fgDecor": {
-          "texture": "torch"
-        },
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": null,
+        "bg": null,
+        "fgDecor": null,
         "bgDecor": null
       },
       {
@@ -397,26 +393,26 @@
         "bgDecor": null
       },
       {
-        "fg": null,
-        "bg": {
+        "fg": {
           "texture": "stone_bricks"
         },
+        "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
       {
-        "fg": null,
-        "bg": {
+        "fg": {
           "texture": "stone_bricks"
         },
+        "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
       {
-        "fg": null,
-        "bg": {
+        "fg": {
           "texture": "stone_bricks"
         },
+        "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
@@ -463,50 +459,16 @@
         "bgDecor": null
       },
       {
-        "fg": null,
-        "bg": {
+        "fg": {
           "texture": "stone_bricks"
         },
+        "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
-      {
-        "fg": null,
-        "bg": {
-          "texture": "stone_bricks"
-        },
-        "fgDecor": null,
-        "bgDecor": null
-      },
-      {
-        "fg": null,
-        "bg": {
-          "texture": "cobblestone"
-        },
-        "fgDecor": null,
-        "bgDecor": null
-      },
-      {
-        "fg": null,
-        "bg": {
-          "texture": "cobblestone"
-        },
-        "fgDecor": null,
-        "bgDecor": null
-      },
-      {
-        "fg": null,
-        "bg": {
-          "texture": "stone_bricks"
-        },
-        "fgDecor": null,
-        "bgDecor": null
-      }
-    ],
-    [
       {
         "fg": {
-          "texture": "cobblestone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
@@ -522,39 +484,15 @@
       },
       {
         "fg": {
-          "texture": "cobblestone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
       {
-        "fg": null,
-        "bg": {
-          "texture": "stone"
-        },
-        "fgDecor": null,
-        "bgDecor": null
-      },
-      {
-        "fg": null,
-        "bg": {
-          "texture": "stone"
-        },
-        "fgDecor": null,
-        "bgDecor": null
-      },
-      {
-        "fg": null,
-        "bg": {
-          "texture": "stone"
-        },
-        "fgDecor": null,
-        "bgDecor": null
-      },
-      {
         "fg": {
-          "texture": "cobblestone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
@@ -564,7 +502,7 @@
     [
       {
         "fg": {
-          "texture": "cobblestone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
@@ -572,7 +510,7 @@
       },
       {
         "fg": {
-          "texture": "cobblestone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
@@ -580,7 +518,7 @@
       },
       {
         "fg": {
-          "texture": "stone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
@@ -588,7 +526,7 @@
       },
       {
         "fg": {
-          "texture": "stone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
@@ -596,23 +534,81 @@
       },
       {
         "fg": {
-          "texture": "stone"
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
       {
-        "fg": null,
-        "bg": {
-          "texture": "stone"
+        "fg": {
+          "texture": "stone_bricks"
         },
+        "bg": null,
         "fgDecor": null,
         "bgDecor": null
       },
       {
         "fg": {
-          "texture": "stone"
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      }
+    ],
+    [
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
+        },
+        "bg": null,
+        "fgDecor": null,
+        "bgDecor": null
+      },
+      {
+        "fg": {
+          "texture": "stone_bricks"
         },
         "bg": null,
         "fgDecor": null,
@@ -620,5 +616,5 @@
       }
     ]
   ],
-  "savedAt": "2026-11-27T08:23:39.341527+00:00"
+  "savedAt": "2026-11-28T01:38:15.413666+00:00"
 }

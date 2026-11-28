@@ -3,7 +3,7 @@
   Explorable presentation deck.
 -->
 
-<section class="slide s-paper-intro" id="paper" data-part="The paper">
+<section class="slide s-paper-intro" id="paper" data-part="Research Paper">
   <p class="kicker">Research Paper</p>
   <h2>Instant Architecture in Minecraft using Box-Split Grammars</h2>
   <p class="sub">Presented by Markus Eger at Foundations of Digital Games (FDG <span class="num">'22</span>)</p>
@@ -11,110 +11,111 @@
     <li>Past building tools forced creators to make specialized coding languages to generate structures.</li>
     <li>Instead, this paper uses Box-Split Grammars written in Python to work with most game engines, letting you generate a building simply by slicing boxes.</li>
   </ul>
-  <aside class="notes">Introduce the paper cleanly: Markus Eger (FDG 2022) embeds procedural box-splitting rules directly in standard Python functions so architectural generation fits naturally into Minecraft and game engines.</aside>
+  <aside class="notes">Introduce the research paper: Instant Architecture in Minecraft using Box-Split Grammars by Markus Eger</aside>
 </section>
 
-<section class="slide s-intro-stage" id="intro" data-part="The idea">
-  <h2 class="sr-only">But what is a Box-Split Grammar?</h2>
+<section class="slide s-intro-stage" id="intro" data-part="Key Terms">
+  <h2 class="sr-only">What is a Box-Split Grammar?</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=0&amp;v=4" width="1600" height="900" scrolling="no" title="Title and 3D paper preview for But what is a Box-Split Grammar?"></iframe>
+      <iframe data-src="demo/intro.html?step=0&amp;v=5" width="1600" height="900" scrolling="no" title="Title and 3D paper preview for What is a Box-Split Grammar?"></iframe>
     </div>
   </div>
-  <aside class="notes">Introduce the question "But what is a Box-Split Grammar?" over a 3D perspective preview of Markus Eger's paper before walking through each term interactively.</aside>
+  <aside class="notes">Introduce the question "What is a Box-Split Grammar?"</aside>
 </section>
 
-<section class="slide s-intro-stage" id="intro-grammar" data-part="The idea">
-  <h2 class="sr-only">But what is a Box-Split Grammar? · Grammar</h2>
+<section class="slide s-intro-stage" id="intro-grammar" data-part="Key Terms">
+  <h2 class="sr-only">What is a Box-Split Grammar? · Grammar</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=1&amp;v=4" width="1600" height="900" scrolling="no" title="Interactive hover definition of Grammar"></iframe>
+      <iframe data-src="demo/intro.html?step=1&amp;v=5" width="1600" height="900" scrolling="no" title="Interactive hover definition of Grammar"></iframe>
     </div>
   </div>
-  <aside class="notes">First hover over "Grammar" in the title: a grammar is a set of rules that breaks one big box into smaller pieces step by step, just like English grammar breaks a sentence into phrases and words.</aside>
+  <aside class="notes">Define grammar</aside>
 </section>
 
-<section class="slide s-intro-stage" id="intro-box-split" data-part="The idea">
-  <h2 class="sr-only">But what is a Box-Split Grammar? · Box-Split</h2>
+<section class="slide s-intro-stage" id="intro-box-split" data-part="Key Terms">
+  <h2 class="sr-only">What is a Box-Split Grammar? · Box-Split</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=2&amp;v=4" width="1600" height="900" scrolling="no" title="Interactive definition of Box-Split Grammar"></iframe>
+      <iframe data-src="demo/intro.html?step=2&amp;v=5" width="1600" height="900" scrolling="no" title="Interactive definition of Box-Split Grammar"></iframe>
     </div>
   </div>
-  <aside class="notes">Dock the Grammar definition at the top bullet, then hover "Box-Split" to highlight "Box-Split Grammar": Dr. Eger's nonterminal system that slices one big box into smaller pieces.</aside>
+  <aside class="notes">Define Box-Split Grammar
+</aside>
 </section>
 
-<section class="slide s-intro-stage" id="intro-nonterminal" data-part="The idea">
-  <h2 class="sr-only">But what is a Box-Split Grammar? · Nonterminal</h2>
+<section class="slide s-intro-stage" id="intro-nonterminal" data-part="Key Terms">
+  <h2 class="sr-only">What is a Box-Split Grammar? · Nonterminal</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=3&amp;v=4" width="1600" height="900" scrolling="no" title="Interactive definition of Nonterminal"></iframe>
+      <iframe data-src="demo/intro.html?step=3&amp;v=5" width="1600" height="900" scrolling="no" title="Interactive definition of Nonterminal"></iframe>
     </div>
   </div>
-  <aside class="notes">Dock Box-Split Grammar into the bullet list, then hover "nonterminal" inside it to unpack what a nonterminal rule does—expanding further into sub-rules like tower(), wall(), and gate().</aside>
+  <aside class="notes">Define nonterminal</aside>
 </section>
 
-<section class="slide s-intro-stage" id="intro-complete" data-part="The idea">
-  <h2 class="sr-only">But what is a Box-Split Grammar? · Overview</h2>
+<section class="slide s-intro-stage" id="intro-complete" data-part="Key Terms">
+  <h2 class="sr-only">What is a Box-Split Grammar? · Overview</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=4&amp;v=4" width="1600" height="900" scrolling="no" title="Complete interactive assembly of definitions, castle side example, and Python snippet"></iframe>
+      <iframe data-src="demo/intro.html?step=4&amp;v=5" width="1600" height="900" scrolling="no" title="Complete interactive assembly of definitions, castle side example, and Python snippet"></iframe>
     </div>
   </div>
-  <aside class="notes">Assemble the complete reference view: dock Nonterminal, type out how Python assists builders, sketch the Castle Side Example, and drag Python into the split rule before pulling out the leftmost tower to trace how its 2D box-split rules build it.</aside>
+  <aside class="notes">Explain why Box-Split Grammars were written in Python</aside>
 </section>
 
-<section class="slide s-intro-stage" id="tower-pull" data-part="How a rule builds">
+<section class="slide s-intro-stage" id="tower-pull" data-part="tower() Example">
   <h2 class="sr-only">From Tower to 2D Grid · Target Tower &amp; Empty Grid</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=1&amp;v=4" width="1600" height="900" scrolling="no" title="Pulling the leftmost Minecraft tower beside an empty 7 by 12 grid and tower.py"></iframe>
+      <iframe data-src="demo/tower.html?step=1&amp;v=5" width="1600" height="900" scrolling="no" title="Pulling the leftmost Minecraft tower beside an empty 7 by 12 grid and tower.py"></iframe>
     </div>
   </div>
-  <aside class="notes">Pull the leftmost tower() out of the castle overview to the left side while its recessed background bricks fade away in flight, revealing the empty 7x12 construction grid and starter tower.py beside it.</aside>
+  <aside class="notes">Walkthrough the tower() example</aside>
 </section>
 
-<section class="slide s-intro-stage" id="tower-split-x" data-part="How a rule builds">
+<section class="slide s-intro-stage" id="tower-split-x" data-part="tower() Example">
   <h2 class="sr-only">From Tower to 2D Grid · Seven Vertical Slices</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=2&amp;v=4" width="1600" height="900" scrolling="no" title="Splitting the 7 by 12 grid into seven equal 1-wide vertical slices"></iframe>
+      <iframe data-src="demo/tower.html?step=2&amp;v=5" width="1600" height="900" scrolling="no" title="Splitting the 7 by 12 grid into seven equal 1-wide vertical slices"></iframe>
     </div>
   </div>
-  <aside class="notes">Run with split(Dimension.X, [1, 1, 1, 1, 1, 1, 1]): across the empty 7x12 grid, slicing it into seven equal 1-wide vertical strips beside the uncut reference tower.</aside>
+  <aside class="notes">Run with split(Dimension.X, [1, 1, 1, 1, 1, 1, 1])</aside>
 </section>
 
-<section class="slide s-intro-stage" id="tower-split-y" data-part="How a rule builds">
+<section class="slide s-intro-stage" id="tower-split-y" data-part="tower() Example">
   <h2 class="sr-only">From Tower to 2D Grid · Horizontal Splits Within Each Slice</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=3&amp;v=4" width="1600" height="900" scrolling="no" title="Splitting each vertical slice horizontally to match the target tower structure"></iframe>
+      <iframe data-src="demo/tower.html?step=3&amp;v=5" width="1600" height="900" scrolling="no" title="Splitting each vertical slice horizontally to match the target tower structure"></iframe>
     </div>
   </div>
-  <aside class="notes">Inside each 1-wide slice, run split(Dimension.Y, ...) while softly spotlighting the matching column on the uncut reference tower—[8, 4] for the buttress, [1, 11] for the stone pier, and [2, 1, 2, 1, 2, 1, 2, 1] for the windows.</aside>
+  <aside class="notes">Explain each slice</aside>
 </section>
 
-<section class="slide s-intro-stage" id="tower-fill" data-part="How a rule builds">
+<section class="slide s-intro-stage" id="tower-fill" data-part="tower() Example">
   <h2 class="sr-only">From Tower to 2D Grid · Filling Regions with Blocks</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=4&amp;v=4" width="1600" height="900" scrolling="no" title="Dragging fill(STONE_BRICKS) from tower.py onto the 7 by 12 grid and completing the tower"></iframe>
+      <iframe data-src="demo/tower.html?step=4&amp;v=5" width="1600" height="900" scrolling="no" title="Dragging fill(STONE_BRICKS) from tower.py onto the 7 by 12 grid and completing the tower"></iframe>
     </div>
   </div>
-  <aside class="notes">Show a cursor clicking and dragging fill(STONE_BRICKS) from tower.py into the 11-block pier and the first stone lintel on the 7x12 grid, then fill all remaining leaves across the tower and invite readers to hover code lines or grid regions.</aside>
+  <aside class="notes">Run fill(STONE_BRICKS)</aside>
 </section>
 
-<section class="slide s-intro-stage" id="interactive-demo" data-part="Try it yourself">
-  <h2 class="sr-only">Make something yourself! · Interactive Box-Split Grammar Widget</h2>
+<section class="slide s-intro-stage" id="interactive-demo" data-part="Your Turn!">
+  <h2 class="sr-only">Your Turn! · Interactive Box-Split Grammar Widget</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=5&amp;v=4" width="1600" height="900" scrolling="no" title="Make something yourself transition into Interactive 2D Box-Split Grammar Widget"></iframe>
+      <iframe data-src="demo/tower.html?step=5&amp;v=6" width="1600" height="900" scrolling="no" title="Your Turn transition into Interactive 2D Box-Split Grammar Widget"></iframe>
     </div>
   </div>
-  <aside class="notes">Transition from the completed tower build to "Make something yourself!", sliding into the live 10x10 2D Cut and Fill widget where readers make horizontal or vertical cuts, fill Minecraft blocks, hover Python lines to highlight boxes, and toggle Exact vs Relative sizing.</aside>
+  <aside class="notes">Walkthrough the 2D demo</aside>
 </section>
 
-<section class="slide s-takeaway" id="takeaway-python" data-part="How it works">
+<section class="slide s-takeaway" id="takeaway-python" data-part="The Python Foundation">
   <p class="kicker">The Python Foundation</p>
   <h2>Each cut creates a smaller scope</h2>
   <p class="band">Splitting a box using <code>with split()</code> creates smaller boxes. Filling a box ends the cycle with a Minecraft block.</p>
@@ -159,163 +160,114 @@
     </div>
   </div>
 
-  <aside class="notes">Bridge from the hands-on cutting widget to the paper's Python mechanics using a cobblestone castle wall example: highlight how indentation tracks spatial nesting, how exact and relative numbers adapt to box size, and how Python decorators enable constraints, random variants, and loops.</aside>
+  <aside class="notes">Explain the Python foundation</aside>
 </section>
 
-<section class="slide chapter" id="rules-constraints" data-part="How it works">
+<section class="slide chapter" id="rules-constraints" data-part="Rules and Constraints">
   <header class="ch-head">
     <span class="ch-num">2</span>
     <div>
       <h2>Rules and Constraints</h2>
-      <p>Drag <strong>Width (X)</strong> across 9 blocks to watch Python switch between a solid wall rule and a gate rule.</p>
+      <p>Open the gate to the castle by setting the <strong>Width (X)</strong> greater than 9</p>
     </div>
   </header>
-  <div class="play-room" data-max="1">
+  <div class="play-room" data-max="1.15">
     <div class="play-set">
-      <iframe data-src="demo/rules.html?mode=constraints&amp;v=5" width="1454" height="704" scrolling="no" title="Interactive Castle Wall Rules and Constraints Demo"></iframe>
+      <iframe data-src="demo/rules.html?mode=constraints&amp;v=7" width="1290" height="380" scrolling="no" title="Interactive Castle Wall Rules and Constraints Demo"></iframe>
     </div>
   </div>
-  <aside class="notes">Isolate @rule constraints using the castle wall: when Width (X) is 9 or less, Constraint.ELSE draws one continuous stone brick wall; dragging Width (X) past 9 activates Dimension.X &gt; 9, splitting [-1, 3, -1] to open an arched gate in the center.</aside>
+  <aside class="notes">Explain rules and constraints</aside>
 </section>
 
-<section class="slide chapter" id="rules-loops" data-part="How it works">
+<section class="slide chapter" id="rules-loops" data-part="Loops">
   <header class="ch-head">
     <span class="ch-num">3</span>
     <div>
-      <h2>Repeating Splits with Loops</h2>
-      <p>Toggle <strong>Repeat [1, 1]</strong> and resize <strong>Width (X)</strong> to tile battlements across any span with a Python <code>while</code> loop.</p>
+      <h2>Loops</h2>
+      <p>Toggle battlements by activating the loop</p>
     </div>
   </header>
-  <div class="play-room" data-max="1">
+  <div class="play-room" data-max="1.15">
     <div class="play-set">
-      <iframe data-src="demo/rules.html?mode=loops&amp;v=5" width="1454" height="704" scrolling="no" title="Interactive Castle Wall Repeating Splits and Loops Demo"></iframe>
+      <iframe data-src="demo/rules.html?mode=loops&amp;v=8" width="1290" height="380" scrolling="no" title="Interactive Castle Wall Repeating Splits and Loops Demo"></iframe>
     </div>
   </div>
-  <aside class="notes">Show how repeat=True pairs with a standard Python while loop: splitting the top row into repeating [1, 1] slices lets fill(STONE_BRICKS) and void() tile castle battlements across any width automatically.</aside>
+  <aside class="notes">Explain loops</aside>
 </section>
 
-<section class="slide chapter" id="rules-variants" data-part="How it works">
+<section class="slide chapter" id="rules-variants" data-part="Random Variants">
   <header class="ch-head">
     <span class="ch-num">4</span>
     <div>
       <h2>Random Variants</h2>
-      <p>Click <strong>Regenerate</strong> to sample weighted <code>@rule</code> functions that weather each stone block differently.</p>
+      <p>Regenerate the random variants of stone blocks</p>
     </div>
   </header>
-  <div class="play-room" data-max="1">
+  <div class="play-room" data-max="1.15">
     <div class="play-set">
-      <iframe data-src="demo/rules.html?mode=variants&amp;v=5" width="1454" height="704" scrolling="no" title="Interactive Castle Wall Random Variants Demo"></iframe>
+      <iframe data-src="demo/rules.html?mode=variants&amp;v=7" width="1290" height="380" scrolling="no" title="Interactive Castle Wall Random Variants Demo"></iframe>
     </div>
   </div>
-  <aside class="notes">Show probabilistic @rule selection: three wall_block() rules with weights 0.60, 0.25, and 0.15 mix Stone Bricks, Mossy Cobblestone, and Cobblestone across the castle wall on each Regenerate click.</aside>
+  <aside class="notes">Explain random variants</aside>
 </section>
 
 <section class="slide chapter" id="interactive-demo-3d" data-part="In 3D">
   <header class="ch-head">
     <span class="ch-num">5</span>
     <div>
-      <h2>Box-Splitting in 3D Minecraft Space</h2>
-      <p>Slice along <strong>X, Y, or Z</strong>, switch to <strong>Move</strong> to orbit and fill 3D sub-boxes, and hover code lines to inspect 3D scopes.</p>
+      <h2>Box-Split Grammars in 3D</h2>
+      <p>Cut along different axes</p>
     </div>
   </header>
   <div class="play-room" data-max="1.5">
     <div class="play-set">
-      <iframe data-src="demo/3d.html" width="900" height="460" scrolling="no" title="Interactive 3D Box Split and Minecraft Grammar Tool"></iframe>
+      <iframe data-src="demo/3d.html?v=4" width="900" height="460" scrolling="no" title="Interactive 3D Box Split and Minecraft Grammar Tool"></iframe>
     </div>
   </div>
-  <aside class="notes">Extend the 2D box-splitting model into 3D voxel scopes: slice along X, Y, or Z, switch to Move to orbit and fill sub-boxes with Oak Log, Cobblestone, and Oak Planks, and hover the live Python grammar panel to highlight 3D nested scopes.</aside>
+  <aside class="notes">Walkthrough the 3D demo</aside>
 </section>
 
 <section class="slide s-possibilities" id="possibilities" data-part="Possibilities">
   <p class="kicker">Beyond One Wall</p>
-  <h2>What Box-Split Grammars can generate</h2>
-  <p class="lede">The same small set of Python primitives scales from 2D pixel patterns to full multi-room buildings.</p>
+  <h2>The possibilities are endless</h2>
+  <p class="lede">Box-split grammars allow us to generate floor plans, recursive tiles, and multi-story, multi-room buildings.</p>
 
-  <div class="poss-grid">
-    <div class="card">
-      <span class="tag">Fig. 4 · Floor Plans</span>
-      <b>Greek Temple Layouts</b>
-      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="7 by 11 tetrastyle temple floor plan grid">
-        <rect x="10" y="10" width="260" height="100" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-        <!-- Horizontal representation of 11 deep x 7 tall plan -->
-        <!-- Front columns (col 0) -->
-        <rect x="26" y="18" width="14" height="10" fill="#3d63bf"/><rect x="26" y="42" width="14" height="10" fill="#3d63bf"/><rect x="26" y="66" width="14" height="10" fill="#3d63bf"/><rect x="26" y="90" width="14" height="10" fill="#3d63bf"/>
-        <!-- Naos front columns (col 2) -->
-        <rect x="66" y="18" width="14" height="10" fill="#3d63bf"/><rect x="66" y="42" width="14" height="10" fill="#3d63bf"/><rect x="66" y="66" width="14" height="10" fill="#3d63bf"/><rect x="66" y="90" width="14" height="10" fill="#3d63bf"/>
-        <!-- Naos side walls (cols 3..7) -->
-        <rect x="86" y="18" width="100" height="10" fill="#475569"/>
-        <rect x="86" y="90" width="100" height="10" fill="#475569"/>
-        <!-- Naos back wall (col 8) -->
-        <rect x="186" y="18" width="14" height="82" fill="#475569"/>
-        <!-- Back columns (col 10) -->
-        <rect x="226" y="18" width="14" height="10" fill="#3d63bf"/><rect x="226" y="42" width="14" height="10" fill="#3d63bf"/><rect x="226" y="66" width="14" height="10" fill="#3d63bf"/><rect x="226" y="90" width="14" height="10" fill="#3d63bf"/>
-      </svg>
-      <span class="text">Composes <code>columns()</code>, <code>chamber()</code>, and <code>naos()</code> with <code>-1</code> spacing.</span>
-    </div>
-
-    <div class="card">
-      <span class="tag">Sec. 4 · Architecture</span>
-      <b>Multi-Story Houses &amp; Towers</b>
-      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="Multi-story Minecraft house facade and tower generated by repeated splits">
-        <rect x="10" y="10" width="260" height="100" rx="8" fill="#eff6ff" stroke="#cbd5e1" stroke-width="1.5"/>
-        <!-- Roof -->
-        <polygon points="36,42 104,16 172,42" fill="#9a3412"/>
-        <!-- House body -->
-        <rect x="44" y="42" width="120" height="60" fill="#b8945f" stroke="#5f4a2b" stroke-width="2"/>
-        <rect x="44" y="88" width="120" height="14" fill="#6e6d6d"/>
-        <rect x="60" y="54" width="20" height="22" fill="#bae6fd" stroke="#475569" stroke-width="1.5"/>
-        <rect x="94" y="54" width="20" height="22" fill="#bae6fd" stroke="#475569" stroke-width="1.5"/>
-        <rect x="128" y="54" width="20" height="22" fill="#bae6fd" stroke="#475569" stroke-width="1.5"/>
-        <!-- Tower -->
-        <rect x="184" y="28" width="56" height="74" fill="#888788" stroke="#525252" stroke-width="2"/>
-        <rect x="184" y="20" width="12" height="8" fill="#6e6d6d"/>
-        <rect x="206" y="20" width="12" height="8" fill="#6e6d6d"/>
-        <rect x="228" y="20" width="12" height="8" fill="#6e6d6d"/>
-        <rect x="204" y="46" width="16" height="22" fill="#1e293b"/>
-      </svg>
-      <span class="text">Loops tile floors and battlements while <code>reorient()</code> wraps all four walls.</span>
-    </div>
-
-    <div class="card">
-      <span class="tag">Fig. 9 · 2D Patterns</span>
-      <b>Recursive Fractals &amp; Tiles</b>
-      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="Recursive blue and white spiral pattern">
-        <rect x="10" y="10" width="260" height="100" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-        <!-- Two recursive spiral tiles side by side -->
-        <g transform="translate(54,18)">
-          <rect width="78" height="78" fill="#ffffff" stroke="#cbd5e1"/>
-          <path d="M8,8 H70 V70 H16 V18 H60 V60 H26 V28 H50 V50 H36" fill="none" stroke="#2563eb" stroke-width="6"/>
-        </g>
-        <g transform="translate(148,18)">
-          <rect width="78" height="78" fill="#ffffff" stroke="#cbd5e1"/>
-          <path d="M8,8 H70 V70 H16 V18 H60 V60 H26 V28 H50 V50 H36" fill="none" stroke="#2563eb" stroke-width="6"/>
-        </g>
-      </svg>
-      <span class="text">Mutual recursion with <code>Dimension &gt; 10</code> stops cleanly at small boxes.</span>
-    </div>
-
-    <div class="card">
-      <span class="tag">Sec. 3.1 · Backends</span>
-      <b>Same Rules, Any Output</b>
-      <svg viewBox="0 0 280 120" width="280" height="120" role="img" aria-label="One Python grammar outputting to Minecraft blocks, VoxelGrid, or PNG images">
-        <rect x="10" y="10" width="260" height="100" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
-        <rect x="18" y="34" width="84" height="52" rx="8" fill="#e9f0ff" stroke="#3d63bf" stroke-width="2"/>
-        <text x="60" y="66" text-anchor="middle" fill="#1e2742" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700">@rule</text>
-        <line x1="104" y1="60" x2="132" y2="30" stroke="#64748b" stroke-width="2"/>
-        <line x1="104" y1="60" x2="132" y2="60" stroke="#64748b" stroke-width="2"/>
-        <line x1="104" y1="60" x2="132" y2="90" stroke="#64748b" stroke-width="2"/>
-        <rect x="134" y="16" width="128" height="25" rx="5" fill="#dcfce7" stroke="#16a34a"/>
-        <text x="198" y="34" text-anchor="middle" fill="#166534" font-family="Nunito Sans, sans-serif" font-size="16" font-weight="700">Minecraft</text>
-        <rect x="134" y="47" width="128" height="25" rx="5" fill="#fef3c7" stroke="#d97706"/>
-        <text x="198" y="65" text-anchor="middle" fill="#92400e" font-family="Nunito Sans, sans-serif" font-size="16" font-weight="700">Voxel Grid</text>
-        <rect x="134" y="78" width="128" height="25" rx="5" fill="#e0e7ff" stroke="#4f46e5"/>
-        <text x="198" y="96" text-anchor="middle" fill="#3730a3" font-family="Nunito Sans, sans-serif" font-size="16" font-weight="700">2D PNG</text>
-      </svg>
-      <span class="text">Swapping <code>set_material()</code> targets Minecraft, ASCII grids, or images.</span>
-    </div>
+  <div class="poss-gallery">
+    <figure class="poss-figure">
+      <img src="demo/assets/temple_floor_plans.jpg" width="472" height="363" alt="Six Greek temple floor plans generated in Minecraft using Box-Split Grammars">
+      <figcaption>Floor Plans</figcaption>
+    </figure>
+    <figure class="poss-figure">
+      <img src="demo/assets/recursive_tiles.png" width="320" height="322" alt="Recursive blue and white fractal spiral pattern generated with Box-Split Grammars">
+      <figcaption>Recursive Tiles</figcaption>
+    </figure>
+    <figure class="poss-figure">
+      <img src="demo/assets/multi_story_buildings.jpg" width="1024" height="863" alt="Two multi-story and multi-room Minecraft buildings generated using Box-Split Grammars">
+      <figcaption>Multi-Story and Multi-Room Buildings</figcaption>
+    </figure>
   </div>
 
-  <aside class="notes">Show the breadth of what Box-Split Grammars generate in the paper and lab: temple floor plans (Figure 4), multi-story facades and towers, recursive 2D patterns (Figure 9), and backend portability across Minecraft, voxel grids, and PNG images.</aside>
+  <div class="card backends-band">
+    <div class="backends-copy">
+      <span class="tag">The Backend</span>
+      <b>The same rules can be applied across various game engines, grids, or images</b>
+    </div>
+    <svg class="backends-diagram" viewBox="0 0 310 120" width="310" height="120" role="img" aria-label="One Python grammar outputting to Game Engines, Grids, or Images">
+      <rect x="4" y="34" width="94" height="52" rx="10" fill="#e9f0ff" stroke="#3d63bf" stroke-width="2"></rect>
+      <text x="51" y="66" text-anchor="middle" fill="#1e2742" font-family="JetBrains Mono, monospace" font-size="18" font-weight="700">@rule</text>
+      <line x1="100" y1="60" x2="136" y2="25" stroke="#64748b" stroke-width="2.2"></line>
+      <line x1="100" y1="60" x2="136" y2="60" stroke="#64748b" stroke-width="2.2"></line>
+      <line x1="100" y1="60" x2="136" y2="95" stroke="#64748b" stroke-width="2.2"></line>
+      <rect x="138" y="10" width="168" height="28" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"></rect>
+      <text x="222" y="30" text-anchor="middle" fill="#166534" font-family="Nunito Sans, sans-serif" font-size="17" font-weight="700">Game Engines</text>
+      <rect x="138" y="46" width="168" height="28" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"></rect>
+      <text x="222" y="66" text-anchor="middle" fill="#92400e" font-family="Nunito Sans, sans-serif" font-size="17" font-weight="700">Grids</text>
+      <rect x="138" y="82" width="168" height="28" rx="6" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"></rect>
+      <text x="222" y="102" text-anchor="middle" fill="#3730a3" font-family="Nunito Sans, sans-serif" font-size="17" font-weight="700">Images</text>
+    </svg>
+  </div>
+
+  <aside class="notes">Explain what Box-Split Grammars allow us to do</aside>
 </section>
 
 <section class="slide s-big-list s-discuss" id="discuss" data-part="Discussion">
@@ -326,5 +278,5 @@
     <li>How could box splitting be applied to handle connected structures like roads and bridges?</li>
     <li>Where else in procedural generation could Box-Split Grammars be applied?</li>
   </ol>
-  <aside class="notes">Open discussion questions encouraging participants to analyze the trade-offs of Python-embedded grammars and general procedural content generation challenges.</aside>
+  <aside class="notes">Ask the audience to answer the questions. Ask if anyone has a question.</aside>
 </section>

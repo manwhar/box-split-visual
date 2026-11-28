@@ -397,7 +397,7 @@
       <canvas id="gl-canvas"></canvas>
       <canvas id="hud-canvas"></canvas>
       <button id="btn-view-reset" class="btn-view-reset" title="Reset camera view" aria-label="Reset camera view">&#8634;</button>
-      <div id="viewport-hint" class="viewport-hint">Click box to slice · Right-drag to orbit</div>
+      <div id="viewport-hint" class="viewport-hint">Drag to move · Click to cut</div>
     </div>
 
     <!-- Middle: Controls -->
@@ -586,8 +586,8 @@
       () => updateCodePanel(),
       (mode) => {
         viewportHint.textContent = mode === 'move'
-          ? 'Drag to orbit · Click box to fill'
-          : 'Click box to slice · Right-drag to orbit';
+          ? 'Drag to move · Click to fill'
+          : 'Drag to move · Click to cut';
       }
     );
 

@@ -877,7 +877,7 @@ export function createTowerController({ targetRenderer, buildRenderer, heroRende
       towerStage.style.transform = '';
       yoursHeading.style.transform = 'scale(1)';
 
-      await anim.wait(950, token);
+      await anim.wait(2350, token);
       if (!anim.isCurrent(token)) return;
 
       yoursHeading.style.transformOrigin = 'top left';

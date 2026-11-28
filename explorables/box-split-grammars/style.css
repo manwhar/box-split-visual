@@ -53,6 +53,11 @@
   }
 }
 
+/* Capitalize top-left gallery link across all slides in this deck */
+.bar .home {
+  text-transform: capitalize;
+}
+
 /* Consistent top alignment and header baseline across Slides 1-4 */
 .slide.s-paper-intro,
 .slide.s-intro-hook,
@@ -146,6 +151,14 @@
   background: #f8fafc;
   box-shadow: 0 8px 30px rgba(30, 40, 60, 0.1);
   border: 1px solid var(--line);
+}
+
+#rules-constraints .play-room,
+#rules-loops .play-room,
+#rules-variants .play-room {
+  flex: 0 0 auto;
+  height: 432px;
+  margin-top: 10px;
 }
 
 /* Slide 4: Post-Demo Takeaway + Python Anatomy */
@@ -273,47 +286,78 @@
   color: var(--ink-2);
 }
 
-/* Slide 7: Possibilities Showcase */
+/* Slide 17: Possibilities Showcase */
 .slide.s-possibilities .lede {
   font-size: 28px;
   margin-top: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
-.poss-grid {
+.poss-gallery {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
 }
 
-.poss-grid .card {
+.poss-figure {
+  margin: 0;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 14px 16px;
   display: flex;
   flex-direction: column;
-  padding: 22px 22px 24px;
+  align-items: center;
+  justify-content: center;
   gap: 10px;
+  min-height: 0;
 }
 
-.poss-grid .card .tag {
-  margin-bottom: 0;
-  font-size: 24px;
-}
-
-.poss-grid .card b {
-  font-size: 28px;
-  line-height: 1.18;
-}
-
-.poss-grid .card svg {
-  width: 100%;
+.poss-figure img {
+  max-height: 295px;
+  width: auto;
+  max-width: 100%;
   height: auto;
-  display: block;
-  margin: 4px 0;
+  object-fit: contain;
+  border-radius: 10px;
+  box-shadow: none;
 }
 
-.poss-grid .card .text {
+.poss-figure figcaption {
+  margin: 0;
+  font-family: var(--f-head);
   font-size: 24px;
-  line-height: 1.35;
-  margin-top: auto;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ink-2);
+}
+
+.backends-band {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+  padding: 20px 28px;
+  background: var(--sea-tint);
+  --tone: var(--sea-tone);
+}
+
+.backends-band .tag {
+  margin-bottom: 6px;
+}
+
+.backends-band b {
+  font-size: 30px;
+  line-height: 1.25;
+}
+
+.backends-diagram {
+  display: block;
 }
 
 /* Slide 7: Discussion */

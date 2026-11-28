@@ -220,7 +220,7 @@ export const CODE_LINES = [
   },
   {
     id: 'slices-mirror',
-    html: `${sp(4)}${cmt('# ... slices 5–7 mirror slices 3–1')}`,
+    html: `${sp(4)}${cmt('# ...')}`,
     boxes: [
       { x: 4, y: 0, w: 1, h: 12 },
       { x: 5, y: 0, w: 1, h: 12 },

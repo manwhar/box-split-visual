@@ -4,7 +4,7 @@
  */
 
 import { clamp, createAnimator } from '../intro/anim.js?v=4';
-import { createTowerController } from './choreography.js?v=4';
+import { createTowerController } from './choreography.js?v=5';
 import { TowerRenderer, loadTowerAssets } from './tower_canvas.js?v=4';
 
 const params = new URLSearchParams(location.search);
