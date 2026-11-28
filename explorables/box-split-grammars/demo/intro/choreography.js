@@ -4,8 +4,8 @@
  * bubble streaming, human digestion pauses, and seamless bubble-to-bullet morphing.
  */
 
-import { clamp, easeInOutCubic, easeOutBack, easeOutCubic, lerp } from './anim.js';
-import { prepareStreamableHtml, streamPreparedChars, streamStringWithCadence } from './cadence.js';
+import { clamp, easeInOutCubic, easeOutBack, easeOutCubic, lerp } from './anim.js?v=4';
+import { prepareStreamableHtml, streamPreparedChars, streamStringWithCadence } from './cadence.js?v=4';
 import {
   BUBBLE_COPY,
   PYTHON_LINE,
@@ -20,16 +20,24 @@ import {
   setPythonFullText,
   setVisible,
   triggerRipple
-} from './dom.js';
+} from './dom.js?v=4';
 
-async function revealHighlight(anim, token, wordEl, targetHl, durationMs = 320) {
+function pointInRect(x, y, r) {
+  return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+}
+
+async function revealHighlight(anim, token, wordEl, targetHl, durationMs = 170) {
   wordEl.classList.add('is-highlighted');
   const cx = targetHl.left + targetHl.width / 2;
   await anim.animate(durationMs, token, (t) => {
     const e = easeOutCubic(t);
-    const w = lerp(targetHl.width * 0.62, targetHl.width, e);
-    setHighlightBox({ left: cx - w / 2, top: targetHl.top, width: w, height: targetHl.height }, e);
+    const w = lerp(targetHl.width * 0.88, targetHl.width, e);
+    setHighlightBox(
+      { left: cx - w / 2, top: targetHl.top, width: w, height: targetHl.height },
+      clamp(t * 2.5, 0, 1)
+    );
   });
+  if (anim.isCurrent(token)) setHighlightBox(targetHl, 1);
 }
 
 async function popBubble(anim, token, step, axis = 'Y', offset = -8) {
@@ -61,13 +69,19 @@ export async function playStep1(anim, token) {
   await anim.wait(220, token);
   if (!anim.isCurrent(token)) return;
 
+  let hlTask = null;
   setCursor(startX, startY, { mode: 'pointer', opacity: 0 });
-  const glideTask = anim.animate(1050, token, (t) => {
+  await anim.animate(1050, token, (t) => {
     const e = easeInOutCubic(t);
-    setCursor(lerp(startX, endX, e), lerp(startY, endY, e) + Math.sin(e * Math.PI) * -28, {
+    const cx = lerp(startX, endX, e);
+    const cy = lerp(startY, endY, e) + Math.sin(e * Math.PI) * -28;
+    setCursor(cx, cy, {
       mode: 'pointer',
       opacity: clamp(t * 3.5, 0, 1)
     });
+    if (!hlTask && pointInRect(cx, cy, targetHl)) {
+      hlTask = revealHighlight(anim, token, els.wordGrammar, targetHl, 170);
+    }
     setPaperState({
       visible: true,
       opacity: lerp(1, 0.28, e),
@@ -76,14 +90,12 @@ export async function playStep1(anim, token) {
       scale: lerp(1, 0.96, e)
     });
   });
-
-  await anim.wait(780, token);
+  if (!anim.isCurrent(token)) return;
+  if (!hlTask) hlTask = revealHighlight(anim, token, els.wordGrammar, targetHl, 170);
+  await hlTask;
   if (!anim.isCurrent(token)) return;
 
-  await Promise.all([glideTask, revealHighlight(anim, token, els.wordGrammar, targetHl, 320)]);
-  if (!anim.isCurrent(token)) return;
-
-  await anim.wait(240, token);
+  await anim.wait(160, token);
   if (!anim.isCurrent(token)) return;
   await popBubble(anim, token, 1, 'Y', -8);
 }
@@ -118,8 +130,10 @@ export async function playStep2(anim, token) {
     if (!anim.isCurrent(token)) return;
     await anim.animate(1000, token, (t) => {
       const e = easeInOutCubic(t);
-      if (e > 0.35) els.wordBoxSplit.classList.add('is-highlighted');
-      setCursor(lerp(startX, endX, e), lerp(startY, endY, e) + Math.sin(e * Math.PI) * -10, {
+      const cx = lerp(startX, endX, e);
+      const cy = lerp(startY, endY, e) + Math.sin(e * Math.PI) * -10;
+      if (cx <= bs.right + 8) els.wordBoxSplit.classList.add('is-highlighted');
+      setCursor(cx, cy, {
         mode: 'pointer',
         opacity: 1
       });
@@ -168,21 +182,25 @@ export async function playStep3(anim, token) {
   await anim.wait(380, token);
   if (!anim.isCurrent(token)) return;
 
+  let hlTask = null;
   await anim.animate(980, token, (t) => {
     const e = easeInOutCubic(t);
-    setCursor(lerp(startX, endX, e) + Math.sin(e * Math.PI) * 32, lerp(startY, endY, e), {
+    const cx = lerp(startX, endX, e) + Math.sin(e * Math.PI) * 32;
+    const cy = lerp(startY, endY, e);
+    setCursor(cx, cy, {
       mode: 'pointer',
       opacity: 1
     });
+    if (!hlTask && pointInRect(cx, cy, toHl)) {
+      hlTask = revealHighlight(anim, token, els.wordNonterminal, toHl, 170);
+    }
   });
+  if (!anim.isCurrent(token)) return;
+  if (!hlTask) hlTask = revealHighlight(anim, token, els.wordNonterminal, toHl, 170);
+  await hlTask;
   if (!anim.isCurrent(token)) return;
 
   await anim.wait(180, token);
-  if (!anim.isCurrent(token)) return;
-  await revealHighlight(anim, token, els.wordNonterminal, toHl, 300);
-  if (!anim.isCurrent(token)) return;
-
-  await anim.wait(260, token);
   if (!anim.isCurrent(token)) return;
   await popBubble(anim, token, 3, 'X', -10);
 }
@@ -326,16 +344,22 @@ async function beatDragPythonRule(anim, token, fromPos) {
   const pickX = pyWordRect.cx;
   const pickY = pyWordRect.cy + 4;
 
+  let hlTask = null;
   await anim.animate(980, token, (t) => {
     const e = easeInOutCubic(t);
-    setCursor(lerp(fromPos.x, pickX, e), lerp(fromPos.y, pickY, e) + Math.sin(e * Math.PI) * 32, {
+    const cx = lerp(fromPos.x, pickX, e);
+    const cy = lerp(fromPos.y, pickY, e) + Math.sin(e * Math.PI) * 32;
+    setCursor(cx, cy, {
       mode: 'pointer',
       opacity: 1
     });
+    if (!hlTask && pointInRect(cx, cy, pyHlRect)) {
+      hlTask = revealHighlight(anim, token, els.wordPython, pyHlRect, 170);
+    }
   });
   if (!anim.isCurrent(token)) return;
-
-  await revealHighlight(anim, token, els.wordPython, pyHlRect, 300);
+  if (!hlTask) hlTask = revealHighlight(anim, token, els.wordPython, pyHlRect, 170);
+  await hlTask;
   if (!anim.isCurrent(token)) return;
 
   await anim.wait(450, token);

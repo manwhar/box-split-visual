@@ -3,10 +3,10 @@
  * Entry point for Slide 2's choreographed intro stage (?step=0..4).
  */
 
-import { createAnimator } from './anim.js';
-import { playStep1, playStep2, playStep3, playStep4 } from './choreography.js';
-import { applyStaticState } from './dom.js';
-import { initInteractions } from './interactions.js';
+import { createAnimator } from './anim.js?v=4';
+import { playStep1, playStep2, playStep3, playStep4 } from './choreography.js?v=4';
+import { applyStaticState } from './dom.js?v=4';
+import { initInteractions } from './interactions.js?v=4';
 
 const params = new URLSearchParams(location.search);
 const parsedStep = Number.parseInt(params.get('step') ?? '0', 10);

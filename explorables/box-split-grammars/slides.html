@@ -18,7 +18,7 @@
   <h2 class="sr-only">But what is a Box-Split Grammar?</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=0" width="1600" height="900" scrolling="no" title="Title and 3D paper preview for But what is a Box-Split Grammar?"></iframe>
+      <iframe data-src="demo/intro.html?step=0&amp;v=4" width="1600" height="900" scrolling="no" title="Title and 3D paper preview for But what is a Box-Split Grammar?"></iframe>
     </div>
   </div>
   <aside class="notes">Introduce the question "But what is a Box-Split Grammar?" over a 3D perspective preview of Markus Eger's paper before walking through each term interactively.</aside>
@@ -28,7 +28,7 @@
   <h2 class="sr-only">But what is a Box-Split Grammar? · Grammar</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=1" width="1600" height="900" scrolling="no" title="Interactive hover definition of Grammar"></iframe>
+      <iframe data-src="demo/intro.html?step=1&amp;v=4" width="1600" height="900" scrolling="no" title="Interactive hover definition of Grammar"></iframe>
     </div>
   </div>
   <aside class="notes">First hover over "Grammar" in the title: a grammar is a set of rules that breaks one big box into smaller pieces step by step, just like English grammar breaks a sentence into phrases and words.</aside>
@@ -38,7 +38,7 @@
   <h2 class="sr-only">But what is a Box-Split Grammar? · Box-Split</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=2" width="1600" height="900" scrolling="no" title="Interactive definition of Box-Split Grammar"></iframe>
+      <iframe data-src="demo/intro.html?step=2&amp;v=4" width="1600" height="900" scrolling="no" title="Interactive definition of Box-Split Grammar"></iframe>
     </div>
   </div>
   <aside class="notes">Dock the Grammar definition at the top bullet, then hover "Box-Split" to highlight "Box-Split Grammar": Dr. Eger's nonterminal system that slices one big box into smaller pieces.</aside>
@@ -48,7 +48,7 @@
   <h2 class="sr-only">But what is a Box-Split Grammar? · Nonterminal</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=3" width="1600" height="900" scrolling="no" title="Interactive definition of Nonterminal"></iframe>
+      <iframe data-src="demo/intro.html?step=3&amp;v=4" width="1600" height="900" scrolling="no" title="Interactive definition of Nonterminal"></iframe>
     </div>
   </div>
   <aside class="notes">Dock Box-Split Grammar into the bullet list, then hover "nonterminal" inside it to unpack what a nonterminal rule does—expanding further into sub-rules like tower(), wall(), and gate().</aside>
@@ -58,7 +58,7 @@
   <h2 class="sr-only">But what is a Box-Split Grammar? · Overview</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/intro.html?step=4" width="1600" height="900" scrolling="no" title="Complete interactive assembly of definitions, castle side example, and Python snippet"></iframe>
+      <iframe data-src="demo/intro.html?step=4&amp;v=4" width="1600" height="900" scrolling="no" title="Complete interactive assembly of definitions, castle side example, and Python snippet"></iframe>
     </div>
   </div>
   <aside class="notes">Assemble the complete reference view: dock Nonterminal, type out how Python assists builders, sketch the Castle Side Example, and drag Python into the split rule before pulling out the leftmost tower to trace how its 2D box-split rules build it.</aside>
@@ -68,7 +68,7 @@
   <h2 class="sr-only">From Tower to 2D Grid · Target Tower &amp; Empty Grid</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=1&amp;v=3" width="1600" height="900" scrolling="no" title="Pulling the leftmost Minecraft tower beside an empty 7 by 12 grid and tower.py"></iframe>
+      <iframe data-src="demo/tower.html?step=1&amp;v=4" width="1600" height="900" scrolling="no" title="Pulling the leftmost Minecraft tower beside an empty 7 by 12 grid and tower.py"></iframe>
     </div>
   </div>
   <aside class="notes">Pull the leftmost tower() out of the castle overview to the left side while its recessed background bricks fade away in flight, revealing the empty 7x12 construction grid and starter tower.py beside it.</aside>
@@ -78,7 +78,7 @@
   <h2 class="sr-only">From Tower to 2D Grid · Seven Vertical Slices</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=2&amp;v=3" width="1600" height="900" scrolling="no" title="Splitting the 7 by 12 grid into seven equal 1-wide vertical slices"></iframe>
+      <iframe data-src="demo/tower.html?step=2&amp;v=4" width="1600" height="900" scrolling="no" title="Splitting the 7 by 12 grid into seven equal 1-wide vertical slices"></iframe>
     </div>
   </div>
   <aside class="notes">Run with split(Dimension.X, [1, 1, 1, 1, 1, 1, 1]): across the empty 7x12 grid, slicing it into seven equal 1-wide vertical strips beside the uncut reference tower.</aside>
@@ -88,7 +88,7 @@
   <h2 class="sr-only">From Tower to 2D Grid · Horizontal Splits Within Each Slice</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=3&amp;v=3" width="1600" height="900" scrolling="no" title="Splitting each vertical slice horizontally to match the target tower structure"></iframe>
+      <iframe data-src="demo/tower.html?step=3&amp;v=4" width="1600" height="900" scrolling="no" title="Splitting each vertical slice horizontally to match the target tower structure"></iframe>
     </div>
   </div>
   <aside class="notes">Inside each 1-wide slice, run split(Dimension.Y, ...) while softly spotlighting the matching column on the uncut reference tower—[8, 4] for the buttress, [1, 11] for the stone pier, and [2, 1, 2, 1, 2, 1, 2, 1] for the windows.</aside>
@@ -98,7 +98,7 @@
   <h2 class="sr-only">From Tower to 2D Grid · Filling Regions with Blocks</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=4&amp;v=3" width="1600" height="900" scrolling="no" title="Dragging fill(STONE_BRICKS) from tower.py onto the 7 by 12 grid and completing the tower"></iframe>
+      <iframe data-src="demo/tower.html?step=4&amp;v=4" width="1600" height="900" scrolling="no" title="Dragging fill(STONE_BRICKS) from tower.py onto the 7 by 12 grid and completing the tower"></iframe>
     </div>
   </div>
   <aside class="notes">Show a cursor clicking and dragging fill(STONE_BRICKS) from tower.py into the 11-block pier and the first stone lintel on the 7x12 grid, then fill all remaining leaves across the tower and invite readers to hover code lines or grid regions.</aside>
@@ -108,7 +108,7 @@
   <h2 class="sr-only">Make something yourself! · Interactive Box-Split Grammar Widget</h2>
   <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/tower.html?step=5&amp;v=3" width="1600" height="900" scrolling="no" title="Make something yourself transition into Interactive 2D Box-Split Grammar Widget"></iframe>
+      <iframe data-src="demo/tower.html?step=5&amp;v=4" width="1600" height="900" scrolling="no" title="Make something yourself transition into Interactive 2D Box-Split Grammar Widget"></iframe>
     </div>
   </div>
   <aside class="notes">Transition from the completed tower build to "Make something yourself!", sliding into the live 10x10 2D Cut and Fill widget where readers make horizontal or vertical cuts, fill Minecraft blocks, hover Python lines to highlight boxes, and toggle Exact vs Relative sizing.</aside>
@@ -162,25 +162,57 @@
   <aside class="notes">Bridge from the hands-on cutting widget to the paper's Python mechanics using a cobblestone castle wall example: highlight how indentation tracks spatial nesting, how exact and relative numbers adapt to box size, and how Python decorators enable constraints, random variants, and loops.</aside>
 </section>
 
-<section class="slide chapter" id="rules-demo" data-part="How it works">
+<section class="slide chapter" id="rules-constraints" data-part="How it works">
   <header class="ch-head">
     <span class="ch-num">2</span>
     <div>
-      <h2>Constraints, Random Variants, and Loops</h2>
-      <p>Open the gate to the castle by setting the Width (X) greater than 9. Toggle battlements by activating the loop. Regenerate the random variants.</p>
+      <h2>Rules and Constraints</h2>
+      <p>Drag <strong>Width (X)</strong> across 9 blocks to watch Python switch between a solid wall rule and a gate rule.</p>
     </div>
   </header>
-  <div class="play-room" data-max="1.5">
+  <div class="play-room" data-max="1">
     <div class="play-set">
-      <iframe data-src="demo/rules.html" width="900" height="460" scrolling="no" title="Interactive Castle Wall Rules, Variants, and Loops Demo"></iframe>
+      <iframe data-src="demo/rules.html?mode=constraints&amp;v=5" width="1454" height="704" scrolling="no" title="Interactive Castle Wall Rules and Constraints Demo"></iframe>
     </div>
   </div>
-  <aside class="notes">Demonstrate the paper's other big idea using the cobblestone castle wall: when Width is 9 or less, Constraint.ELSE draws one continuous crenellated cobblestone wall; dragging Width > 9 fires Dimension.X > 9 and opens a gate in the middle; Repeat [1, 1] toggles alternating cobblestone/void battlements; and Regenerate samples between cobblestone and mossy cobblestone variants.</aside>
+  <aside class="notes">Isolate @rule constraints using the castle wall: when Width (X) is 9 or less, Constraint.ELSE draws one continuous stone brick wall; dragging Width (X) past 9 activates Dimension.X &gt; 9, splitting [-1, 3, -1] to open an arched gate in the center.</aside>
+</section>
+
+<section class="slide chapter" id="rules-loops" data-part="How it works">
+  <header class="ch-head">
+    <span class="ch-num">3</span>
+    <div>
+      <h2>Repeating Splits with Loops</h2>
+      <p>Toggle <strong>Repeat [1, 1]</strong> and resize <strong>Width (X)</strong> to tile battlements across any span with a Python <code>while</code> loop.</p>
+    </div>
+  </header>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/rules.html?mode=loops&amp;v=5" width="1454" height="704" scrolling="no" title="Interactive Castle Wall Repeating Splits and Loops Demo"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Show how repeat=True pairs with a standard Python while loop: splitting the top row into repeating [1, 1] slices lets fill(STONE_BRICKS) and void() tile castle battlements across any width automatically.</aside>
+</section>
+
+<section class="slide chapter" id="rules-variants" data-part="How it works">
+  <header class="ch-head">
+    <span class="ch-num">4</span>
+    <div>
+      <h2>Random Variants</h2>
+      <p>Click <strong>Regenerate</strong> to sample weighted <code>@rule</code> functions that weather each stone block differently.</p>
+    </div>
+  </header>
+  <div class="play-room" data-max="1">
+    <div class="play-set">
+      <iframe data-src="demo/rules.html?mode=variants&amp;v=5" width="1454" height="704" scrolling="no" title="Interactive Castle Wall Random Variants Demo"></iframe>
+    </div>
+  </div>
+  <aside class="notes">Show probabilistic @rule selection: three wall_block() rules with weights 0.60, 0.25, and 0.15 mix Stone Bricks, Mossy Cobblestone, and Cobblestone across the castle wall on each Regenerate click.</aside>
 </section>
 
 <section class="slide chapter" id="interactive-demo-3d" data-part="In 3D">
   <header class="ch-head">
-    <span class="ch-num">3</span>
+    <span class="ch-num">5</span>
     <div>
       <h2>Box-Splitting in 3D Minecraft Space</h2>
       <p>Slice along <strong>X, Y, or Z</strong>, switch to <strong>Move</strong> to orbit and fill 3D sub-boxes, and hover code lines to inspect 3D scopes.</p>

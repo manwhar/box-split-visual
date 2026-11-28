@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
 """Local web UI server for creating 2D Minecraft mockup renders.
+#!/usr/bin/env python3
 
 Runs with Python 3.10+ standard library only (no third-party packages).
 Serves the mockup editor UI, discovers Minecraft textures in ../demo/assets/,
@@ -9,21 +9,22 @@ Usage:
     py tools/minecraft_mockup.py
     py tools/minecraft_mockup.py --port 8765 --no-browser
 """
+
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timezone
 import base64
-from http import HTTPStatus
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
-from pathlib import Path
 import re
 import struct
 import sys
 import threading
 import urllib.parse
 import webbrowser
+from datetime import datetime, timezone
+from http import HTTPStatus
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 
 TOOLS_DIR = Path(__file__).resolve().parent
 UI_DIR = TOOLS_DIR / "ui"
@@ -74,8 +75,8 @@ def inspect_png_bytes(data: bytes) -> tuple[int, int, bool] | None:
     has_alpha = color_type in (4, 6)
     pos = 8
     while pos + 12 <= len(data):
-        chunk_len = struct.unpack(">I", data[pos:pos + 4])[0]
-        chunk_type = data[pos + 4:pos + 8]
+        chunk_len = struct.unpack(">I", data[pos : pos + 4])[0]
+        chunk_type = data[pos + 4 : pos + 8]
         if chunk_type == b"tRNS":
             has_alpha = True
             break
@@ -115,7 +116,12 @@ def classify_texture(tex_id: str, width: int, height: int, has_alpha: bool) -> d
     """Compute span and rendering metadata for a discovered texture PNG."""
     if width == height and width >= BLOCK_TEXELS:
         span_cols, span_rows = 1, 1
-    elif width % BLOCK_TEXELS == 0 and height % BLOCK_TEXELS == 0 and width >= BLOCK_TEXELS and height >= BLOCK_TEXELS:
+    elif (
+        width % BLOCK_TEXELS == 0
+        and height % BLOCK_TEXELS == 0
+        and width >= BLOCK_TEXELS
+        and height >= BLOCK_TEXELS
+    ):
         span_cols = width // BLOCK_TEXELS
         span_rows = height // BLOCK_TEXELS
     else:
@@ -132,7 +138,12 @@ def classify_texture(tex_id: str, width: int, height: int, has_alpha: bool) -> d
         is_decor = False
         casts_shadow = True
         preserves_bg = True
-    elif tex_id == "oak_door" or tex_id.endswith("_door") or span_rows > 1 or span_cols > 1:
+    elif (
+        tex_id == "oak_door"
+        or tex_id.endswith("_door")
+        or span_rows > 1
+        or span_cols > 1
+    ):
         kind = "multiblock"
         is_decor = False
         casts_shadow = True
@@ -166,8 +177,7 @@ def list_textures() -> list[dict]:
         return []
 
     project_stems = {
-        p.stem for p in ASSETS_DIR.glob("*.json")
-        if read_project_json(p) is not None
+        p.stem for p in ASSETS_DIR.glob("*.json") if read_project_json(p) is not None
     }
 
     textures = []
@@ -182,15 +192,17 @@ def list_textures() -> list[dict]:
             continue
 
         meta = classify_texture(p.stem, width, height, has_alpha)
-        textures.append({
-            "id": p.stem,
-            "filename": p.name,
-            "url": f"/assets/{urllib.parse.quote(p.name)}",
-            "width": width,
-            "height": height,
-            "hasAlpha": has_alpha,
-            **meta,
-        })
+        textures.append(
+            {
+                "id": p.stem,
+                "filename": p.name,
+                "url": f"/assets/{urllib.parse.quote(p.name)}",
+                "width": width,
+                "height": height,
+                "hasAlpha": has_alpha,
+                **meta,
+            }
+        )
 
     textures.sort(key=lambda t: (KIND_ORDER.get(t["kind"], 99), t["label"].lower()))
     return textures
@@ -213,15 +225,19 @@ def list_projects() -> list[dict]:
             mtime = 0.0
         png_path = ASSETS_DIR / f"{p.stem}.png"
         updated_iso = datetime.fromtimestamp(mtime, tz=timezone.utc).isoformat()
-        projects.append({
-            "name": p.stem,
-            "cols": data.get("cols"),
-            "rows": data.get("rows"),
-            "mtime": mtime,
-            "updatedAt": updated_iso,
-            "pngExists": png_path.is_file(),
-            "pngUrl": f"/assets/{urllib.parse.quote(p.stem + '.png')}?v={int(mtime)}" if png_path.is_file() else None,
-        })
+        projects.append(
+            {
+                "name": p.stem,
+                "cols": data.get("cols"),
+                "rows": data.get("rows"),
+                "mtime": mtime,
+                "updatedAt": updated_iso,
+                "pngExists": png_path.is_file(),
+                "pngUrl": f"/assets/{urllib.parse.quote(p.stem + '.png')}?v={int(mtime)}"
+                if png_path.is_file()
+                else None,
+            }
+        )
 
     projects.sort(key=lambda item: item["mtime"], reverse=True)
     for item in projects:
@@ -250,7 +266,7 @@ def sanitize_export_name(raw_name: object) -> str | None:
     name = raw_name.strip()
     for ext in (".png", ".json"):
         if name.lower().endswith(ext):
-            name = name[:-len(ext)]
+            name = name[: -len(ext)]
     name = name.strip()
     if not VALID_NAME_RE.fullmatch(name):
         return None
@@ -308,7 +324,7 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
             return
 
         if path.startswith("/static/"):
-            target = resolve_safe_child(UI_DIR, path[len("/static/"):])
+            target = resolve_safe_child(UI_DIR, path[len("/static/") :])
             if target is None:
                 self._send_json(HTTPStatus.FORBIDDEN, {"error": "Invalid static path"})
                 return
@@ -316,7 +332,7 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
             return
 
         if path.startswith("/assets/"):
-            target = resolve_safe_child(ASSETS_DIR, path[len("/assets/"):])
+            target = resolve_safe_child(ASSETS_DIR, path[len("/assets/") :])
             if target is None:
                 self._send_json(HTTPStatus.FORBIDDEN, {"error": "Invalid asset path"})
                 return
@@ -332,14 +348,18 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
             return
 
         if path.startswith("/api/projects/"):
-            raw_id = urllib.parse.unquote(path[len("/api/projects/"):]).strip("/")
+            raw_id = urllib.parse.unquote(path[len("/api/projects/") :]).strip("/")
             if not PROJECT_ID_RE.fullmatch(raw_id):
-                self._send_json(HTTPStatus.BAD_REQUEST, {"error": "Invalid project name"})
+                self._send_json(
+                    HTTPStatus.BAD_REQUEST, {"error": "Invalid project name"}
+                )
                 return
             json_path = ASSETS_DIR / f"{raw_id}.json"
             data = read_project_json(json_path)
             if data is None:
-                self._send_json(HTTPStatus.NOT_FOUND, {"error": f"Project '{raw_id}' not found"})
+                self._send_json(
+                    HTTPStatus.NOT_FOUND, {"error": f"Project '{raw_id}' not found"}
+                )
                 return
             self._send_json(HTTPStatus.OK, data)
             return
@@ -349,7 +369,9 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         parsed = urllib.parse.urlsplit(self.path)
         if parsed.path != "/api/export":
-            self._send_json(HTTPStatus.NOT_FOUND, {"error": f"Unknown endpoint: {parsed.path}"})
+            self._send_json(
+                HTTPStatus.NOT_FOUND, {"error": f"Unknown endpoint: {parsed.path}"}
+            )
             return
 
         try:
@@ -359,14 +381,18 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
             return
 
         if content_length <= 0 or content_length > 25 * 1024 * 1024:
-            self._send_json(HTTPStatus.BAD_REQUEST, {"error": "Request body missing or too large"})
+            self._send_json(
+                HTTPStatus.BAD_REQUEST, {"error": "Request body missing or too large"}
+            )
             return
 
         try:
             raw_body = self.rfile.read(content_length)
             payload = json.loads(raw_body.decode("utf-8"))
         except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
-            self._send_json(HTTPStatus.BAD_REQUEST, {"error": f"Invalid JSON body: {exc}"})
+            self._send_json(
+                HTTPStatus.BAD_REQUEST, {"error": f"Invalid JSON body: {exc}"}
+            )
             return
 
         if not isinstance(payload, dict):
@@ -377,7 +403,9 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
         if not name:
             self._send_json(
                 HTTPStatus.BAD_REQUEST,
-                {"error": "Invalid name. Use 1-80 letters, digits, hyphens, or underscores starting with a letter/digit."},
+                {
+                    "error": "Invalid name. Use 1-80 letters, digits, hyphens, or underscores starting with a letter/digit."
+                },
             )
             return
 
@@ -388,31 +416,44 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
         if png_path.exists() and not is_mockup_project_stem(name):
             self._send_json(
                 HTTPStatus.CONFLICT,
-                {"error": f"Cannot overwrite existing asset '{name}.png'. Pick a different mockup name."},
+                {
+                    "error": f"Cannot overwrite existing asset '{name}.png'. Pick a different mockup name."
+                },
             )
             return
 
         png_data_url = payload.get("pngDataUrl")
-        if not isinstance(png_data_url, str) or not png_data_url.startswith("data:image/png;base64,"):
-            self._send_json(HTTPStatus.BAD_REQUEST, {"error": "Expected pngDataUrl starting with data:image/png;base64,"})
+        if not isinstance(png_data_url, str) or not png_data_url.startswith(
+            "data:image/png;base64,"
+        ):
+            self._send_json(
+                HTTPStatus.BAD_REQUEST,
+                {"error": "Expected pngDataUrl starting with data:image/png;base64,"},
+            )
             return
 
         b64_part = png_data_url.split(",", 1)[1]
         try:
             png_bytes = base64.b64decode(b64_part, validate=True)
         except Exception as exc:
-            self._send_json(HTTPStatus.BAD_REQUEST, {"error": f"Invalid PNG base64 data: {exc}"})
+            self._send_json(
+                HTTPStatus.BAD_REQUEST, {"error": f"Invalid PNG base64 data: {exc}"}
+            )
             return
 
         png_info = inspect_png_bytes(png_bytes)
         if png_info is None:
-            self._send_json(HTTPStatus.BAD_REQUEST, {"error": "Decoded payload is not a valid PNG"})
+            self._send_json(
+                HTTPStatus.BAD_REQUEST, {"error": "Decoded payload is not a valid PNG"}
+            )
             return
         width, height, _ = png_info
 
         project = payload.get("project")
         if not isinstance(project, dict):
-            self._send_json(HTTPStatus.BAD_REQUEST, {"error": "Missing project JSON object"})
+            self._send_json(
+                HTTPStatus.BAD_REQUEST, {"error": "Missing project JSON object"}
+            )
             return
 
         project_out = dict(project)
@@ -424,9 +465,14 @@ class MockupRequestHandler(BaseHTTPRequestHandler):
         try:
             ASSETS_DIR.mkdir(parents=True, exist_ok=True)
             png_path.write_bytes(png_bytes)
-            json_path.write_text(json.dumps(project_out, indent=2) + "\n", encoding="utf-8")
+            json_path.write_text(
+                json.dumps(project_out, indent=2) + "\n", encoding="utf-8"
+            )
         except OSError as exc:
-            self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Failed to write files: {exc}"})
+            self._send_json(
+                HTTPStatus.INTERNAL_SERVER_ERROR,
+                {"error": f"Failed to write files: {exc}"},
+            )
             return
 
         self._send_json(
@@ -457,10 +503,23 @@ def bind_server(host: str, requested_port: int | None) -> ThreadingHTTPServer:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Launch the 2D Minecraft mockup render generator web UI.")
-    parser.add_argument("--host", default="127.0.0.1", help="Bind host (default: 127.0.0.1)")
-    parser.add_argument("--port", type=int, default=None, help="Bind port (default: 8765 or next available)")
-    parser.add_argument("--no-browser", action="store_true", help="Do not automatically open a browser tab")
+    parser = argparse.ArgumentParser(
+        description="Launch the 2D Minecraft mockup render generator web UI."
+    )
+    parser.add_argument(
+        "--host", default="127.0.0.1", help="Bind host (default: 127.0.0.1)"
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=None,
+        help="Bind port (default: 8765 or next available)",
+    )
+    parser.add_argument(
+        "--no-browser",
+        action="store_true",
+        help="Do not automatically open a browser tab",
+    )
     args = parser.parse_args(argv)
 
     if not UI_DIR.is_dir():

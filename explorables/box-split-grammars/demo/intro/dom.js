@@ -4,13 +4,13 @@
  * bubble docking helper, and deterministic step snapshots.
  */
 
-import { clamp, easeInOutCubic, easeOutCubic, lerp } from './anim.js';
+import { clamp, easeInOutCubic, easeOutCubic, lerp } from './anim.js?v=4';
 
-export const PYTHON_LINE = 'Python  lets coders use loops, conditions, and other tools to assist them in building.';
+export const PYTHON_LINE = 'Python lets coders use loops, conditions, and other tools to assist them in building.';
 export const PYTHON_WORD = 'Python';
 
 export const BUBBLE_COPY = {
-  1: 'A set of rules that breaks one big box into smaller pieces step by step. You can think about it like grammar in English that breaks a sentence into phrases and words.',
+  1: 'A set of rules that breaks one big box into smaller pieces step by step.&nbsp; You can think about it like grammar in English that breaks a sentence into phrases and words.',
   2: "Dr. Eger's nonterminal system that slices one big box into smaller pieces.",
   3: 'A rule that expands further instead of placing blocks. For example, one side of a castle splits into <code>tower()</code>, <code>wall()</code>, <code>gate()</code>, <code>wall()</code>, and <code>tower()</code>.'
 };

@@ -3,9 +3,9 @@
  * Entry point for the 3-column Tower-to-2D-Grid bridge slides (demo/tower.html?step=1..5).
  */
 
-import { clamp, createAnimator } from '../intro/anim.js?v=3';
-import { createTowerController } from './choreography.js?v=3';
-import { TowerRenderer, loadTowerAssets } from './tower_canvas.js?v=3';
+import { clamp, createAnimator } from '../intro/anim.js?v=4';
+import { createTowerController } from './choreography.js?v=4';
+import { TowerRenderer, loadTowerAssets } from './tower_canvas.js?v=4';
 
 const params = new URLSearchParams(location.search);
 const parsedStep = Number.parseInt(params.get('step') ?? '1', 10);
@@ -89,7 +89,7 @@ if (STEP === 5 && mockupFrame) {
       // Same-origin fallback if nested frame cannot be inspected
     }
   });
-  mockupFrame.src = 'index.html?v=3';
+  mockupFrame.src = 'index.html?v=4';
 }
 
 const waitFontsReady = () =>

@@ -6,8 +6,8 @@
  * drop highlights, and uncut reference column spotlighting.
  */
 
-import { clamp, lerp } from '../intro/anim.js?v=3';
-import { TOWER_COLS, TOWER_ROWS } from './grammar_spec.js?v=3';
+import { clamp, lerp } from '../intro/anim.js?v=4';
+import { TOWER_COLS, TOWER_ROWS } from './grammar_spec.js?v=4';
 
 function makeOffscreen(w, h) {
   const c = document.createElement('canvas');
@@ -214,12 +214,12 @@ function mergeColSpans(cols) {
 
 export async function loadTowerAssets() {
   const [data, stoneBricks, cobblestone] = await Promise.all([
-    fetch('assets/tower.json?v=3').then((r) => {
+    fetch('assets/tower.json?v=4').then((r) => {
       if (!r.ok) throw new Error(`Failed to load tower.json (${r.status})`);
       return r.json();
     }),
-    loadImage('assets/stone_bricks.png?v=3'),
-    loadImage('assets/cobblestone.png?v=3')
+    loadImage('assets/stone_bricks.png?v=4'),
+    loadImage('assets/cobblestone.png?v=4')
   ]);
   const textures = { stone_bricks: stoneBricks, cobblestone };
   const baked = buildShadowedBgCanvas(data, textures, 64);

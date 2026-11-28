@@ -1,14 +1,12 @@
 /**
  * rules_engine.js
- * Implements Box-Split Grammar execution for the Castle Wall demo, faithful to SplitGrammar.py:
- * - makeSplit with positive (absolute) and negative (proportional) sizes + repeat=True + Rounding.START
- * - @rule constraint dispatch:
- *   - Dimension.X > 9 triggers gate_layout() vs Constraint.ELSE plain wall
- *   - Dimension.X % 2 == 1 centers a 3-wide gate vs Dimension.X % 2 == 0 centers a 4-wide gate
- * - Weighted nondeterministic selection for wall_body() (Cobblestone vs Mossy Cobblestone)
+ * Faithful Box-Split Grammar evaluators for the three focused Castle Wall slides:
+ *   - evaluateConstraintsWall(width, height): @rule(constraint=Dimension.X > 9) vs Constraint.ELSE
+ *   - evaluateLoopsWall(width, repeatLoop, height): split(Dimension.X, [1, 1], repeat=True) while loop
+ *   - evaluateVariantsWall(seed, width, height): weighted probabilistic @rule selection
+ *
+ * Uses top-down grid coordinates: x in [0..width-1], y in [0..height-1] (y=0 is top row).
  */
-
-import { TEXTURE_TYPES } from './textures.js';
 
 export function mulberry32(seed) {
   let a = seed >>> 0;
@@ -22,7 +20,7 @@ export function mulberry32(seed) {
 }
 
 /**
- * Exact port of SplitGrammar.make_split(a, b, sizes, Rounding.START, repeat)
+ * Port of SplitGrammar.make_split(a, b, sizes, Rounding.START, repeat)
  */
 export function makeSplit(a, b, sizes, repeat = false) {
   const abssizes = sizes.filter((s) => s > 0).reduce((acc, s) => acc + s, 0);
@@ -73,94 +71,226 @@ export function makeSplit(a, b, sizes, repeat = false) {
 }
 
 /**
- * Execute the castle_wall grammar for given dimensions, loop toggle, and seed.
- * Splits Y into [-1, 1] first so top battlements alternate cleanly across the whole wall
- * without pressing two tall merlons together next to the gate.
+ * Mode 1: Rules & Constraints
+ * @rule(constraint=Dimension.X > 9) opens a 3-wide arched castle gate between [-1, 3, -1];
+ * @rule(constraint=Constraint.ELSE) builds a continuous solid stone_bricks wall.
  */
-export function evaluateWallGrammar({ width, height, repeatLoop, seed }) {
-  const rng = mulberry32(seed);
-  const cells = []; // { x, y, w, h, material, ruleTag }
-  const firedRules = new Set();
-  const bayResults = [];
+export function evaluateConstraintsWall(width, height = 6) {
+  const gateActive = width > 9;
+  const cells = [];
+  const boxes = [];
+  const solidCuts = [];
+  const topLabels = [];
 
-  function fillBox(x, y, w, h, material, ruleTag) {
-    if (w <= 0 || h <= 0) return;
-    cells.push({ x, y, w, h, material, ruleTag });
-  }
+  if (gateActive) {
+    const [[x0, x1], [gx0, gx1], [x2, x3]] = makeSplit(0, width, [-1, 3, -1], false);
+    const leftW = x1 - x0;
+    const gateW = gx1 - gx0;
+    const rightW = x3 - x2;
 
-  // Top battlement row across full width: split(X, [1, 1], repeat=True) -> X _ X _ X
-  function evalBattlement(bx, by, bw) {
-    if (bw <= 0) return;
-    if (!repeatLoop) {
-      firedRules.add('wall_flat');
-      fillBox(bx, by, bw, 1, TEXTURE_TYPES.COBBLESTONE, 'wall_flat');
-      return;
+    boxes.push(
+      { x: 0, y: 0, w: leftW, h: height, scopeTag: 'c_left' },
+      { x: gx0, y: 0, w: gateW, h: height, scopeTag: 'c_gate' },
+      { x: x2, y: 0, w: rightW, h: height, scopeTag: 'c_right' }
+    );
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        if (x < gx0) {
+          cells.push({ x, y, fg: 'stone_bricks', bg: null, scopeTag: 'c_left' });
+        } else if (x >= x2) {
+          cells.push({ x, y, fg: 'stone_bricks', bg: null, scopeTag: 'c_right' });
+        } else if (y <= 1) {
+          cells.push({ x, y, fg: 'stone_bricks', bg: null, scopeTag: 'c_gate' });
+        } else {
+          // 3-wide arched doorway: oak_planks backdrop framed by cobblestone jambs & arch corners
+          const isOuter = x === gx0 || x === gx1 - 1;
+          let jamb = null;
+          if (isOuter) {
+            const side = x === gx0 ? 'left' : 'right';
+            jamb = y === 2 ? 'full' : side;
+          }
+          cells.push({
+            x,
+            y,
+            fg: jamb ? 'cobblestone' : null,
+            jambMode: jamb,
+            bg: 'oak_planks',
+            scopeTag: 'c_gate'
+          });
+        }
+      }
     }
-    firedRules.add('wall_loop');
-    const slices = makeSplit(bx, bx + bw, [1, 1], true);
-    slices.forEach(([a, b], idx) => {
-      const mat = idx % 2 === 0 ? TEXTURE_TYPES.COBBLESTONE : null;
-      fillBox(a, by, b - a, 1, mat, 'wall_loop');
-    });
+
+    solidCuts.push(
+      { axis: 'V', at: gx0, from: 0, to: height },
+      { axis: 'V', at: x2, from: 0, to: height }
+    );
+
+    topLabels.push(
+      { x: 0, w: leftW, text: `-1 → ${leftW}` },
+      { x: gx0, w: gateW, text: '3' },
+      { x: x2, w: rightW, text: `-1 → ${rightW}` }
+    );
+
+    return {
+      mode: 'constraints',
+      width,
+      height,
+      gateActive: true,
+      activeRuleGroup: 'rule_gate',
+      inactiveRuleGroup: 'rule_else',
+      hasCreneledOutline: false,
+      boxes,
+      cells,
+      solidCuts,
+      topLabels
+    };
   }
 
-  // Gate opening in the lower wall body: cobblestone jambs + open void() doorway + lintel
-  function evalGate(gx, gy, gw, gh, ruleTag) {
-    const ySlices = makeSplit(gy, gy + gh, [-1, 1], false);
-    const [doorY, lintelY] = ySlices;
-    const xSlices = makeSplit(gx, gx + gw, [1, -1, 1], false);
-    const [leftJamb, openSpan, rightJamb] = xSlices;
-    const dh = doorY[1] - doorY[0];
-
-    fillBox(leftJamb[0], doorY[0], leftJamb[1] - leftJamb[0], dh, TEXTURE_TYPES.COBBLESTONE, ruleTag);
-    fillBox(openSpan[0], doorY[0], openSpan[1] - openSpan[0], dh, null, ruleTag);
-    fillBox(rightJamb[0], doorY[0], rightJamb[1] - rightJamb[0], dh, TEXTURE_TYPES.COBBLESTONE, ruleTag);
-    fillBox(gx, lintelY[0], gw, lintelY[1] - lintelY[0], TEXTURE_TYPES.COBBLESTONE, ruleTag);
-  }
-
-  // Random @rule variants for wall_body(): Cobblestone vs Mossy Cobblestone
-  function evalWallBody(bx, by, bw, bh, wallIndex) {
-    const pickCobble = rng() < 0.5;
-    if (pickCobble) {
-      firedRules.add('body_cobble');
-      bayResults.push({ index: wallIndex, variant: 'cobble', w: bw });
-      fillBox(bx, by, bw, bh, TEXTURE_TYPES.COBBLESTONE, 'body_cobble');
-    } else {
-      firedRules.add('body_mossy');
-      bayResults.push({ index: wallIndex, variant: 'mossy', w: bw });
-      fillBox(bx, by, bw, bh, TEXTURE_TYPES.MOSSY_COBBLESTONE, 'body_mossy');
+  boxes.push({ x: 0, y: 0, w: width, h: height, scopeTag: 'c_else' });
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      cells.push({ x, y, fg: 'stone_bricks', bg: null, scopeTag: 'c_else' });
     }
   }
-
-  // @rule dispatch for lower_wall(): Dimension.X > 9 opens a 3-wide gate vs Constraint.ELSE
-  function evalLowerWall(lx, ly, lw, lh) {
-    if (lw > 9) {
-      firedRules.add('lower_gate');
-      const xSlices = makeSplit(lx, lx + lw, [-1, 3, -1], false);
-      const [leftWall, gate, rightWall] = xSlices;
-      evalWallBody(leftWall[0], ly, leftWall[1] - leftWall[0], lh, 0);
-      evalGate(gate[0], ly, gate[1] - gate[0], lh, 'lower_gate');
-      evalWallBody(rightWall[0], ly, rightWall[1] - rightWall[0], lh, 1);
-    } else {
-      firedRules.add('lower_plain');
-      evalWallBody(lx, ly, lw, lh, 0);
-    }
-  }
-
-  // Root castle_wall(): split(Dimension.Y, [-1, 1]) -> lower_wall() + battlement()
-  const ySlices = makeSplit(0, height, [-1, 1], false);
-  const [bodyY, capY] = ySlices;
-  evalLowerWall(0, bodyY[0], width, bodyY[1] - bodyY[0]);
-  evalBattlement(0, capY[0], width);
+  topLabels.push({ x: 0, w: width, text: `Width (X) = ${width}` });
 
   return {
+    mode: 'constraints',
+    width,
+    height,
+    gateActive: false,
+    activeRuleGroup: 'rule_else',
+    inactiveRuleGroup: 'rule_gate',
+    hasCreneledOutline: false,
+    boxes,
+    cells,
+    solidCuts,
+    topLabels
+  };
+}
+
+/**
+ * Mode 2: Repeating Splits with Loops
+ * split(Dimension.Y, [-1, 1]) separates the lower wall_base() from the top row,
+ * then split(Dimension.X, [1, 1], repeat=True) tiles stone_bricks / void() across Width (X).
+ */
+export function evaluateLoopsWall(width, repeatLoop = true, height = 6) {
+  const cells = [];
+  const boxes = [{ x: 0, y: 1, w: width, h: height - 1, scopeTag: 'l_base' }];
+  const solidCuts = [{ axis: 'H', at: 1, from: 0, to: width }];
+  const topLabels = [];
+
+  for (let y = 1; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      cells.push({ x, y, fg: 'stone_bricks', bg: null, scopeTag: 'l_base' });
+    }
+  }
+
+  if (repeatLoop) {
+    const slices = makeSplit(0, width, [1, 1], true);
+    slices.forEach(([x0], idx) => {
+      const isMerlon = idx % 2 === 0;
+      const scopeTag = isMerlon ? 'l_merlon' : 'l_void';
+      boxes.push({ x: x0, y: 0, w: 1, h: 1, isVoid: !isMerlon, scopeTag });
+      cells.push({
+        x: x0,
+        y: 0,
+        fg: isMerlon ? 'stone_bricks' : null,
+        bg: null,
+        isVoid: !isMerlon,
+        scopeTag
+      });
+      if (x0 > 0) {
+        solidCuts.push({ axis: 'V', at: x0, from: 0, to: 1 });
+      }
+      topLabels.push({ x: x0, w: 1, text: '1' });
+    });
+  } else {
+    boxes.push({ x: 0, y: 0, w: width, h: 1, isVoid: false, scopeTag: 'l_flat' });
+    for (let x = 0; x < width; x++) {
+      cells.push({ x, y: 0, fg: 'stone_bricks', bg: null, scopeTag: 'l_flat' });
+    }
+    topLabels.push({ x: 0, w: width, text: `Flat top (1 × ${width})` });
+  }
+
+  return {
+    mode: 'loops',
     width,
     height,
     repeatLoop,
+    hasCreneledOutline: false,
+    boxes,
     cells,
-    firedRules,
-    bayResults,
-    gateActive: width > 9,
-    gateWidth: width > 9 ? 3 : 0
+    solidCuts,
+    topLabels
   };
+}
+
+const VARIANT_RULES = [
+  { cutoff: 0.60, material: 'stone_bricks', scopeTag: 'v_bricks' },
+  { cutoff: 0.85, material: 'mossy_cobblestone', scopeTag: 'v_mossy' },
+  { cutoff: 1.00, material: 'cobblestone', scopeTag: 'v_cobble' }
+];
+
+/**
+ * Mode 3: Random Variants
+ * Samples weighted wall_block() @rules across every solid block of an 11x6 battlemented wall:
+ *   0.60 -> stone_bricks, 0.25 -> mossy_cobblestone, 0.15 -> cobblestone
+ */
+export function evaluateVariantsWall(seed = 7, width = 11, height = 6) {
+  const rng = mulberry32(seed);
+  const cells = [];
+  const counts = { v_bricks: 0, v_mossy: 0, v_cobble: 0 };
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (y === 0 && x % 2 === 1) continue;
+      const r = rng();
+      const picked = VARIANT_RULES.find((v) => r < v.cutoff) ?? VARIANT_RULES[2];
+      counts[picked.scopeTag] += 1;
+      cells.push({
+        x,
+        y,
+        fg: picked.material,
+        bg: null,
+        scopeTag: picked.scopeTag
+      });
+    }
+  }
+
+  const boxes = cells.map((c) => ({ x: c.x, y: c.y, w: 1, h: 1, scopeTag: c.scopeTag }));
+
+  return {
+    mode: 'variants',
+    seed,
+    width,
+    height,
+    hasCreneledOutline: true,
+    counts,
+    boxes,
+    cells,
+    solidCuts: [],
+    topLabels: []
+  };
+}
+
+/**
+ * Advance seed until all 3 weighted variants appear at least once and layout differs from prevSeed.
+ */
+export function nextDistinctSeed(prevSeed, width = 11, height = 6) {
+  const prevSig = evaluateVariantsWall(prevSeed, width, height)
+    .cells.map((c) => c.scopeTag)
+    .join(',');
+  for (let i = 1; i <= 64; i++) {
+    const candidateSeed = prevSeed + i;
+    const result = evaluateVariantsWall(candidateSeed, width, height);
+    const { v_bricks, v_mossy, v_cobble } = result.counts;
+    if (v_bricks > 0 && v_mossy > 0 && v_cobble > 0) {
+      const nextSig = result.cells.map((c) => c.scopeTag).join(',');
+      if (nextSig !== prevSig) return candidateSeed;
+    }
+  }
+  return prevSeed + 1;
 }

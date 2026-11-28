@@ -143,6 +143,7 @@
   margin-top: 12px;
   border-radius: 16px;
   overflow: hidden;
+  background: #f8fafc;
   box-shadow: 0 8px 30px rgba(30, 40, 60, 0.1);
   border: 1px solid var(--line);
 }

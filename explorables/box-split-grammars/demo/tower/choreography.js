@@ -8,7 +8,7 @@
  *   5: "Make something yourself!" FLIP transition into live interactive 2D mockup
  */
 
-import { clamp, easeInOutCubic, easeOutBack, easeOutCubic, lerp } from '../intro/anim.js?v=3';
+import { clamp, easeInOutCubic, easeOutBack, easeOutCubic, lerp } from '../intro/anim.js?v=4';
 import {
   ALL_CUTS,
   ALL_FILLED_REGIONS,
@@ -25,7 +25,7 @@ import {
   TOWER_COLS,
   TOWER_ROWS,
   VERTICAL_CUTS
-} from './grammar_spec.js?v=3';
+} from './grammar_spec.js?v=4';
 
 const CELL_PX = 48;
 
@@ -798,16 +798,16 @@ export function createTowerController({ targetRenderer, buildRenderer, heroRende
       }
     }
 
-    await anim.animate(680, token, (t) => {
+    await anim.animate(640, token, (t) => {
       const cursorFade = 1 - clamp(t / 0.35, 0, 1);
       setCursor(afterDrag2.x, afterDrag2.y, { opacity: cursorFade });
 
       const e = easeInOutCubic(t);
-      const restAnimated = REST_FILLED_REGIONS.map((reg, idx) => {
-        const delay = (idx / REST_FILLED_REGIONS.length) * 0.25;
-        const local = clamp((t - delay) / (1 - delay), 0, 1);
-        return { ...reg, alpha: 1, wipeProgress: easeOutCubic(local) };
-      });
+      const restAnimated = REST_FILLED_REGIONS.map((reg) => ({
+        ...reg,
+        alpha: e,
+        wipeProgress: 1
+      }));
       const labels = ALL_SUBBOXES.filter(
         (b) => !filledRegionKeys.has(`${b.x},${b.y}`)
       ).map((b) => ({

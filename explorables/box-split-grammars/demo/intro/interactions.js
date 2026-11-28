@@ -3,8 +3,8 @@
  * Step 0 Basic 3D paper pointer swivel, Step 4 castle hover linking, and Replay button.
  */
 
-import { clamp } from './anim.js';
-import { els } from './dom.js';
+import { clamp } from './anim.js?v=4';
+import { els } from './dom.js?v=4';
 
 export function initInteractions({ getStep, isVisible, onReplay }) {
   let interactiveEnabled = false;

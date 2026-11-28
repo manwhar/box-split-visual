@@ -347,7 +347,8 @@ ul.points.terms-list {
   visibility: hidden;
 }
 
-.python-text-wrap { position: relative; z-index: 6; display: inline-flex; align-items: baseline; }
+.python-text-wrap { position: relative; z-index: 6; display: inline; }
+#python-rest, .python-rest { white-space: pre; }
 
 .typing-caret {
   display: inline-block;
